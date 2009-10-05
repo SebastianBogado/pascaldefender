@@ -37,29 +37,53 @@
         <Filename Value="pascaldefender.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pascaldefender"/>
+        <CursorPos X="10" Y="5"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="0"/>
         <UsageCount Value="20"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="pascaldefender.pas"/>
         <ComponentName Value="Form1"/>
-        <IsPartOfProject Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="pascaldefender"/>
-        <CursorPos X="26" Y="5"/>
-        <TopLine Value="2"/>
-        <EditorIndex Value="0"/>
+        <CursorPos X="1" Y="3"/>
+        <TopLine Value="1"/>
         <UsageCount Value="20"/>
-        <Loaded Value="True"/>
       </Unit1>
     </Units>
-    <JumpHistory Count="0" HistoryIndex="-1"/>
+    <JumpHistory Count="4" HistoryIndex="3">
+      <Position1>
+        <Filename Value="pascaldefender.lpr"/>
+        <Caret Line="7" Column="1" TopLine="1"/>
+      </Position1>
+      <Position2>
+        <Filename Value="pascaldefender.lpr"/>
+        <Caret Line="2" Column="1" TopLine="1"/>
+      </Position2>
+      <Position3>
+        <Filename Value="pascaldefender.lpr"/>
+        <Caret Line="6" Column="1" TopLine="1"/>
+      </Position3>
+      <Position4>
+        <Filename Value="pascaldefender.lpr"/>
+        <Caret Line="4" Column="18" TopLine="1"/>
+      </Position4>
+    </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="8"/>
     <PathDelim Value="\"/>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)\"/>
+      <UnitOutputDirectory Value="C:\Users\tests\Documents\Facultad\2009\H2\75.40 Algoritmos y Programación I\Trabajos Prácticos\pascaldefender\bin"/>
     </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <CStyleOperator Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
     <Linking>
       <Options>
         <Win32>
