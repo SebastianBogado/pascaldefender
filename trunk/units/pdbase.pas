@@ -8,6 +8,8 @@ implementation
 uses
   pdcommons,
   introduccion,
+  instrucciones,
+  hiscores,
   juego;
 
 procedure iniciar_pd();
@@ -22,6 +24,8 @@ begin
        case opcion of
             PD_INTRO: opcion := correr_introduccion();
             PD_JUGAR: opcion := correr_juego();
+            PD_VER_INSTRUCCIONES: opcion := correr_instrucciones();
+            PD_VER_HISCORES: opcion := correr_hiscores();
             else
                 opcion := PD_SALIR
        end;

@@ -1,12 +1,9 @@
 program pascaldefender;
 
 uses
-    pdbase;
+    pdbase, instrucciones;
 
 begin
      iniciar_pd();
-
-     writeln('Presione ENTER para continuar');
-     readln();
 end.
 
