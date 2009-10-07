@@ -15,7 +15,6 @@ var
    opcion : byte;
    tecla : char;
 begin
-     writeln('correr intro');
      opcion := PD_INTRO;
      while(opcion = PD_INTRO) do
      begin

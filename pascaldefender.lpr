@@ -1,7 +1,7 @@
 program pascaldefender;
 
 uses
-    pdbase, instrucciones;
+    pdbase;
 
 begin
      iniciar_pd();

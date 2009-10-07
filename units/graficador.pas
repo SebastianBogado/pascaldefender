@@ -4,11 +4,17 @@ interface
 
 uses
     crt,
-    puntajes;
+    puntajes,
+    nivel,
+    mapa,
+    entidad,
+    jugador;
 
 procedure graficar_introduccion();
 procedure graficar_instrucciones();
 procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
+function formulario_nombre():string;
+procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 
 implementation
 
@@ -57,6 +63,50 @@ begin
      writeln('Presione cualquier tecla para volver al inicio.');
 end;
 
+function formulario_nombre():string;
+var
+   nombre:string;
+begin
+     clrscr();
+     writeln('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:');
+     readln(nombre);
+     writeln('Bienvenido ',nombre,'!');
+     writeln('Presiona una tecla para continuar');
+     readkey();
+     formulario_nombre := nombre;
+end;
+
+procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
+var
+   i,j:integer;
+   linea:array [1..COLUMNAS_MAPA] of char;
+begin
+     gotoxy(1,1);
+     cursoroff();
+     clreol();
+     writeln('Nivel ',nivel.numero,', Puntos ',jugador.puntos,', Vidas ',jugador.vidas);
+     clreol();
+     writeln();
+
+     for i := 1 to FILAS_MAPA do
+     begin
+         for j := 1 to COLUMNAS_MAPA do
+         begin
+              if(nivel.mapa[i][j] > 0) then
+              begin
+                   case nivel.entidades[nivel.mapa[i][j]].tipo of
+                        alien_a:linea[j]:=('X');
+                        beto: linea[j]:=('B');
+                   end;
+              end
+              else
+                  linea[j]:=(' ');
+         end;
+         writeln(linea);
+     end;
+
+     cursoron();
+end;
 
 end.
 
