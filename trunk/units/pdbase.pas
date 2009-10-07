@@ -1,3 +1,4 @@
+{pdbase - Sistema base del juego}
 unit pdbase;
 
 interface
@@ -16,7 +17,6 @@ procedure iniciar_pd();
 var
    opcion : byte;
 begin
-    writeln('comenzando');
     opcion := PD_INTRO;
 
     while (opcion <> PD_SALIR) do
