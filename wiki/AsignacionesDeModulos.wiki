@@ -1,0 +1,15 @@
+#summary Quién se encarga de qué cosa.
+#labels Phase-Design
+
+= Sebastián =
+|| *Módulo* || *Unit* || *Proc/Func* ||
+||Principal||pdbase||iniciar_pd||
+||Pantalla Intro||pantalla_introduccion||correr_introduccion||
+||Graficar Introduccion||graficador||graficar_introduccion||
+||Pedir Opcion||pantalla_introduccion||pedir_pantalla||
+||Pantalla Instrucciones||pantalla_instrucciones||correr_instrucciones||
+||Grafica Instrucciones||graficador||graficar_instrucciones||
+||Pantalla HiScores||pantalla_hiscores||correr_hiscores||
+||Obtener HiScores||puntajes||obtener_puntajes||
+||Graficar HiScores||graficador||graficar_hiscores||
+||Juego||pantalla_juego||correr_juego||
