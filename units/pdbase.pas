@@ -8,26 +8,35 @@ implementation
 
 uses
   pdcommons,
-  introduccion,
-  instrucciones,
-  hiscores,
-  juego;
+  pantalla_introduccion,
+  pantalla_instrucciones,
+  pantalla_hiscores,
+  pantalla_juego;
 
-procedure iniciar_pd();
+{
+Maneja el paso de una pantalla del programa a otra. Cada ejecución
+de las distintas pantallas, devuelve la pantalla a ejecutar luego.
+}
+procedure correr_pd();
 var
-   opcion : byte;
+   {La pantalla que se debe mostrar}
+   pantalla : t_pantalla;
 begin
-    opcion := PD_INTRO;
+    pantalla := introduccion;
 
-    while (opcion <> PD_SALIR) do
+    while (pantalla <> salida) do
     begin
-       case opcion of
-            PD_INTRO: opcion := correr_introduccion();
-            PD_JUGAR: opcion := correr_juego();
-            PD_VER_INSTRUCCIONES: opcion := correr_instrucciones();
-            PD_VER_HISCORES: opcion := correr_hiscores();
+       case pantalla of
+            introduccion:
+                  pantalla := correr_introduccion();
+            juego:
+                  pantalla := correr_juego();
+            instrucciones:
+                  pantalla := correr_instrucciones();
+            hiscores:
+                  pantalla := correr_hiscores();
             else
-                opcion := PD_SALIR
+                  pantalla := salida;
        end;
     end;
 end;
