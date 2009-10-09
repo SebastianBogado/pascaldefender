@@ -1,0 +1,13 @@
+#summary Reglas de estilo y sintaxis para Desarrolladores.
+
+= Código =
+== General ==
+== Constantes == 
+== Tipos ==
+== Procedimientos ==
+== Funciones ==
+== Units ==
+
+= Comentarios =
+
+= Estructura de Archivos =
