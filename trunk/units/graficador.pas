@@ -30,25 +30,32 @@ begin
     writeln();
 end;
 
+{
+Grafica la pantalla de introducción
+}
 procedure graficar_introduccion();
 begin
-     clrscr();
-     encabezado();
-     writeln('Seleccione una opcion:');
-     writeln('1. Jugar');
-     writeln('2. Instrucciones');
-     writeln('3. High Scores');
-     writeln('0. Salir');
+    clrscr();
+    encabezado();
+    writeln('Seleccione una opcion:');
+    writeln('1. Jugar');
+    writeln('2. Instrucciones');
+    writeln('3. High Scores');
+    writeln('0. Salir');
 end;
 
+{
+Grafica la pantalla con las instrucciones del juego
+@todo escribir las instrucciones
+}
 procedure graficar_instrucciones();
 begin
-     clrscr();
-     encabezado();
-     writeln('Instrucciones');
-     writeln('Aca van las instrucciones...');
-     writeln('');
-     writeln('Presione cualquier tecla para volver al inicio.');
+    clrscr();
+    encabezado();
+    writeln('Instrucciones');
+    writeln('Aca van las instrucciones...');
+    writeln('');
+    writeln('Presione cualquier tecla para volver al inicio.');
 end;
 
 {
@@ -58,63 +65,65 @@ Muestra en pantalla los puntajes recibidos
 }
 procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
 var
-   i:byte;
+    i:byte;
 begin
-     clrscr();
-     encabezado();
-     writeln('Puntajes Record');
-     writeln('Hay ',cantidad_puntajes,' puntajes record registrados');
+    clrscr();
+    encabezado();
+    writeln('Puntajes Record');
+    writeln('Hay ',cantidad_puntajes,' puntajes record registrados');
 
-     for i := 1 to cantidad_puntajes do
-         writeln(i,' - ',puntajes[i].puntos,' ',puntajes[i].nombre);
+    for i := 1 to cantidad_puntajes do
+        writeln(i,' - ',puntajes[i].puntos,' ',puntajes[i].nombre);
 
-     writeln('');
-     writeln('Presione cualquier tecla para volver al inicio.');
+    writeln('');
+    writeln('Presione cualquier tecla para volver al inicio.');
 end;
 
-function formulario_nombre():string;
+function pedir_nombre():string;
 var
-   nombre:string;
+    nombre:string;
 begin
-     clrscr();
-     writeln('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:');
-     readln(nombre);
-     writeln('Bienvenido ',nombre,'!');
-     writeln('Presiona una tecla para continuar');
-     readkey();
-     formulario_nombre := nombre;
+    clrscr();
+    writeln('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:');
+    readln(nombre);
+    writeln('Bienvenido ',nombre,'!');
+    writeln('Presiona una tecla para continuar');
+    readkey();
+
+    pedir_nombre := nombre;
 end;
 
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 var
-   i,j:integer;
-   linea:array [1..COLUMNAS_MAPA] of char;
+    i,j:integer;
+    linea:array [1..COLUMNAS_MAPA] of char;
 begin
-     gotoxy(1,1);
-     cursoroff();
-     clreol();
-     writeln('Nivel ',nivel.numero,', Puntos ',jugador.puntos,', Vidas ',jugador.vidas);
-     clreol();
-     writeln();
+    gotoxy(1,1);
+    cursoroff();
+    clreol();
+    writeln('Nivel ',nivel.numero,', Puntos ',jugador.puntos,', Vidas ',jugador.vidas);
 
-     for i := 1 to FILAS_MAPA do
-     begin
-         for j := 1 to COLUMNAS_MAPA do
-         begin
-              if(nivel.mapa[i][j] > 0) then
-              begin
-                   case nivel.entidades[nivel.mapa[i][j]].tipo of
-                        alien_a:linea[j]:=('X');
-                        beto: linea[j]:=('B');
-                   end;
+    clreol();
+    writeln();
+
+    for i := 1 to FILAS_MAPA do
+    begin
+        for j := 1 to COLUMNAS_MAPA do
+        begin
+            if(nivel.mapa[i][j] > 0) then
+            begin
+                case nivel.entidades[nivel.mapa[i][j]].tipo of
+                    alien_a:linea[j]:=('X');
+                    beto: linea[j]:=('B');
+                end;
               end
-              else
-                  linea[j]:=(' ');
-         end;
-         writeln(linea);
-     end;
+            else
+                linea[j]:=(' ');
+        end;
+        writeln(linea);
+    end;
 
-     cursoron();
+    cursoron();
 end;
 
 end.

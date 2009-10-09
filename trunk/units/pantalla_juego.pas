@@ -16,64 +16,50 @@ function correr_juego():byte;
 
 implementation
 
-{forward declarations}
-function correr_nivel(numero_nivel:byte; var jugador:t_jugador):byte; forward;
-
 const
-     CANTIDAD_NIVELES = 3;
+    CANTIDAD_NIVELES = 3;
 
 {
-Crea un jugador y lo inicializa con el nombre pedido al usuario
+Crea un jugador y lo inicializa con un nombre pedido al usuario
 @retorna t_jugador EL jugador creado.
 }
 function crear_jugador():t_jugador;
 var
-   jugador:t_jugador;
+    jugador:t_jugador;
 begin
-     inicializar_jugador(jugador);
-     jugador.nombre := formulario_nombre();
+    inicializar_jugador(jugador);
+    jugador.nombre := pedir_nombre();
 
-     crear_jugador := jugador;
+    crear_jugador := jugador;
 end;
-
 
 {
-Corre cada uno de los niveles hasta que el jugador muere o abandona.
-@retorna t_pantalla La pantalla a la que el usuario quiere acceder
+Crea las entidades
+@todo implementar!
 }
-function correr_juego():t_pantalla;
-var
-   jugador:t_jugador;
-   seguir_jugando:boolean;
-   numero_nivel:integer;
+procedure crear_entidades(var entidades:t_entidades);
 begin
-     numero_nivel := 0;
-     seguir_jugando := true;
 
-     jugador := crear_jugador();
-
-     while(seguir_jugando and (numero_nivel < CANTIDAD_NIVELES)) do
-     begin
-          inc(numero_nivel);
-          seguir_jugando := correr_nivel(numero_nivel, jugador);
-     end;
-
-     correr_juego := respuesta_nivel;
 end;
 
-function correr_nivel(numero_nivel:byte; var jugador:t_jugador):byte;
+function jugar_nivel(numero_nivel:byte; var jugador:t_jugador):boolean;
 var
-   nivel:t_nivel;
-   origen_x,origen_y:integer;
-   i:integer;
-   hubo_cambio:boolean;
-   tecla:char;
-   estado:byte;
+    nivel:t_nivel;
+    seguir_jugando:boolean;
 begin
-     inicializar_nivel(nivel);
-     nivel.numero := numero_nivel;
+    inicializar_nivel(nivel);
+    nivel.numero := numero_nivel;
 
-     {inicializa los aliens
+    crear_entidades_nivel(nivel);
+
+    while seguir_jugando do
+        jugar_turno();
+
+
+    correr_nivel := seguir_jugando;
+end;
+
+    { {inicializa los aliens
      @TODO separar}
      for i := 1 to 12 do
      begin
@@ -134,10 +120,34 @@ begin
                if(hubo_cambio)then
                     graficar_nivel(nivel,jugador);
           end;
-     end;
+     end;   }
 
-     correr_nivel := estado;
+
+
+{
+Corre cada uno de los niveles hasta que el jugador muere o abandona.
+@retorna t_pantalla La pantalla a la que el usuario quiere acceder
+}
+function correr_juego():t_pantalla;
+var
+    jugador:t_jugador;
+    seguir_jugando:boolean;
+    numero_nivel:integer;
+begin
+    numero_nivel := 0;
+    seguir_jugando := true;
+
+    jugador := crear_jugador();
+
+    while(seguir_jugando and (numero_nivel < CANTIDAD_NIVELES)) do
+    begin
+        inc(numero_nivel);
+        seguir_jugando := jugar_nivel(numero_nivel, jugador);
+    end;
+
+    correr_juego := introduccion;
 end;
+
 
 end.
 
