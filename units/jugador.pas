@@ -11,6 +11,7 @@ type
 
 procedure inicializar_jugador(var jugador:t_jugador);
 
+
 implementation
 
 {

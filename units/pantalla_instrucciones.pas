@@ -14,14 +14,14 @@ implementation
 
 {
 Muestra las instrucciones del juego, y vuelve a la introducción
-@retorna t_pantalla La pantalla que debe correrse a continuación
+@returns t_pantalla La pantalla que debe correrse a continuación
 }
 function correr_instrucciones():t_pantalla;
 begin
-     graficar_instrucciones();
-     readkey();
+    graficar_instrucciones();
+    readkey();
 
-     correr_instrucciones := introduccion;
+    correr_instrucciones := introduccion;
 end;
 
 end.

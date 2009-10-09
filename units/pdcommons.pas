@@ -1,4 +1,6 @@
-{Componentes comunes}
+{
+Componentes comunes
+}
 unit pdcommons;
 
 interface

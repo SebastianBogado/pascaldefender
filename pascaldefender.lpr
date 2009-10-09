@@ -4,6 +4,6 @@ uses
     pdbase;
 
 begin
-     correr_pd();
+    correr_pd();
 end.
 

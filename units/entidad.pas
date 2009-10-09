@@ -19,6 +19,7 @@ type
     t_entidades = Array [1..MAX_ENTIDADES] of t_entidad;
 
 procedure inicializar_entidades(var entidades:t_entidades);
+procedure inicializar_entidad(var entidad:t_entidad);
 
 
 implementation
@@ -28,12 +29,14 @@ var
    i:byte;
 begin
      for i := 0 to MAX_ENTIDADES do
-     begin
-          entidades[i].tipo := unknown;
-          entidades[i].origen.x := 0;
-          entidades[i].origen.y := 0;
-     end;
+       inicializar_entidad(entidades[i]);
+end;
 
+procedure inicializar_entidad(var entidad:t_entidad);
+begin
+          entidad.tipo := unknown;
+          entidad.origen.x := 0;
+          entidad.origen.y := 0;
 end;
 
 end.
