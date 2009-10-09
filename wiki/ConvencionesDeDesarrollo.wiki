@@ -1,4 +1,5 @@
 #summary Reglas de estilo y sintaxis para Desarrolladores.
+#labels Phase-Design
 
 = Código =
 == General ==
