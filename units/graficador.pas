@@ -15,7 +15,7 @@ procedure graficar_introduccion();
 procedure graficar_instrucciones();
 procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
-function formulario_nombre():string;
+function pedir_nombre():string;
 
 implementation
 
@@ -79,6 +79,11 @@ begin
     writeln('Presione cualquier tecla para volver al inicio.');
 end;
 
+{
+Retorna un nombre que el usuario ingresa
+@param string El nombre ingresado
+@todo implementar el tipo t_nombre?
+}
 function pedir_nombre():string;
 var
     nombre:string;
