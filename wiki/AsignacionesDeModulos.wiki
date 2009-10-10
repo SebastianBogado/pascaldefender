@@ -13,3 +13,12 @@
 ||Obtener HiScores||puntajes||obtener_puntajes||
 ||Graficar HiScores||graficador||graficar_hiscores||
 ||Juego||pantalla_juego||correr_juego||
+
+= Federico =
+|| *Módulo* || *Unit* || *Proc/Func* ||
+||Crear Jugador||pantalla_juego||crear_jugador||
+||Pedir Nombre||graficador||pedir_nombre||
+||Correr Nivel||pantalla_juego||jugar_nivel||
+||Crear Entidades||pantalla_juego||crear_entidades||
+||Jugar Turno||pantalla_juego||jugar_turno||
+||Guardar HiScore||puntajes||guardar_puntaje||
