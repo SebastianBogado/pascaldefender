@@ -16,12 +16,12 @@ readln
 }}}
 == Constantes ==
 Las constantes son la única excepción a la regla de utilizaciòn de minúsculas, y deben escribirse todas en mayúscula. Esto es para diferenciarlas visualmente de las variables:
-{{
+{{{
 const
     MAX_CANTIDAD = 70;
     FOO = 42;
 
-}}
+}}}
 == Tipos ==
 == Procedimientos ==
 == Funciones ==
