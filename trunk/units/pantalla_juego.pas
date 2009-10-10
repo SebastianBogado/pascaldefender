@@ -21,7 +21,7 @@ const
 
 {
 Crea un jugador y lo inicializa con un nombre pedido al usuario
-@retorna t_jugador EL jugador creado.
+@return t_jugador EL jugador creado.
 }
 function crear_jugador():t_jugador;
 var
@@ -34,14 +34,55 @@ begin
 end;
 
 {
-Crea las entidades
+Crea las entidades para un nivel
 @todo implementar!
 }
-procedure crear_entidades(var entidades:t_entidades);
+procedure crear_entidades_nivel(var nivel:t_nivel);
 begin
 
 end;
 
+{
+@todo implementar!
+}
+procedure turno_jugador(var nivel:t_nivel, var jugador:t_jugador);
+begin
+
+end;
+
+{
+@todo implementar!
+}
+procedure turno_alienigena(var nivel:t_nivel, var jugador:t_jugador);
+begin
+
+end;
+
+{
+@todo implementar!
+}
+procedure turno_mundo(var nivel:t_nivel, var jugador:t_jugador);
+begin
+
+end;
+
+{
+Realiza todas las acciones de un turno
+@todo implementar!
+}
+procedure jugar_turno(var nivel:t_nivel, var jugador:t_jugador);
+begin
+
+end;
+
+{
+Corre el nivel, ejecutando todos los turnos hasta que el usuario gana, muere
+o abandona.
+@param numero_nivel byte El número del nivel a jugar
+@param jugador t_jugador El jugador que jugará el nivel
+@return boolean True si el jugador ha ganado, False si ha perdido o abandonado.
+@todo implementar el guardado de puntos.
+}
 function jugar_nivel(numero_nivel:byte; var jugador:t_jugador):boolean;
 var
     nivel:t_nivel;
@@ -53,80 +94,15 @@ begin
     crear_entidades_nivel(nivel);
 
     while seguir_jugando do
-        jugar_turno();
-
+        seguir_jugando := jugar_turno(nivel, jugador);
 
     correr_nivel := seguir_jugando;
 end;
 
-    { {inicializa los aliens
-     @TODO separar}
-     for i := 1 to 12 do
-     begin
-       origen_x := (((i-1)*5)+1) mod (5{4 cuerpo + 1 espacio} * 6{naves por fila});
-       origen_y := ((i-1) div 6) * 3 + 1;
-       nivel.entidades[i].tipo := alien_a;
-       nivel.entidades[i].origen.x := origen_x;
-       nivel.entidades[i].origen.y := origen_y;
-       nivel.mapa[origen_y][origen_x] := i;
-       nivel.mapa[origen_y][origen_x+1] := i;
-       nivel.mapa[origen_y][origen_x+2] := i;
-       nivel.mapa[origen_y][origen_x+3] := i;
-       nivel.mapa[origen_y+1][origen_x+1] := i;
-       nivel.mapa[origen_y+1][origen_x+2] := i;
-     end;
-
-     {inicializa a beto
-     @TODO separar}
-     inc(i);
-     origen_x := 10;
-     origen_y := 19;
-     nivel.entidades[i].tipo := beto;
-     nivel.entidades[i].origen.x := origen_x;
-     nivel.entidades[i].origen.y := origen_y;
-     nivel.mapa[origen_y][origen_x+1] := i;
-     nivel.mapa[origen_y][origen_x+2] := i;
-     nivel.mapa[origen_y+1][origen_x] := i;
-     nivel.mapa[origen_y+1][origen_x+1] := i;
-     nivel.mapa[origen_y+1][origen_x+2] := i;
-     nivel.mapa[origen_y+1][origen_x+3] := i;
-
-     hubo_cambio := true;
-     estado := PD_JUGAR;
-
-     while(estado = PD_JUGAR)do
-     begin
-          if(keypressed) then
-          begin
-              tecla := readkey ;
-              case tecla of
-                   #0 :
-                   begin
-                        tecla := readkey ; {scancode}
-                        case tecla of
-                          #75 : estado := PD_VER_INSTRUCCIONES; {izquierda}
-                          #77 : estado := PD_VER_HISCORES ; {derecha}
-                        end ;
-                   end ;
-                   #27 : estado := PD_INTRO;
-                   'q' : estado := PD_SALIR;
-                   'n' : estado := PD_PROXIMO_NIVEL;
-              end ;
-          end;
-          {logica de movimientos}
-
-          if((estado = PD_JUGAR) and hubo_cambio) then
-          begin
-               if(hubo_cambio)then
-                    graficar_nivel(nivel,jugador);
-          end;
-     end;   }
-
-
 
 {
 Corre cada uno de los niveles hasta que el jugador muere o abandona.
-@retorna t_pantalla La pantalla a la que el usuario quiere acceder
+@return t_pantalla La pantalla a la que el usuario quiere acceder
 }
 function correr_juego():t_pantalla;
 var

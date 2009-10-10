@@ -38,7 +38,7 @@
         <CursorPos X="39" Y="9"/>
         <TopLine Value="1"/>
         <EditorIndex Value="0"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -68,10 +68,10 @@
         <Filename Value="units\pantalla_juego.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pantalla_juego"/>
-        <CursorPos X="19" Y="37"/>
-        <TopLine Value="123"/>
+        <CursorPos X="22" Y="64"/>
+        <TopLine Value="37"/>
         <EditorIndex Value="9"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -81,7 +81,7 @@
         <CursorPos X="15" Y="25"/>
         <TopLine Value="1"/>
         <EditorIndex Value="3"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -91,17 +91,17 @@
         <CursorPos X="20" Y="2"/>
         <TopLine Value="1"/>
         <EditorIndex Value="2"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="units\puntajes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="puntajes"/>
-        <CursorPos X="5" Y="66"/>
-        <TopLine Value="6"/>
+        <CursorPos X="48" Y="54"/>
+        <TopLine Value="30"/>
         <EditorIndex Value="6"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
       </Unit7>
       <Unit8>
@@ -111,17 +111,17 @@
         <CursorPos X="1" Y="11"/>
         <TopLine Value="1"/>
         <EditorIndex Value="1"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="68"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="units\graficador.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="graficador"/>
-        <CursorPos X="33" Y="49"/>
-        <TopLine Value="55"/>
+        <CursorPos X="15" Y="18"/>
+        <TopLine Value="3"/>
         <EditorIndex Value="5"/>
-        <UsageCount Value="65"/>
+        <UsageCount Value="67"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
@@ -131,7 +131,7 @@
         <CursorPos X="27" Y="23"/>
         <TopLine Value="1"/>
         <EditorIndex Value="8"/>
-        <UsageCount Value="63"/>
+        <UsageCount Value="65"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
@@ -141,7 +141,7 @@
         <CursorPos X="34" Y="15"/>
         <TopLine Value="1"/>
         <EditorIndex Value="7"/>
-        <UsageCount Value="63"/>
+        <UsageCount Value="65"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
@@ -150,7 +150,7 @@
         <UnitName Value="nivel"/>
         <CursorPos X="1" Y="19"/>
         <TopLine Value="1"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="62"/>
       </Unit12>
       <Unit13>
         <Filename Value="units\mapa.pas"/>
@@ -158,7 +158,7 @@
         <UnitName Value="mapa"/>
         <CursorPos X="10" Y="6"/>
         <TopLine Value="1"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="61"/>
       </Unit13>
       <Unit14>
         <Filename Value="units\entidad.pas"/>
@@ -166,7 +166,7 @@
         <UnitName Value="entidad"/>
         <CursorPos X="1" Y="36"/>
         <TopLine Value="13"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="61"/>
       </Unit14>
       <Unit15>
         <Filename Value="units\jugador.pas"/>
@@ -175,7 +175,7 @@
         <CursorPos X="51" Y="19"/>
         <TopLine Value="1"/>
         <EditorIndex Value="4"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="61"/>
         <Loaded Value="True"/>
       </Unit15>
       <Unit16>
@@ -186,7 +186,7 @@
         <UsageCount Value="20"/>
       </Unit16>
     </Units>
-    <JumpHistory Count="4" HistoryIndex="3">
+    <JumpHistory Count="8" HistoryIndex="7">
       <Position1>
         <Filename Value="units\graficador.pas"/>
         <Caret Line="60" Column="4" TopLine="25"/>
@@ -203,6 +203,22 @@
         <Filename Value="units\pantalla_juego.pas"/>
         <Caret Line="15" Column="9" TopLine="10"/>
       </Position4>
+      <Position5>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="85" Column="36" TopLine="75"/>
+      </Position5>
+      <Position6>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="51" Column="41" TopLine="54"/>
+      </Position6>
+      <Position7>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="52" Column="31" TopLine="19"/>
+      </Position7>
+      <Position8>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="37" Column="33" TopLine="25"/>
+      </Position8>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
