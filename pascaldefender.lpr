@@ -1,6 +1,6 @@
 program pascaldefender;
 
-uses
+uses 
     pdbase;
 
 begin
