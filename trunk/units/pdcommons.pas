@@ -12,7 +12,6 @@ type
     end;
     t_pantalla = (introduccion, juego, instrucciones, hiscores, salida);
 
-
 implementation
 
 end.

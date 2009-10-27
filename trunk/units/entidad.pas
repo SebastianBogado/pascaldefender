@@ -6,6 +6,9 @@ uses
 
 const
      MAX_ENTIDADES = 100;
+     CANTIDAD_BETOS = 1;
+     CANTIDAD_ESCUDOS = 4;
+     CANTIDAD_ALIENS = 18;
 
 type
     t_id_entidad = byte;

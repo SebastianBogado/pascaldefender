@@ -10,8 +10,7 @@ const
      FILAS_MAPA = 20;
 
 type
-    t_fila_mapa = Array [1..COLUMNAS_MAPA] of t_id_entidad;
-    t_mapa = Array [1..FILAS_MAPA] of t_fila_mapa;
+    t_mapa = Array [1..FILAS_MAPA,1..COLUMNAS_MAPA] of t_id_entidad;
 
 procedure inicializar_mapa(var mapa:t_mapa);
 

@@ -101,6 +101,7 @@ end;
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 var
     i,j:integer;
+    c:char;
     linea:array [1..COLUMNAS_MAPA] of char;
 begin
     gotoxy(1,1);
@@ -115,15 +116,19 @@ begin
     begin
         for j := 1 to COLUMNAS_MAPA do
         begin
-            if(nivel.mapa[i][j] > 0) then
+            if(nivel.mapa[i,j] > 0) then
             begin
-                case nivel.entidades[nivel.mapa[i][j]].tipo of
-                    alien_a:linea[j]:=('X');
-                    beto: linea[j]:=('B');
-                end;
+                if nivel.entidades[nivel.mapa[i,j]].tipo = alien_a then
+                    c := 'X'
+                else if nivel.entidades[nivel.mapa[i,j]].tipo = escudo then
+                    c := '#'
+                else if nivel.entidades[nivel.mapa[i,j]].tipo = beto then
+                    c := 'B';
               end
             else
-                linea[j]:=(' ');
+                c:= ' ';
+
+            linea[j]:=c;
         end;
         writeln(linea);
     end;

@@ -4,7 +4,7 @@ Sistema base del juego
 unit pdbase;
 
 interface
-procedure iniciar_pd();
+procedure correr_pd();
 
 implementation
 
