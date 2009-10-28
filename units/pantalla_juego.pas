@@ -58,18 +58,346 @@ begin
   {crear aliens}
   for i := 1 to CANTIDAD_ALIENS do
   begin
-    {esto los acomoda de filas de 6 naves cada una}
-    nivel.aliens[i].x := ((i mod ALIENS_POR_FILA)+1)*(ANCHO_ALIEN+1);
-    nivel.aliens[i].y := ((i div ALIENS_POR_FILA)-1)*(ALTURA_ALIEN+1) + 1;
+    {esto los acomoda de filas de ALIENS_POR_FILA naves cada una}
+    nivel.aliens[i].x := 1 + ((i-1) mod ALIENS_POR_FILA)*(ANCHO_ALIEN+1);
+    nivel.aliens[i].y := 1 + ((i-1) div ALIENS_POR_FILA)*(ALTURA_ALIEN+1);
   end;
+  nivel.direccion_aliens := -1;
+
+  nivel.disparo_beto.vivo := false;
+
+  for i:=1 to CANTIDAD_DISPAROS_ALIENS do
+	nivel.disparos_aliens[i].vivo := false;
 
 end;
 
-function jugar_turno(nivel:t_nivel; var jugador:t_jugador):boolean;
+function x_alien_extremo_der(var nivel:t_nivel):byte;
+var
+	i:integer;
+	x_extremo:byte;
 begin
-    graficar_nivel(nivel, jugador);
+	x_extremo := 1;
+	for i := 1 to CANTIDAD_ALIENS do
+    	if nivel.aliens[i].vivo and (nivel.aliens[i].x > x_extremo) then
+        	x_extremo := nivel.aliens[i].x;
 
-    jugar_turno := true;
+    x_alien_extremo_der := x_extremo;
+end;
+
+function x_alien_extremo_izq(var nivel:t_nivel):byte;
+var
+	i:integer;
+	x_extremo:byte;
+begin
+	x_extremo := ANCHO_MAPA;
+	for i := 1 to CANTIDAD_ALIENS do
+    	if nivel.aliens[i].vivo and (nivel.aliens[i].x < x_extremo) then
+        	x_extremo := nivel.aliens[i].x;
+
+    x_alien_extremo_izq := x_extremo;
+end;
+
+function y_alien_extremo_inf(var nivel:t_nivel):byte;
+var
+	i:integer;
+	y_extremo:byte;
+begin
+	y_extremo := 1;
+	for i := 1 to CANTIDAD_ALIENS do
+    	if nivel.aliens[i].vivo and (nivel.aliens[i].y > y_extremo) then
+        	y_extremo := nivel.aliens[i].y;
+
+    y_alien_extremo_inf := y_extremo;
+end;
+
+function cantidad_aliens_vivos(var nivel:t_nivel):integer;
+var
+	i,n:integer;
+begin
+	n:=0;
+	for i:=1 to CANTIDAD_ALIENS do
+    	if nivel.aliens[i].vivo then
+     		inc(n);
+
+	cantidad_aliens_vivos := n;
+end;
+
+function jugar_turno_beto(var nivel:t_nivel; var jugador:t_jugador):boolean;
+var
+	direccion_beto:integer;
+    seguir_jugando:boolean;
+begin
+    direccion_beto := 0;
+    seguir_jugando := true;
+
+	if keypressed() then
+	begin
+        case readkey() of
+            #0: begin
+				case readkey() of
+					#75: direccion_beto := -1;
+                    #77: direccion_beto := 1;
+				end;
+			end;
+            'd': begin
+            	if not nivel.disparo_beto.vivo then
+                begin
+	                nivel.disparo_beto.vivo := true;
+					nivel.disparo_beto.x := nivel.beto.x + (ANCHO_BETO div 2);
+    	            nivel.disparo_beto.y := nivel.beto.y;
+                end;
+            end;
+            'q': seguir_jugando := false;
+		end;
+	end;
+
+    if ((direccion_beto = 1) and (nivel.beto.x + ANCHO_BETO < ANCHO_MAPA))
+    	or ((direccion_beto = -1) and (nivel.beto.x > 1)) then
+    	nivel.beto.x := nivel.beto.x + direccion_beto;
+
+	jugar_turno_beto := seguir_jugando;
+end;
+
+procedure jugar_turno_alien(var nivel:t_nivel; var jugador:t_jugador);
+var
+	x_extremo:byte;
+    i,j:integer;
+    se_disparo:boolean;
+begin
+	se_disparo := false;
+
+	if (nivel.direccion_aliens > 0) then
+    {la flota se mueve a la derecha}
+    begin
+		x_extremo := x_alien_extremo_der(nivel);
+    	if (x_extremo + ANCHO_ALIEN) < ANCHO_MAPA then
+        {la flota no toca el borde, muevo todos}
+		begin
+	    	for i := 1 to CANTIDAD_ALIENS do
+  				nivel.aliens[i].x := nivel.aliens[i].x + nivel.direccion_aliens;
+		end
+        else
+        begin
+        {en el borde, bajan e invierten direcion}
+        	if (y_alien_extremo_inf(nivel) + ALTURA_ALIEN) < ALTURA_MAPA then
+	        	for i := 1 to CANTIDAD_ALIENS do
+  					inc(nivel.aliens[i].y);
+
+            nivel.direccion_aliens := nivel.direccion_aliens * -1;
+        end;
+    end
+    else if (nivel.direccion_aliens < 0) then
+    {la flota se mueve a la izquierda}
+    begin
+    	x_extremo := x_alien_extremo_izq(nivel);
+    	if x_extremo > 1 then
+        {la flota no toca el borde, muevo todos}
+		begin
+	    	for i := 1 to CANTIDAD_ALIENS do
+  				nivel.aliens[i].x := nivel.aliens[i].x + nivel.direccion_aliens;
+		end
+        else
+	        {en el borde invierten direcion}
+            nivel.direccion_aliens := nivel.direccion_aliens * -1;
+    end;
+
+    {DISPARO ALIEN ALEATORIO}
+    i:=1;
+    while (not se_disparo) and (i <= CANTIDAD_DISPAROS_ALIENS) do
+    begin
+    	if (not nivel.disparos_aliens[i].vivo) and (random(500) = 1) then
+       	begin
+	        se_disparo := true;
+            {hay que disparar... pero hay que elegir quién}
+            j:= random(CANTIDAD_ALIENS) + 1;
+            while not nivel.aliens[j].vivo do
+	            j:= random(CANTIDAD_ALIENS) + 1;
+
+			nivel.disparos_aliens[i].vivo := true;
+            nivel.disparos_aliens[i].x := nivel.aliens[j].x + (ANCHO_ALIEN div 2);
+            nivel.disparos_aliens[i].y := nivel.aliens[j].y + ALTURA_ALIEN;
+        end;
+        inc(i);
+    end;
+
+end;
+
+procedure jugar_turno_mundo(var nivel:t_nivel; var jugador:t_jugador);
+var
+    i,j:integer;
+begin
+	if nivel.disparo_beto.vivo then
+    	if nivel.disparo_beto.y > 0 then
+    		dec(nivel.disparo_beto.y)
+        else
+        	nivel.disparo_beto.vivo := false;
+
+	for i:=1 to CANTIDAD_DISPAROS_ALIENS do
+    	if nivel.disparos_aliens[i].vivo then
+    		if nivel.disparos_aliens[i].y < ALTURA_MAPA then
+        		inc(nivel.disparos_aliens[i].y)
+            else
+            	nivel.disparos_aliens[i].vivo := false;
+
+	{COLISIONES}
+
+    {disparo beto vs escudos}
+    i := 1;
+    while nivel.disparo_beto.vivo and (i <= CANTIDAD_ESCUDOS) do
+    begin
+       	if 	nivel.escudos[i].vivo
+        	and (nivel.disparo_beto.x >= nivel.escudos[i].x)
+           	and (nivel.disparo_beto.x < (nivel.escudos[i].x + ANCHO_ESCUDO))
+            and (nivel.disparo_beto.y >= nivel.escudos[i].y)
+            and (nivel.disparo_beto.y < nivel.escudos[i].y + ALTURA_ESCUDO)  then
+		begin
+			nivel.disparo_beto.vivo := false;
+            nivel.escudos[i].vivo := false;
+		end;
+        inc(i);
+	end;
+
+    {disparo beto vs aliens}
+    i := 1;
+    while nivel.disparo_beto.vivo and (i <= CANTIDAD_ALIENS) do
+    begin
+       	if 	nivel.aliens[i].vivo
+        	and (nivel.disparo_beto.x >= nivel.aliens[i].x)
+           	and (nivel.disparo_beto.x < (nivel.aliens[i].x + ANCHO_ALIEN))
+            and (nivel.disparo_beto.y >= nivel.aliens[i].y)
+            and (nivel.disparo_beto.y < nivel.aliens[i].y + ALTURA_ALIEN)  then
+		begin
+			nivel.disparo_beto.vivo := false;
+            nivel.aliens[i].vivo := false;
+            case nivel.numero of
+            	1: jugador.puntos := jugador.puntos + 10;
+                2: jugador.puntos := jugador.puntos + 20;
+                else
+                	jugador.puntos := jugador.puntos + 40;
+            end;
+		end;
+        inc(i);
+	end;
+
+    for i := 1 to CANTIDAD_DISPAROS_ALIENS do
+    	if nivel.disparos_aliens[i].vivo then
+        begin
+			{disparo alien vs escudos}
+	        j := 1;
+    		while nivel.disparos_aliens[i].vivo and (j <= CANTIDAD_ESCUDOS) do
+		    begin
+    	   		if 	nivel.escudos[i].vivo
+        			and (nivel.disparos_aliens[i].x >= nivel.escudos[j].x)
+	        	   	and (nivel.disparos_aliens[i].x < (nivel.escudos[j].x + ANCHO_ESCUDO))
+		            and (nivel.disparos_aliens[i].y >= nivel.escudos[j].y)
+		            and (nivel.disparos_aliens[i].y < nivel.escudos[j].y + ALTURA_ESCUDO)  then
+				begin
+				nivel.disparos_aliens[i].vivo := false;
+	            nivel.escudos[j].vivo := false;
+				end;
+		        inc(j);
+			end;
+
+        	{disparo alien vs beto}
+	            if 	nivel.disparos_aliens[i].vivo and nivel.beto.vivo
+        			and (nivel.disparos_aliens[i].x >= nivel.beto.x)
+	        	   	and (nivel.disparos_aliens[i].x < (nivel.beto.x + ANCHO_BETO))
+		            and (nivel.disparos_aliens[i].y >= nivel.beto.y)
+		            and (nivel.disparos_aliens[i].y < nivel.beto.y + ALTURA_BETO)  then
+				begin
+					nivel.disparos_aliens[i].vivo := false;
+                    if(jugador.vidas > 0) then
+                    begin
+                        if jugador.puntos >= 300 then
+                        	jugador.puntos := jugador.puntos - 300
+                        else
+                        	jugador.puntos := 0;
+
+                    	dec(jugador.vidas);
+                    end;
+				end;
+        end;
+
+	for i := 1 to CANTIDAD_ALIENS do
+    	if nivel.aliens[i].vivo then
+        begin
+        	{alien vs escudos}
+        	j := 1;
+    		while nivel.aliens[i].vivo and (j <= CANTIDAD_ESCUDOS) do
+		    begin
+    	   		if 	nivel.escudos[j].vivo
+                	and not (
+        				(nivel.aliens[i].x >= nivel.escudos[j].x + ANCHO_ESCUDO)
+	        	   		or (nivel.aliens[i].x + ANCHO_ALIEN <= nivel.escudos[j].x)
+		            	or (nivel.aliens[i].y >= nivel.escudos[j].y + ALTURA_ESCUDO)
+		            	or (nivel.aliens[i].y + ALTURA_ALIEN <= nivel.escudos[j].y)
+              		) then
+				begin
+					nivel.aliens[i].vivo := false;
+	            	nivel.escudos[j].vivo := false;
+				end;
+		        inc(j);
+			end;
+
+            {alien vs beto}
+            	if 	nivel.aliens[i].vivo and nivel.beto.vivo
+        			and not (
+        				(nivel.aliens[i].x >= nivel.beto.x + ANCHO_BETO)
+	        	   		or (nivel.aliens[i].x + ANCHO_ALIEN <= nivel.beto.x)
+		            	or (nivel.aliens[i].y >= nivel.beto.y + ALTURA_BETO)
+		            	or (nivel.aliens[i].y + ALTURA_ALIEN <= nivel.beto.y)
+              		) then
+				begin
+					nivel.aliens[i].vivo := false;
+                    if(jugador.vidas > 0) then
+                    begin
+                        if jugador.puntos >= 300 then
+                        	jugador.puntos := jugador.puntos - 300
+                        else
+                        	jugador.puntos := 0;
+
+                    	dec(jugador.vidas);
+                    end;
+				end;
+
+        end;
+
+
+
+end;
+
+function jugar_turno(var nivel:t_nivel; var jugador:t_jugador):t_resultado_nivel;
+var
+    resultado_turno:t_resultado_nivel;
+begin
+
+    if jugar_turno_beto(nivel, jugador) then
+    begin
+    	jugar_turno_alien(nivel, jugador);
+        jugar_turno_mundo(nivel, jugador);
+        graficar_nivel(nivel, jugador);
+        //delay(250);
+
+    	if jugador.vidas = 0 then
+    	begin
+    		writeln('Perdiste, presiona ENTER para continuar');
+	        readln();
+    	    resultado_turno := perdio;
+    	end
+        else if cantidad_aliens_vivos(nivel) = 0 then
+        begin
+	        writeln('Ganaste, presiona ENTER para continuar');
+    	    readln();
+        	resultado_turno := gano;
+	    end
+        else
+        	resultado_turno := continuar;
+
+    end
+    else
+    	resultado_turno := abandono;
+
+    jugar_turno := resultado_turno;
 end;
 
 
@@ -81,22 +409,25 @@ o abandona.
 @return boolean True si el jugador ha ganado, False si ha perdido o abandonado.
 @todo implementar el guardado de puntos.
 }
-function jugar_nivel(numero_nivel:byte; var jugador:t_jugador):boolean;
+function jugar_nivel(numero_nivel:byte; var jugador:t_jugador):t_resultado_nivel;
 var
     nivel:t_nivel;
-    seguir_jugando:boolean;
+    resultado_turno:t_resultado_nivel;
+    i:integer;
 begin
     inicializar_nivel(nivel);
     nivel.numero := numero_nivel;
 
-    seguir_jugando := true;
+    resultado_turno := continuar;
 
     crear_entidades_nivel(nivel);
 
-    while seguir_jugando do
-        seguir_jugando := jugar_turno(nivel, jugador);
+    while resultado_turno = continuar do
+    begin
+        resultado_turno := jugar_turno(nivel, jugador);
+    end;
 
-    jugar_nivel := seguir_jugando;
+    jugar_nivel := resultado_turno;
 end;
 
 
@@ -107,18 +438,18 @@ Corre cada uno de los niveles hasta que el jugador muere o abandona.
 function correr_juego():t_pantalla;
 var
     jugador:t_jugador;
-    seguir_jugando:boolean;
+    resultado_nivel:t_resultado_nivel;
     numero_nivel:integer;
 begin
     numero_nivel := 0;
-    seguir_jugando := true;
+    resultado_nivel := gano;
 
     jugador := crear_jugador();
 
-    while(seguir_jugando and (numero_nivel < CANTIDAD_NIVELES)) do
+    while((resultado_nivel = gano) and (numero_nivel < CANTIDAD_NIVELES)) do
     begin
         inc(numero_nivel);
-        seguir_jugando := jugar_nivel(numero_nivel, jugador);
+        resultado_nivel := jugar_nivel(numero_nivel, jugador);
     end;
 
     correr_juego := introduccion;
