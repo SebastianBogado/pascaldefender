@@ -2,29 +2,12 @@ unit mapa;
 
 interface
 
-uses
-    entidad;
-
 const
-     COLUMNAS_MAPA = 70;
-     FILAS_MAPA = 20;
+     ANCHO_MAPA = 70;
+     ALTURA_MAPA = 20;
 
-type
-    t_mapa = Array [1..FILAS_MAPA,1..COLUMNAS_MAPA] of t_id_entidad;
-
-procedure inicializar_mapa(var mapa:t_mapa);
-
+     ALIENS_POR_FILA = 6;
 
 implementation
-
-procedure inicializar_mapa(var mapa:t_mapa);
-var
-   i,j:byte;
 begin
-     for i := 1 to FILAS_MAPA do
-         for j := 1 to COLUMNAS_MAPA do
-             mapa[i][j] := 0;
-end;
-
 end.
-
