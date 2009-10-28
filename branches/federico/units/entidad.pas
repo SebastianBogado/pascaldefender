@@ -5,23 +5,20 @@ uses
     pdcommons;
 
 const
-
-    MAX_ENTIDADES = 30;
+	MAX_ENTIDADES = 100;
 
     ALTURA_BETO = 2;
     ANCHO_BETO = 3;
 
-    ALTURA_ESCUDO = 4;
+    ALTURA_ESCUDO = 3;
     ANCHO_ESCUDO = 4;
 
     ALTURA_ALIEN = 2;
     ANCHO_ALIEN = 3;
 
-    ALTURA_DISPARO = 1;
-    ANCHO_DISPARO = 1;
-
     CANTIDAD_ESCUDOS = 4;
-    CANTIDAD_ALIENS = 18;
+    CANTIDAD_ALIENS = 12;
+    CANTIDAD_DISPAROS_ALIENS = 5;
 
 type
     t_entidad = Record

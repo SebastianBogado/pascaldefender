@@ -24,6 +24,8 @@ var
     {La pantalla que se debe mostrar}
     pantalla : t_pantalla;
 begin
+	randomize();
+
     pantalla := introduccion;
 
     while (pantalla <> salida) do
