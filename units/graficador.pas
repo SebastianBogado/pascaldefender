@@ -100,10 +100,10 @@ end;
 
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 var
-    i,j:integer;
-    c:char;
-    linea:array [1..COLUMNAS_MAPA] of char;
+    i,j,k:byte;
+    mapa:array[1..ALTURA_MAPA,1..ANCHO_MAPA] of char;
 begin
+    clrscr();
     gotoxy(1,1);
     cursoroff();
     clreol();
@@ -112,26 +112,13 @@ begin
     clreol();
     writeln();
 
-    for i := 1 to FILAS_MAPA do
-    begin
-        for j := 1 to COLUMNAS_MAPA do
-        begin
-            if(nivel.mapa[i,j] > 0) then
+    for k := nivel.beto.x to nivel.beto.x + ANCHO_BETO do
+        for j := nivel.beto.y to nivel.beto.y + ALTURA_BETO do
             begin
-                if nivel.entidades[nivel.mapa[i,j]].tipo = alien_a then
-                    c := 'X'
-                else if nivel.entidades[nivel.mapa[i,j]].tipo = escudo then
-                    c := '#'
-                else if nivel.entidades[nivel.mapa[i,j]].tipo = beto then
-                    c := 'B';
-              end
-            else
-                c:= ' ';
+            mapa[j,k] := 'B';
+            end;
 
-            linea[j]:=c;
-        end;
-        writeln(linea);
-    end;
+    for i := 1 to ALTURA_MAPA
 
     cursoron();
 end;

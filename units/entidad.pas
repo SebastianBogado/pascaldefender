@@ -5,23 +5,33 @@ uses
     pdcommons;
 
 const
-     MAX_ENTIDADES = 100;
-     CANTIDAD_BETOS = 1;
-     CANTIDAD_ESCUDOS = 4;
-     CANTIDAD_ALIENS = 18;
+
+    MAX_ENTIDADES = 30;
+
+    ALTURA_BETO = 2;
+    ANCHO_BETO = 3;
+
+    ALTURA_ESCUDO = 4;
+    ANCHO_ESCUDO = 4;
+
+    ALTURA_ALIEN = 2;
+    ANCHO_ALIEN = 3;
+
+    ALTURA_DISPARO = 1;
+    ANCHO_DISPARO = 1;
+
+    CANTIDAD_ESCUDOS = 4;
+    CANTIDAD_ALIENS = 18;
 
 type
-    t_id_entidad = byte;
-    t_tipo_entidad = (beto, alien_a, alien_b, alien_c, escudo, disparo_alien, disparo_beto, unknown);
-
     t_entidad = Record
-              tipo : t_tipo_entidad;
-              origen : t_coordenada;
+              x : byte;
+              y : byte;
+              vivo : boolean;
     end;
+    t_entidades = array[1..MAX_ENTIDADES] of t_entidad;
 
-    t_entidades = Array [1..MAX_ENTIDADES] of t_entidad;
-
-procedure inicializar_entidades(var entidades:t_entidades);
+procedure inicializar_entidades(var entidades:t_entidades); 
 procedure inicializar_entidad(var entidad:t_entidad);
 
 
@@ -37,9 +47,9 @@ end;
 
 procedure inicializar_entidad(var entidad:t_entidad);
 begin
-          entidad.tipo := unknown;
-          entidad.origen.x := 0;
-          entidad.origen.y := 0;
+          entidad.vivo := true;
+          entidad.x := 0;
+          entidad.y := 0;
 end;
 
 end.

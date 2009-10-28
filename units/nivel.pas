@@ -12,9 +12,9 @@ const
 type
     t_nivel = record
             numero : byte;
-            mapa : t_mapa;
-            entidades : t_entidades;
-            cantidad_entidades : t_id_entidad;
+            beto : t_entidad;
+            aliens : t_entidades;
+            escudos : t_entidades;
     end;
 
 procedure inicializar_nivel(var nivel:t_nivel);
@@ -24,9 +24,8 @@ implementation
 procedure inicializar_nivel(var nivel:t_nivel);
 begin
      nivel.numero := 0;
-     nivel.cantidad_entidades := MAX_ENTIDADES;
-     inicializar_entidades(nivel.entidades);
-     inicializar_mapa(nivel.mapa);
+     inicializar_entidades(nivel.escudos);
+     inicializar_entidades(nivel.aliens);
 end;
 
 end.

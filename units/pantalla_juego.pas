@@ -34,18 +34,6 @@ begin
     crear_jugador := jugador;
 end;
 
-function detectar_colision(id_entidad:t_id_entidad; var nivel:t_nivel):t_id_entidad;
-begin
-
-end;
-
-procedure reposicionar_entidad(id_entidad:t_id_entidad; var nivel:t_nivel);
-begin
-  nivel.mapa[nivel.entidades[id_entidad].origen.y,nivel.entidades[id_entidad].origen.x] := id_entidad;
-  nivel.mapa[nivel.entidades[id_entidad].origen.y,nivel.entidades[id_entidad].origen.x+1] := id_entidad;
-  nivel.mapa[nivel.entidades[id_entidad].origen.y+1,nivel.entidades[id_entidad].origen.x] := id_entidad;
-  nivel.mapa[nivel.entidades[id_entidad].origen.y+1,nivel.entidades[id_entidad].origen.x+1] := id_entidad;
-end;
 
 {
 Crea las entidades para un nivel
@@ -55,99 +43,35 @@ procedure crear_entidades_nivel(var nivel:t_nivel);
 var
     i:byte;
 begin
-    nivel.cantidad_entidades := 0;
 
   {crear beto}
-  nivel.entidades[1].tipo := beto;
-  nivel.entidades[1].origen.x := 1;
-  nivel.entidades[1].origen.y := 18;
-  inc(nivel.cantidad_entidades);
+  nivel.beto.x := ANCHO_MAPA div 2;
+  nivel.beto.y := ALTURA_MAPA - ALTURA_BETO;
 
   {crear escudo}
-  for i := CANTIDAD_BETOS+1 to CANTIDAD_BETOS + CANTIDAD_ESCUDOS do
-  begin
-    nivel.entidades[i].tipo := escudo;
-    nivel.entidades[i].origen.x := i*3;
-    nivel.entidades[i].origen.y := 15;
-    inc(nivel.cantidad_entidades);
+  for i := 1 to CANTIDAD_ESCUDOS do
+  begin                     
+    nivel.escudos[i].x := i*(ANCHO_ESCUDO + 1);
+    nivel.escudos[i].y := nivel.beto.y - ALTURA_ESCUDO - 1;
   end;
 
   {crear aliens}
-  for i := CANTIDAD_BETOS+CANTIDAD_ESCUDOS+1 to CANTIDAD_BETOS + CANTIDAD_ESCUDOS + CANTIDAD_ALIENS do
+  for i := 1 to CANTIDAD_ALIENS do
   begin
-    nivel.entidades[i].tipo := alien_a;
     {esto los acomoda de filas de 6 naves cada una}
-    nivel.entidades[i].origen.x := ((i mod 6)+1)*3;
-    nivel.entidades[i].origen.y := ((i div 6)-1)*3 + 1;
-    inc(nivel.cantidad_entidades);
+    nivel.aliens[i].x := ((i mod ALIENS_POR_FILA)+1)*(ANCHO_ALIEN+1);
+    nivel.aliens[i].y := ((i div ALIENS_POR_FILA)-1)*(ALTURA_ALIEN+1) + 1;
   end;
 
 end;
 
-procedure mover_beto(d:integer; var nivel:t_nivel; var jugador:t_jugador);
+function jugar_turno(nivel:t_nivel; var jugador:t_jugador):boolean;
 begin
-    if ((d < 0) and (nivel.entidades[1].origen.x > 1)) or ((d > 0) and (nivel.entidades[1].origen.x < COLUMNAS_MAPA)) then
-    begin
-        nivel.entidades[1].origen.x := nivel.entidades[1].origen.x + d;
-    end;
+    graficar_nivel(nivel, jugador);
+
+    jugar_turno := true;
 end;
 
-{
-@todo implementar!
-}
-procedure turno_jugador(var nivel:t_nivel; var jugador:t_jugador);
-begin
-    if keypressed() then
-    begin
-        case readkey() of
-            #0: begin
-                  case readkey() of
-                      #72 : mover_beto(1, nivel, jugador);
-                      #75 : mover_beto(-1, nivel, jugador);
-                      {#77 : r;
-                      #80 : d;}
-                  end;
-                end;
-        end;
-    end;
-
-end;
-
-{
-@todo implementar!
-}
-procedure turno_alienigena(var nivel:t_nivel; var jugador:t_jugador);
-begin
-
-end;
-
-{
-@todo implementar!
-}
-procedure turno_mundo(var nivel:t_nivel; var jugador:t_jugador);
-begin
-
-end;
-
-{
-Realiza todas las acciones de un turno
-@todo implementar!
-}
-function jugar_turno(var nivel:t_nivel; var jugador:t_jugador):boolean;
-var
-    i:integer;
-begin
-        inicializar_mapa(nivel.mapa);
-
-        turno_jugador(nivel, jugador);
-
-        for i := 1 to nivel.cantidad_entidades do
-            reposicionar_entidad(i, nivel);
-
-        graficar_nivel(nivel, jugador);
-
-        jugar_turno := true;
-end;
 
 {
 Corre el nivel, ejecutando todos los turnos hasta que el usuario gana, muere
@@ -164,6 +88,8 @@ var
 begin
     inicializar_nivel(nivel);
     nivel.numero := numero_nivel;
+
+    seguir_jugando := true;
 
     crear_entidades_nivel(nivel);
 
