@@ -37,22 +37,34 @@ end;
 
 {
 Crea las entidades para un nivel
-@todo implementar!
+@param nivel t_nivel El nivel sobre el cual se van a crear las entidades
 }
 procedure crear_entidades_nivel(var nivel:t_nivel);
 var
-    i:byte;
+    i,j,k,espacio:byte;
+    x_refugio,y_refugio:byte;
 begin
-
   {crear beto}
-  nivel.beto.x := ANCHO_MAPA div 2;
-  nivel.beto.y := ALTURA_MAPA - ALTURA_BETO;
+  nivel.beto.x := (ANCHO_MAPA-ANCHO_BETO) div 2; {en el "medio"}
+  nivel.beto.y := ALTURA_MAPA - ALTURA_BETO + 1; {sobre el borde inf.}
 
-  {crear escudo}
-  for i := 1 to CANTIDAD_ESCUDOS do
-  begin                     
-    nivel.escudos[i].x := i*(ANCHO_ESCUDO + 1);
-    nivel.escudos[i].y := nivel.beto.y - ALTURA_ESCUDO - 1;
+  {crear refugios}
+  y_refugio := nivel.beto.y - ALTURA_REFUGIO - 1; {estan 1 casillero por arriba de beto}
+  espacio := (ANCHO_MAPA - CANTIDAD_REFUGIOS * ANCHO_REFUGIO) div (CANTIDAD_REFUGIOS+1); {el espaciado entre refugios}
+  for  i := 1 to CANTIDAD_REFUGIOS do
+  begin
+    x_refugio := (i-1)*ANCHO_REFUGIO+i*espacio;
+    {
+    crear escudos
+    cada refugio se compone de escudos independientes, lo que facilita romperlos de a poco
+    }
+    for j := 1 to ESCUDOS_POR_REFUGIO do
+    begin
+        k := ((i-1)*ESCUDOS_POR_REFUGIO)+j; {auxiliar}
+        {ordenamos en rectangulos}
+        nivel.escudos[k].x := x_refugio + ((k-1) mod ANCHO_REFUGIO);
+        nivel.escudos[k].y := y_refugio + ((j-1) div ANCHO_REFUGIO);
+    end;
   end;
 
   {crear aliens}
@@ -62,15 +74,22 @@ begin
     nivel.aliens[i].x := 1 + ((i-1) mod ALIENS_POR_FILA)*(ANCHO_ALIEN+1);
     nivel.aliens[i].y := 1 + ((i-1) div ALIENS_POR_FILA)*(ALTURA_ALIEN+1);
   end;
-  nivel.direccion_aliens := -1;
+  nivel.direccion_aliens := -1; {arrancan hacia la izquierda}
 
-  nivel.disparo_beto.vivo := false;
+  nivel.disparo_beto.vivo := false; {el unico disparo de beto arranca inactivo}
 
+  {todos los disparos aliens arrancan inactivos}
   for i:=1 to CANTIDAD_DISPAROS_ALIENS do
 	nivel.disparos_aliens[i].vivo := false;
 
 end;
 
+{
+Devuelve la posición extrema derecha de la flota alienigena.
+Es decir, el numero de la primer columna que contiene alguna nave alien
+@param nivel t_nivel el nivel donde se encuentra la flota
+@return byte la posición derecha extrema
+}
 function x_alien_extremo_der(var nivel:t_nivel):byte;
 var
 	i:integer;
@@ -84,6 +103,12 @@ begin
     x_alien_extremo_der := x_extremo;
 end;
 
+{
+Devuelve la posición extrema izquierda de la flota alienigena.
+Es decir, el numero de la última columna que contiene alguna nave alien
+@param nivel t_nivel el nivel donde se encuentra la flota
+@return byte la posición izquierda extrema
+}
 function x_alien_extremo_izq(var nivel:t_nivel):byte;
 var
 	i:integer;
@@ -97,6 +122,9 @@ begin
     x_alien_extremo_izq := x_extremo;
 end;
 
+{
+
+}
 function y_alien_extremo_inf(var nivel:t_nivel):byte;
 var
 	i:integer;
@@ -215,7 +243,7 @@ begin
 
 			nivel.disparos_aliens[i].vivo := true;
             nivel.disparos_aliens[i].x := nivel.aliens[j].x + (ANCHO_ALIEN div 2);
-            nivel.disparos_aliens[i].y := nivel.aliens[j].y + ALTURA_ALIEN;
+            nivel.disparos_aliens[i].y := nivel.aliens[j].y + ALTURA_ALIEN - 1;
         end;
         inc(i);
     end;
@@ -243,13 +271,25 @@ begin
 
     {disparo beto vs escudos}
     i := 1;
+    while nivel.disparo_beto.vivo and (i <= CANTIDAD_DISPAROS_ALIENS) do
+    begin
+       	if 	nivel.escudos[i].vivo
+        	and (nivel.disparo_beto.x = nivel.disparos_aliens[i].x)
+            and (nivel.disparo_beto.y = nivel.disparos_aliens[i].y)  then
+		begin
+			nivel.disparo_beto.vivo := false;
+            nivel.disparos_aliens[i].vivo := false;
+		end;
+        inc(i);
+	end;
+
+    {disparo beto vs escudos}
+    i := 1;
     while nivel.disparo_beto.vivo and (i <= CANTIDAD_ESCUDOS) do
     begin
        	if 	nivel.escudos[i].vivo
-        	and (nivel.disparo_beto.x >= nivel.escudos[i].x)
-           	and (nivel.disparo_beto.x < (nivel.escudos[i].x + ANCHO_ESCUDO))
-            and (nivel.disparo_beto.y >= nivel.escudos[i].y)
-            and (nivel.disparo_beto.y < nivel.escudos[i].y + ALTURA_ESCUDO)  then
+        	and (nivel.disparo_beto.x = nivel.escudos[i].x)
+            and (nivel.disparo_beto.y = nivel.escudos[i].y)  then
 		begin
 			nivel.disparo_beto.vivo := false;
             nivel.escudos[i].vivo := false;
@@ -287,10 +327,8 @@ begin
     		while nivel.disparos_aliens[i].vivo and (j <= CANTIDAD_ESCUDOS) do
 		    begin
     	   		if 	nivel.escudos[i].vivo
-        			and (nivel.disparos_aliens[i].x >= nivel.escudos[j].x)
-	        	   	and (nivel.disparos_aliens[i].x < (nivel.escudos[j].x + ANCHO_ESCUDO))
-		            and (nivel.disparos_aliens[i].y >= nivel.escudos[j].y)
-		            and (nivel.disparos_aliens[i].y < nivel.escudos[j].y + ALTURA_ESCUDO)  then
+        			and (nivel.disparos_aliens[i].x = nivel.escudos[j].x)
+                    and (nivel.disparos_aliens[i].y = nivel.escudos[j].y)  then
 				begin
 				nivel.disparos_aliens[i].vivo := false;
 	            nivel.escudos[j].vivo := false;
@@ -380,14 +418,11 @@ begin
 
     	if jugador.vidas = 0 then
     	begin
-    		writeln('Perdiste, presiona ENTER para continuar');
-	        readln();
+            graficar_derrota();
     	    resultado_turno := perdio;
     	end
         else if cantidad_aliens_vivos(nivel) = 0 then
         begin
-	        writeln('Ganaste, presiona ENTER para continuar');
-    	    readln();
         	resultado_turno := gano;
 	    end
         else
@@ -422,6 +457,8 @@ begin
 
     crear_entidades_nivel(nivel);
 
+    graficar_prenivel(nivel);
+
     while resultado_turno = continuar do
     begin
         resultado_turno := jugar_turno(nivel, jugador);
@@ -450,6 +487,12 @@ begin
     begin
         inc(numero_nivel);
         resultado_nivel := jugar_nivel(numero_nivel, jugador);
+    end;
+
+    if (resultado_nivel = gano) and (numero_nivel = CANTIDAD_NIVELES) then
+    begin
+        jugador.puntos := jugador.puntos + 1000;
+        graficar_victoria(jugador);
     end;
 
     correr_juego := introduccion;
