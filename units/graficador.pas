@@ -160,38 +160,49 @@ begin
     readln();
 end;
 
+procedure pisar_string(pos:byte; origen:string; var dst:string);
+var
+	i:byte;
+begin
+	for i:= 0 to length(origen)-1 do
+    begin
+        dst[i+pos] := origen[i+1];
+    end;
+end;
 
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 var
     i,j,k:byte;
     mapa:array[1..ALTURA_MAPA] of string[ANCHO_MAPA];
 begin
+	{vacío el mapa}
      for i := 1 to ALTURA_MAPA do
      begin
-          mapa[i] := '';
+         mapa[i] := ''; 
          for j := 1 to ANCHO_MAPA do
              mapa[i] := mapa[i]+' ';
      end;
 
     gotoxy(1,1);
     cursoroff();
+
+    {cabecera}
     clreol();
     writeln('Nivel ',nivel.numero,', Puntos ',jugador.puntos,', Vidas ',jugador.vidas);
 
     clreol();
     writeln();
 
-    for k := nivel.beto.x to nivel.beto.x + ANCHO_BETO - 1 do
-        for j := nivel.beto.y to nivel.beto.y + ALTURA_BETO - 1 do
-            begin
-            mapa[j][k] := 'B';
-            end;
+    {dibujo a Beto}
+    pisar_string(nivel.beto.x, '.A.', mapa[nivel.beto.y]);
+    pisar_string(nivel.beto.x, 'IMI', mapa[nivel.beto.y+1]);
 
+    {dibujar escudos}
     for i := 1 to CANTIDAD_ESCUDOS do
     	if nivel.escudos[i].vivo then
 			for k := nivel.escudos[i].x to nivel.escudos[i].x + ANCHO_ESCUDO - 1 do
         		for j := nivel.escudos[i].y to nivel.escudos[i].y + ALTURA_ESCUDO - 1 do
-            		mapa[j][k] := 'E';
+            		mapa[j][k] := '#';
 
     for i := 1 to CANTIDAD_ALIENS do
     	if nivel.aliens[i].vivo then
@@ -199,9 +210,10 @@ begin
         		for j := nivel.aliens[i].y to nivel.aliens[i].y + ALTURA_ALIEN - 1 do
              		mapa[j][k] := 'A';
 
+	{dibujar disparo Beto}
     if nivel.disparo_beto.vivo then
     	mapa[nivel.disparo_beto.y][nivel.disparo_beto.x] := '|';
-
+    {dibujar disparos aliens}
     for i := 1 to CANTIDAD_DISPAROS_ALIENS do
     	if nivel.disparos_aliens[i].vivo then
 			mapa[nivel.disparos_aliens[i].y][nivel.disparos_aliens[i].x] := '|';
