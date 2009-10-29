@@ -13,6 +13,9 @@ uses
 
 procedure graficar_introduccion();
 procedure graficar_instrucciones();
+procedure graficar_victoria(var jugador:t_jugador);
+procedure graficar_derrota();
+procedure graficar_prenivel(var nivel:t_nivel);
 procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 function pedir_nombre():string;
@@ -79,6 +82,13 @@ begin
     writeln('Presione cualquier tecla para volver al inicio.');
 end;
 
+procedure graficar_prenivel(var nivel:t_nivel);
+begin
+    clrscr();
+    writeln('NIVEL ',nivel.numero);
+    delay(3000);
+end;
+
 {
 Retorna un nombre que el usuario ingresa
 @param string El nombre ingresado
@@ -96,6 +106,22 @@ begin
     readkey();
 
     pedir_nombre := nombre;
+end;
+
+procedure graficar_victoria(var jugador:t_jugador);
+begin
+    clrscr();
+    writeln('Sos un groso, ', jugador.nombre, '! Ganaste el juego con ',jugador.puntos,' puntos');
+    writeln('Presiona una tecla para continuar');
+    readkey();
+end;
+
+procedure graficar_derrota();
+begin
+    clrscr();
+    writeln('GAME OVER');
+    writeln('Presiona una tecla para continuar');
+    readkey();
 end;
 
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
