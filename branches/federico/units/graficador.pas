@@ -56,8 +56,21 @@ begin
     clrscr();
     encabezado();
     writeln('Instrucciones');
-    writeln('Aca van las instrucciones...');
-    writeln('');
+    writeln();
+    writeln('El objetivo del juego es destruir a todas las naves marcianas. ');
+    writeln();
+    writeln('El juego termina al pasar tres niveles, o perder tres vidas.');
+    writeln();
+    writeln('Para mover la nave de Beto, usar las flechas laterales para moverse');
+    writeln('y D para disparar');
+    writeln();
+    writeln('Los marcianos van avanzando y destruiran la nave del Capitan si ');
+    writeln('entran en contacto');
+    writeln();
+    writeln('En el primer nivel, cada nave destruida da 10 puntos; en el ');
+    writeln('segundo, 20 puntos y en el tercero, 40. Al ganar, se bonifica al ');
+    writeln('jugador con 1000 puntos. Cada vida perdida descuenta 300 puntos.');
+    writeln();
     writeln('Presione cualquier tecla para volver al inicio.');
 end;
 
@@ -83,10 +96,23 @@ begin
 end;
 
 procedure graficar_prenivel(var nivel:t_nivel);
+var
+	segundos:byte;
 begin
+	cursoroff();
     clrscr();
-    writeln('NIVEL ',nivel.numero);
-    delay(3000);
+    writeln('Nivel ',nivel.numero);
+
+    segundos := 3;
+    while segundos > 0 do
+    begin
+    	gotoxy(1,2);
+    	clreol();
+        write('Arranca en ',segundos,'s');
+    	delay(1000 {1 segundo});
+    	dec(segundos);
+    end;
+    cursoron();
 end;
 
 {
@@ -102,8 +128,8 @@ begin
     writeln('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:');
     readln(nombre);
     writeln('Bienvenido ',nombre,'!');
-    writeln('Presiona una tecla para continuar');
-    readkey();
+    writeln('Presiona ENTER para continuar');
+    readln();
 
     pedir_nombre := nombre;
 end;
@@ -112,16 +138,16 @@ procedure graficar_victoria(var jugador:t_jugador);
 begin
     clrscr();
     writeln('Sos un groso, ', jugador.nombre, '! Ganaste el juego con ',jugador.puntos,' puntos');
-    writeln('Presiona una tecla para continuar');
-    readkey();
+    writeln('Presiona ENTER para continuar');
+    readln();
 end;
 
 procedure graficar_derrota();
 begin
     clrscr();
     writeln('GAME OVER');
-    writeln('Presiona una tecla para continuar');
-    readkey();
+    writeln('Presiona ENTER para continuar');
+    readln();
 end;
 
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);

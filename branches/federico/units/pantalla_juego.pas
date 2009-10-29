@@ -4,6 +4,8 @@ interface
 
 uses
     crt,
+    sysutils,
+    dateutils,
     pdcommons,
     puntajes,
     nivel,
@@ -54,10 +56,7 @@ begin
   for  i := 1 to CANTIDAD_REFUGIOS do
   begin
     x_refugio := (i-1)*ANCHO_REFUGIO+i*espacio;
-    {
-    crear escudos
-    cada refugio se compone de escudos independientes, lo que facilita romperlos de a poco
-    }
+    {crear escudos. cada refugio se compone de escudos independientes, lo que facilita romperlos de a poco}
     for j := 1 to ESCUDOS_POR_REFUGIO do
     begin
         k := ((i-1)*ESCUDOS_POR_REFUGIO)+j; {auxiliar}
@@ -85,191 +84,191 @@ begin
 end;
 
 {
-Devuelve la posición extrema derecha de la flota alienigena.
-Es decir, el numero de la primer columna que contiene alguna nave alien
-@param nivel t_nivel el nivel donde se encuentra la flota
-@return byte la posición derecha extrema
+Interpreta los comandos del usuario. Puede mover a Beto, disparar, o salir del juego
+@param nivel t_nivel El nivel en juego
+@param jugador t_jugador El jugador que esta jugando
+@return boolean False si el jugador desea salir, sino, True.
 }
-function x_alien_extremo_der(var nivel:t_nivel):byte;
-var
-	i:integer;
-	x_extremo:byte;
-begin
-	x_extremo := 1;
-	for i := 1 to CANTIDAD_ALIENS do
-    	if nivel.aliens[i].vivo and (nivel.aliens[i].x > x_extremo) then
-        	x_extremo := nivel.aliens[i].x;
-
-    x_alien_extremo_der := x_extremo;
-end;
-
-{
-Devuelve la posición extrema izquierda de la flota alienigena.
-Es decir, el numero de la última columna que contiene alguna nave alien
-@param nivel t_nivel el nivel donde se encuentra la flota
-@return byte la posición izquierda extrema
-}
-function x_alien_extremo_izq(var nivel:t_nivel):byte;
-var
-	i:integer;
-	x_extremo:byte;
-begin
-	x_extremo := ANCHO_MAPA;
-	for i := 1 to CANTIDAD_ALIENS do
-    	if nivel.aliens[i].vivo and (nivel.aliens[i].x < x_extremo) then
-        	x_extremo := nivel.aliens[i].x;
-
-    x_alien_extremo_izq := x_extremo;
-end;
-
-{
-
-}
-function y_alien_extremo_inf(var nivel:t_nivel):byte;
-var
-	i:integer;
-	y_extremo:byte;
-begin
-	y_extremo := 1;
-	for i := 1 to CANTIDAD_ALIENS do
-    	if nivel.aliens[i].vivo and (nivel.aliens[i].y > y_extremo) then
-        	y_extremo := nivel.aliens[i].y;
-
-    y_alien_extremo_inf := y_extremo;
-end;
-
-function cantidad_aliens_vivos(var nivel:t_nivel):integer;
-var
-	i,n:integer;
-begin
-	n:=0;
-	for i:=1 to CANTIDAD_ALIENS do
-    	if nivel.aliens[i].vivo then
-     		inc(n);
-
-	cantidad_aliens_vivos := n;
-end;
-
 function jugar_turno_beto(var nivel:t_nivel; var jugador:t_jugador):boolean;
 var
-	direccion_beto:integer;
+	direccion_beto:integer; {dirección del movimiento sobre eje x}
     seguir_jugando:boolean;
 begin
-    direccion_beto := 0;
+	direccion_beto := 0; {beto no se mueve}
     seguir_jugando := true;
 
-	if keypressed() then
-	begin
-        case readkey() of
-            #0: begin
-				case readkey() of
-					#75: direccion_beto := -1;
-                    #77: direccion_beto := 1;
-				end;
-			end;
-            'd': begin
-            	if not nivel.disparo_beto.vivo then
-                begin
-	                nivel.disparo_beto.vivo := true;
-					nivel.disparo_beto.x := nivel.beto.x + (ANCHO_BETO div 2);
-    	            nivel.disparo_beto.y := nivel.beto.y;
+    {beto se mueve cada 0.1s}
+	if millisecondspan(nivel.inicio_turno, nivel.inicio_turno_beto) > 100 then
+    begin
+    nivel.inicio_turno_beto := now();
+
+
+    	if keypressed() then
+    	begin
+            case readkey() of
+                #0: begin
+    				case readkey() of
+    					#75 {flecha izq}: direccion_beto := -1;
+                        #77 {flecha der}: direccion_beto := 1;
+    				end;
+    			end;
+                'd': begin
+                	{disparar si no hay un disparo en curso}
+                	if not nivel.disparo_beto.vivo then
+                    begin
+    	                nivel.disparo_beto.vivo := true;
+                        {posicionar el disparo}
+    					nivel.disparo_beto.x := nivel.beto.x + (ANCHO_BETO div 2);
+        	            nivel.disparo_beto.y := nivel.beto.y;
+                    end;
                 end;
-            end;
-            'q': seguir_jugando := false;
-		end;
-	end;
+                'q': seguir_jugando := false; {abandonar la partida}
+    		end;
+    	end;
 
-    if ((direccion_beto = 1) and (nivel.beto.x + ANCHO_BETO < ANCHO_MAPA))
-    	or ((direccion_beto = -1) and (nivel.beto.x > 1)) then
-    	nivel.beto.x := nivel.beto.x + direccion_beto;
+        {mover a Beto, sin pasarnos de los bordes}
+        if ((direccion_beto = 1) and (nivel.beto.x + ANCHO_BETO < ANCHO_MAPA))
+        	or ((direccion_beto = -1) and (nivel.beto.x > 1)) then
+        	nivel.beto.x := nivel.beto.x + direccion_beto;
 
-	jugar_turno_beto := seguir_jugando;
+
+    end;
+
+ jugar_turno_beto := seguir_jugando;
 end;
 
+
+{
+Mueve los aliens, y efectua disparos al azar
+@param nivel t_nivel El nivel en juego
+@param jugador t_jugador El jugador que esta jugando
+}
 procedure jugar_turno_alien(var nivel:t_nivel; var jugador:t_jugador);
 var
+	se_disparo:boolean;
 	x_extremo:byte;
     i,j:integer;
-    se_disparo:boolean;
 begin
-	se_disparo := false;
-
-	if (nivel.direccion_aliens > 0) then
-    {la flota se mueve a la derecha}
+	{los aliens se mueven a cada nivel más rápido}
+	if millisecondspan(nivel.inicio_turno, nivel.inicio_turno_aliens) > (1000 div nivel.numero) then
     begin
-		x_extremo := x_alien_extremo_der(nivel);
-    	if (x_extremo + ANCHO_ALIEN) < ANCHO_MAPA then
-        {la flota no toca el borde, muevo todos}
-		begin
-	    	for i := 1 to CANTIDAD_ALIENS do
-  				nivel.aliens[i].x := nivel.aliens[i].x + nivel.direccion_aliens;
-		end
-        else
+    nivel.inicio_turno_aliens := now();
+
+        {MOVIMIENTO ALIENIGENA}
+    	if (nivel.direccion_aliens > 0) then
+        {la flota se mueve a la derecha}
         begin
-        {en el borde, bajan e invierten direcion}
-        	if (y_alien_extremo_inf(nivel) + ALTURA_ALIEN) < ALTURA_MAPA then
-	        	for i := 1 to CANTIDAD_ALIENS do
-  					inc(nivel.aliens[i].y);
+    		x_extremo := x_alien_extremo_der(nivel);
+        	if (x_extremo + ANCHO_ALIEN) < ANCHO_MAPA then
+            {la flota no toca el borde derecho, muevo todos}
+    		begin
+    	    	for i := 1 to CANTIDAD_ALIENS do
+      				nivel.aliens[i].x := nivel.aliens[i].x + nivel.direccion_aliens;
+    		end
+            else
+            begin
+            {están en el borde derecho, bajan e invierten direcion}
+            	if (y_alien_extremo_inf(nivel) + ALTURA_ALIEN) < ALTURA_MAPA then
+    	        	for i := 1 to CANTIDAD_ALIENS do
+      					inc(nivel.aliens[i].y);
 
-            nivel.direccion_aliens := nivel.direccion_aliens * -1;
+                nivel.direccion_aliens := nivel.direccion_aliens * -1;
+            end;
+        end
+        else if (nivel.direccion_aliens < 0) then
+        {la flota se mueve a la izquierda}
+        begin
+        	x_extremo := x_alien_extremo_izq(nivel);
+        	if x_extremo > 1 then
+            {la flota no toca el borde izquierdo, muevo todos}
+    		begin
+    	    	for i := 1 to CANTIDAD_ALIENS do
+      				nivel.aliens[i].x := nivel.aliens[i].x + nivel.direccion_aliens;
+    		end
+            else
+    	        {están en el borde izquierdo, invierten direcion}
+                nivel.direccion_aliens := nivel.direccion_aliens * -1;
         end;
-    end
-    else if (nivel.direccion_aliens < 0) then
-    {la flota se mueve a la izquierda}
-    begin
-    	x_extremo := x_alien_extremo_izq(nivel);
-    	if x_extremo > 1 then
-        {la flota no toca el borde, muevo todos}
-		begin
-	    	for i := 1 to CANTIDAD_ALIENS do
-  				nivel.aliens[i].x := nivel.aliens[i].x + nivel.direccion_aliens;
-		end
-        else
-	        {en el borde invierten direcion}
-            nivel.direccion_aliens := nivel.direccion_aliens * -1;
-    end;
 
-    {DISPARO ALIEN ALEATORIO}
-    i:=1;
-    while (not se_disparo) and (i <= CANTIDAD_DISPAROS_ALIENS) do
-    begin
-    	if (not nivel.disparos_aliens[i].vivo) and (random(500) = 1) then
-       	begin
-	        se_disparo := true;
-            {hay que disparar... pero hay que elegir quién}
-            j:= random(CANTIDAD_ALIENS) + 1;
-            while not nivel.aliens[j].vivo do
-	            j:= random(CANTIDAD_ALIENS) + 1;
+        {DISPARO ALIEN ALEATORIO}
+        se_disparo := false; {vamos a permitir un solo disparo de la flota por turno}
+        i:=1;
+        while not se_disparo and (i <= CANTIDAD_DISPAROS_ALIENS) do
+        begin
+        	{si el disparo no esta activo, y los dados lo indican, disparamos}
+        	if (not nivel.disparos_aliens[i].vivo) and (random(5) = 1) then
+           	begin
+                {hay que disparar... pero hay que elegir quién, agarramos un alien al azar}
+                se_disparo := true;
+                j:= random(CANTIDAD_ALIENS) + 1;
+                while not nivel.aliens[j].vivo do
+    	            j:= random(CANTIDAD_ALIENS) + 1;
 
-			nivel.disparos_aliens[i].vivo := true;
-            nivel.disparos_aliens[i].x := nivel.aliens[j].x + (ANCHO_ALIEN div 2);
-            nivel.disparos_aliens[i].y := nivel.aliens[j].y + ALTURA_ALIEN - 1;
+    			nivel.disparos_aliens[i].vivo := true;
+
+                {posicionamos el disparo}
+                nivel.disparos_aliens[i].x := nivel.aliens[j].x + (ANCHO_ALIEN div 2);
+                nivel.disparos_aliens[i].y := nivel.aliens[j].y + ALTURA_ALIEN - 1;
+            end;
+            inc(i);
         end;
-        inc(i);
-    end;
 
+
+    end;
 end;
 
+
+{
+Mueve todos los disparos, y realiza la lógica de colisiones
+@param nivel t_nivel El nivel en juego
+@param jugador t_jugador El jugador que esta jugando
+}
 procedure jugar_turno_mundo(var nivel:t_nivel; var jugador:t_jugador);
 var
     i,j:integer;
 begin
-	if nivel.disparo_beto.vivo then
-    	if nivel.disparo_beto.y > 0 then
-    		dec(nivel.disparo_beto.y)
-        else
-        	nivel.disparo_beto.vivo := false;
+	{MOVIMIENTO DE DISPAROS}
 
-	for i:=1 to CANTIDAD_DISPAROS_ALIENS do
-    	if nivel.disparos_aliens[i].vivo then
-    		if nivel.disparos_aliens[i].y < ALTURA_MAPA then
-        		inc(nivel.disparos_aliens[i].y)
+    {el disparo de beto siempre se mueve a la misma velocidad}
+	if millisecondspan(nivel.inicio_turno, nivel.inicio_disparo_beto) > 100 then
+    begin
+    	nivel.inicio_disparo_beto := now();
+     	{si el disparo de Beto está activo, se mueve. Si toca el borde, se desactiva}
+    	if nivel.disparo_beto.vivo then
+        	if nivel.disparo_beto.y > 0 then
+        		dec(nivel.disparo_beto.y)
             else
-            	nivel.disparos_aliens[i].vivo := false;
+            	nivel.disparo_beto.vivo := false;
+	end;
 
-	{COLISIONES}
+	{los disparos aliens se mueven a cada nivel más rápido}
+	if millisecondspan(nivel.inicio_turno, nivel.inicio_disparos_aliens) > (250 div nivel.numero) then
+    begin
+	    nivel.inicio_disparos_aliens := now();
+    	{idem al disparo de Beto, pero para cada disparo alienígena}
+    	for i:=1 to CANTIDAD_DISPAROS_ALIENS do
+        	if nivel.disparos_aliens[i].vivo then
+        		if nivel.disparos_aliens[i].y < ALTURA_MAPA then
+            		inc(nivel.disparos_aliens[i].y)
+                else
+                	nivel.disparos_aliens[i].vivo := false;
+    end;
 
-    {disparo beto vs escudos}
+
+
+ 	{LOGICA DE COLISIONES}
+    {
+    hay 3 tipos de colisiones:
+    1) puntos vs puntos
+    	si tienen identicas coordenadas, colisionan
+    2) puntos vs áreas
+    	si el punto está por afuera del área, no colisionan
+    3) áreas vs áreas
+    	si las áreas se solapan, colisionan
+    }
+
+    {disparos aliens vs disparo beto}
+    {los disparos son "puntos" en el espacio}
     i := 1;
     while nivel.disparo_beto.vivo and (i <= CANTIDAD_DISPAROS_ALIENS) do
     begin
@@ -277,6 +276,7 @@ begin
         	and (nivel.disparo_beto.x = nivel.disparos_aliens[i].x)
             and (nivel.disparo_beto.y = nivel.disparos_aliens[i].y)  then
 		begin
+        	{hay colisión, se destruyen los dos}
 			nivel.disparo_beto.vivo := false;
             nivel.disparos_aliens[i].vivo := false;
 		end;
@@ -284,6 +284,7 @@ begin
 	end;
 
     {disparo beto vs escudos}
+    {los disparos y los escudos son "puntos" en el espacio}
     i := 1;
     while nivel.disparo_beto.vivo and (i <= CANTIDAD_ESCUDOS) do
     begin
@@ -291,6 +292,7 @@ begin
         	and (nivel.disparo_beto.x = nivel.escudos[i].x)
             and (nivel.disparo_beto.y = nivel.escudos[i].y)  then
 		begin
+        	{hay colisión, se destruyen los dos}
 			nivel.disparo_beto.vivo := false;
             nivel.escudos[i].vivo := false;
 		end;
@@ -298,6 +300,7 @@ begin
 	end;
 
     {disparo beto vs aliens}
+    {los disparos son "puntos" en el espacio, los aliens son áreas}
     i := 1;
     while nivel.disparo_beto.vivo and (i <= CANTIDAD_ALIENS) do
     begin
@@ -307,29 +310,37 @@ begin
             and (nivel.disparo_beto.y >= nivel.aliens[i].y)
             and (nivel.disparo_beto.y < nivel.aliens[i].y + ALTURA_ALIEN)  then
 		begin
+        	{hay colisión, se destruyen los dos}
 			nivel.disparo_beto.vivo := false;
             nivel.aliens[i].vivo := false;
+
+            {pero en cada nivel hay diferente puntaje!}
             case nivel.numero of
             	1: jugador.puntos := jugador.puntos + 10;
                 2: jugador.puntos := jugador.puntos + 20;
+                3: jugador.puntos := jugador.puntos + 40;
                 else
-                	jugador.puntos := jugador.puntos + 40;
+                	{una formula rápida por si en algun momento se juegan más de 3 niveles :)}
+                	jugador.puntos := jugador.puntos + 10 + nivel.numero * 10;
             end;
 		end;
         inc(i);
 	end;
 
+    {todos los disparos aliens activos}
     for i := 1 to CANTIDAD_DISPAROS_ALIENS do
     	if nivel.disparos_aliens[i].vivo then
         begin
 			{disparo alien vs escudos}
+            {los disparos y los escudos son "puntos" en el espacio}
 	        j := 1;
     		while nivel.disparos_aliens[i].vivo and (j <= CANTIDAD_ESCUDOS) do
 		    begin
-    	   		if 	nivel.escudos[i].vivo
+    	   		if 	nivel.escudos[j].vivo
         			and (nivel.disparos_aliens[i].x = nivel.escudos[j].x)
                     and (nivel.disparos_aliens[i].y = nivel.escudos[j].y)  then
 				begin
+                {hay colisión, se destruyen los dos}
 				nivel.disparos_aliens[i].vivo := false;
 	            nivel.escudos[j].vivo := false;
 				end;
@@ -337,13 +348,18 @@ begin
 			end;
 
         	{disparo alien vs beto}
-	            if 	nivel.disparos_aliens[i].vivo and nivel.beto.vivo
+            {los disparos son "puntos" en el espacio, Beto es un área}
+	            if 	nivel.disparos_aliens[i].vivo
         			and (nivel.disparos_aliens[i].x >= nivel.beto.x)
 	        	   	and (nivel.disparos_aliens[i].x < (nivel.beto.x + ANCHO_BETO))
 		            and (nivel.disparos_aliens[i].y >= nivel.beto.y)
 		            and (nivel.disparos_aliens[i].y < nivel.beto.y + ALTURA_BETO)  then
 				begin
-					nivel.disparos_aliens[i].vivo := false;
+	                {hay colisión, se destruye el disparo alien}
+
+     				nivel.disparos_aliens[i].vivo := false;
+
+                    {descontamos 1 vida y 300 puntos al jugador. ojo con el underflow!}
                     if(jugador.vidas > 0) then
                     begin
                         if jugador.puntos >= 300 then
@@ -356,10 +372,12 @@ begin
 				end;
         end;
 
+	{todos los aliens vivos}
 	for i := 1 to CANTIDAD_ALIENS do
     	if nivel.aliens[i].vivo then
         begin
         	{alien vs escudos}
+            {los escudos son "puntos" en el espacio, los aliens son áreas}
         	j := 1;
     		while nivel.aliens[i].vivo and (j <= CANTIDAD_ESCUDOS) do
 		    begin
@@ -371,6 +389,7 @@ begin
 		            	or (nivel.aliens[i].y + ALTURA_ALIEN <= nivel.escudos[j].y)
               		) then
 				begin
+                	{hay colisión, se destruyen los dos}
 					nivel.aliens[i].vivo := false;
 	            	nivel.escudos[j].vivo := false;
 				end;
@@ -378,7 +397,8 @@ begin
 			end;
 
             {alien vs beto}
-            	if 	nivel.aliens[i].vivo and nivel.beto.vivo
+            {los aliens y Beto son áreas}
+            	if 	nivel.aliens[i].vivo
         			and not (
         				(nivel.aliens[i].x >= nivel.beto.x + ANCHO_BETO)
 	        	   		or (nivel.aliens[i].x + ANCHO_ALIEN <= nivel.beto.x)
@@ -386,7 +406,10 @@ begin
 		            	or (nivel.aliens[i].y + ALTURA_ALIEN <= nivel.beto.y)
               		) then
 				begin
+                	{hay colisión, se destruye el alien}
 					nivel.aliens[i].vivo := false;
+
+                    {descontamos 1 vida y 300 puntos al jugador. ojo con el underflow!}
                     if(jugador.vidas > 0) then
                     begin
                         if jugador.puntos >= 300 then
@@ -404,27 +427,32 @@ begin
 
 end;
 
+{
+Juega los turnos de Beto, los aliens, y el mundo. Además, grafica el nivel.
+@param nivel t_nivel El nivel en juego
+@param jugador t_jugador El jugador que está jugando
+@return t_resultado_nivel "gano" si no quedan aliens por matar,
+	"abandono" si el jugador abandonó, "perdió" si el jugador ha perdido,
+ 	o "continuar" si hay que seguir jugando turnos.
+}
 function jugar_turno(var nivel:t_nivel; var jugador:t_jugador):t_resultado_nivel;
 var
     resultado_turno:t_resultado_nivel;
 begin
+	{para regular las velocidades...}
+    nivel.inicio_turno := now();
 
     if jugar_turno_beto(nivel, jugador) then
     begin
     	jugar_turno_alien(nivel, jugador);
         jugar_turno_mundo(nivel, jugador);
         graficar_nivel(nivel, jugador);
-        //delay(250);
+
 
     	if jugador.vidas = 0 then
-    	begin
-            graficar_derrota();
-    	    resultado_turno := perdio;
-    	end
+    	    resultado_turno := perdio
         else if cantidad_aliens_vivos(nivel) = 0 then
-        begin
-        	resultado_turno := gano;
-	    end
+        	resultado_turno := gano
         else
         	resultado_turno := continuar;
 
@@ -437,12 +465,11 @@ end;
 
 
 {
-Corre el nivel, ejecutando todos los turnos hasta que el usuario gana, muere
-o abandona.
-@param numero_nivel byte El número del nivel a jugar
-@param jugador t_jugador El jugador que jugará el nivel
-@return boolean True si el jugador ha ganado, False si ha perdido o abandonado.
-@todo implementar el guardado de puntos.
+Inicializa el nivel, muestra la pantalla previa, y corre los turnos.
+@param numero_nivel byte El número de nivel a jugar
+@param jugador t_jugador El jugador que está jugando
+@return t_resultado_nivel "gano" si ha concluído el nivel,
+	"abandono" si el jugador abandonó, o "perdió" si el jugador ha perdido.
 }
 function jugar_nivel(numero_nivel:byte; var jugador:t_jugador):t_resultado_nivel;
 var
@@ -469,8 +496,9 @@ end;
 
 
 {
-Corre cada uno de los niveles hasta que el jugador muere o abandona.
-@return t_pantalla La pantalla a la que el usuario quiere acceder
+Corre cada uno de los niveles hasta que el jugador gana, muere o abandona.
+@return t_pantalla La pantalla a la que el usuario accederá luego
+@todo guardar puntos
 }
 function correr_juego():t_pantalla;
 var
@@ -483,6 +511,7 @@ begin
 
     jugador := crear_jugador();
 
+    {corremos todos los niveles}
     while((resultado_nivel = gano) and (numero_nivel < CANTIDAD_NIVELES)) do
     begin
         inc(numero_nivel);
@@ -493,7 +522,11 @@ begin
     begin
         jugador.puntos := jugador.puntos + 1000;
         graficar_victoria(jugador);
-    end;
+    end
+    else if resultado_nivel = perdio then
+        graficar_derrota();
+
+    {acá habría que guardar los puntos}
 
     correr_juego := introduccion;
 end;
