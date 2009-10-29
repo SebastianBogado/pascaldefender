@@ -272,7 +272,7 @@ begin
     i := 1;
     while nivel.disparo_beto.vivo and (i <= CANTIDAD_DISPAROS_ALIENS) do
     begin
-       	if 	nivel.escudos[i].vivo
+       	if 	nivel.disparos_aliens[i].vivo
         	and (nivel.disparo_beto.x = nivel.disparos_aliens[i].x)
             and (nivel.disparo_beto.y = nivel.disparos_aliens[i].y)  then
 		begin
