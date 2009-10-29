@@ -12,7 +12,7 @@
       <TargetFileExt Value=".exe"/>
       <UseAppBundle Value="False"/>
       <Icon Value="0"/>
-      <ActiveEditorIndexAtStart Value="6"/>
+      <ActiveEditorIndexAtStart Value="11"/>
     </General>
     <LazDoc Paths="docs"/>
     <VersionInfo>
@@ -38,7 +38,7 @@
         <CursorPos X="11" Y="4"/>
         <TopLine Value="1"/>
         <EditorIndex Value="0"/>
-        <UsageCount Value="127"/>
+        <UsageCount Value="129"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -70,7 +70,7 @@
         <UnitName Value="pantalla_juego_old"/>
         <CursorPos X="39" Y="9"/>
         <TopLine Value="1"/>
-        <UsageCount Value="127"/>
+        <UsageCount Value="129"/>
       </Unit4>
       <Unit5>
         <Filename Value="units\pantalla_introduccion.pas"/>
@@ -79,7 +79,7 @@
         <CursorPos X="5" Y="26"/>
         <TopLine Value="16"/>
         <EditorIndex Value="3"/>
-        <UsageCount Value="127"/>
+        <UsageCount Value="129"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -89,17 +89,17 @@
         <CursorPos X="5" Y="9"/>
         <TopLine Value="1"/>
         <EditorIndex Value="2"/>
-        <UsageCount Value="127"/>
+        <UsageCount Value="129"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="units\puntajes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="puntajes"/>
-        <CursorPos X="66" Y="17"/>
-        <TopLine Value="1"/>
+        <CursorPos X="19" Y="19"/>
+        <TopLine Value="46"/>
         <EditorIndex Value="6"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="128"/>
         <Loaded Value="True"/>
       </Unit7>
       <Unit8>
@@ -109,7 +109,7 @@
         <CursorPos X="33" Y="21"/>
         <TopLine Value="7"/>
         <EditorIndex Value="1"/>
-        <UsageCount Value="125"/>
+        <UsageCount Value="127"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
@@ -119,7 +119,7 @@
         <CursorPos X="70" Y="158"/>
         <TopLine Value="130"/>
         <EditorIndex Value="5"/>
-        <UsageCount Value="124"/>
+        <UsageCount Value="126"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
@@ -129,7 +129,7 @@
         <CursorPos X="26" Y="27"/>
         <TopLine Value="1"/>
         <EditorIndex Value="8"/>
-        <UsageCount Value="122"/>
+        <UsageCount Value="124"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
@@ -139,7 +139,7 @@
         <CursorPos X="34" Y="15"/>
         <TopLine Value="1"/>
         <EditorIndex Value="7"/>
-        <UsageCount Value="122"/>
+        <UsageCount Value="124"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
@@ -149,7 +149,7 @@
         <CursorPos X="34" Y="46"/>
         <TopLine Value="12"/>
         <EditorIndex Value="9"/>
-        <UsageCount Value="119"/>
+        <UsageCount Value="121"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
@@ -159,7 +159,7 @@
         <CursorPos X="21" Y="6"/>
         <TopLine Value="1"/>
         <EditorIndex Value="10"/>
-        <UsageCount Value="118"/>
+        <UsageCount Value="120"/>
         <Loaded Value="True"/>
       </Unit13>
       <Unit14>
@@ -169,7 +169,7 @@
         <CursorPos X="55" Y="21"/>
         <TopLine Value="1"/>
         <EditorIndex Value="12"/>
-        <UsageCount Value="118"/>
+        <UsageCount Value="120"/>
         <Loaded Value="True"/>
       </Unit14>
       <Unit15>
@@ -179,7 +179,7 @@
         <CursorPos X="27" Y="15"/>
         <TopLine Value="1"/>
         <EditorIndex Value="4"/>
-        <UsageCount Value="118"/>
+        <UsageCount Value="120"/>
         <Loaded Value="True"/>
       </Unit15>
       <Unit16>
@@ -193,10 +193,10 @@
         <Filename Value="units\pantalla_juego.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pantalla_juego"/>
-        <CursorPos X="42" Y="534"/>
-        <TopLine Value="498"/>
+        <CursorPos X="34" Y="275"/>
+        <TopLine Value="264"/>
         <EditorIndex Value="11"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
       </Unit17>
       <Unit18>
@@ -207,7 +207,7 @@
         <UsageCount Value="21"/>
       </Unit18>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="units\pantalla_juego.pas"/>
         <Caret Line="481" Column="26" TopLine="461"/>
@@ -306,28 +306,24 @@
       </Position24>
       <Position25>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="15" Column="13" TopLine="504"/>
+        <Caret Line="14" Column="10" TopLine="1"/>
       </Position25>
       <Position26>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="14" Column="10" TopLine="1"/>
+        <Filename Value="units\puntajes.pas"/>
+        <Caret Line="93" Column="36" TopLine="62"/>
       </Position26>
       <Position27>
         <Filename Value="units\puntajes.pas"/>
-        <Caret Line="93" Column="36" TopLine="62"/>
+        <Caret Line="6" Column="13" TopLine="1"/>
       </Position27>
       <Position28>
         <Filename Value="units\puntajes.pas"/>
-        <Caret Line="6" Column="13" TopLine="1"/>
+        <Caret Line="102" Column="36" TopLine="61"/>
       </Position28>
       <Position29>
         <Filename Value="units\puntajes.pas"/>
-        <Caret Line="102" Column="36" TopLine="61"/>
-      </Position29>
-      <Position30>
-        <Filename Value="units\puntajes.pas"/>
         <Caret Line="17" Column="57" TopLine="1"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
