@@ -22,6 +22,8 @@ var
     pantalla_seleccionada:t_pantalla;
     tecla_ingresada:char;
 begin
+	pantalla_seleccionada := introduccion;
+
     tecla_ingresada := readkey();
     write(tecla_ingresada);
     case tecla_ingresada of
