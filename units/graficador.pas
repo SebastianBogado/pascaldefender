@@ -17,6 +17,7 @@ procedure graficar_victoria(var jugador:t_jugador);
 procedure graficar_derrota();
 procedure graficar_prenivel(var nivel:t_nivel);
 procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
+procedure graficar_felicitaciones(var jugador:t_jugador);
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 function pedir_nombre():string;
 
@@ -89,7 +90,7 @@ begin
     writeln('Hay ',cantidad_puntajes,' puntajes record registrados');
 
     for i := 1 to cantidad_puntajes do
-        writeln(i,' - ',puntajes[i].puntos,' ',puntajes[i].nombre);
+        writeln('#', i,' - ',puntajes[i].puntos,' ',puntajes[i].nombre);
 
     writeln('');
     writeln('Presione cualquier tecla para volver al inicio.');
@@ -149,6 +150,16 @@ begin
     writeln('Presiona ENTER para continuar');
     readln();
 end;
+
+
+procedure graficar_felicitaciones(var jugador:t_jugador);
+begin
+    clrscr();
+    writeln('Felicitaciones, ', jugador.nombre, ', con tus ', jugador.puntos, ' puntos lograste un nuevo HiScore!');
+    writeln('Presiona ENTER para continuar');
+    readln();
+end;
+
 
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 var
