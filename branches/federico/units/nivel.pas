@@ -14,15 +14,16 @@ type
             numero : byte;
             beto : t_entidad;
             disparo_beto : t_entidad;
-            aliens : t_entidades;
-            disparos_aliens : t_entidades;
-            escudos : t_entidades;
+            aliens : t_aliens;
+            disparos_aliens : t_disparos_aliens;
+            escudos : t_escudos;
             direccion_aliens : integer;
             inicio_turno : TDateTime;
             inicio_turno_beto : TDateTime;
             inicio_turno_aliens : TDateTime;
             inicio_disparo_beto : TDateTime;
             inicio_disparos_aliens : TDateTime;
+            ancho_alien : byte;
 
     end;
 
@@ -44,8 +45,10 @@ begin
      nivel.inicio_turno_aliens := 0;
      nivel.inicio_disparo_beto := 0;
      nivel.inicio_disparos_aliens := 0;
-     inicializar_entidades(nivel.escudos);
-     inicializar_entidades(nivel.aliens);
+     nivel.ancho_alien := MIN_ANCHO_ALIEN;
+     inicializar_escudos(nivel.escudos);
+     inicializar_aliens(nivel.aliens);
+     inicializar_disparos_aliens(nivel.disparos_aliens);
 end;
 
 {
