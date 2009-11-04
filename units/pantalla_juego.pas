@@ -94,7 +94,7 @@ Interpreta los comandos del usuario. Puede mover a Beto, disparar, o salir del j
 @param jugador t_jugador El jugador que esta jugando
 @return boolean False si el jugador desea salir, sino, True.
 }
-function jugar_turno_beto(var nivel:t_nivel; var jugador:t_jugador):boolean;
+function jugar_turno_beto(var nivel:t_nivel):boolean;
 var
 	direccion_beto:integer; {dirección del movimiento sobre eje x}
     seguir_jugando:boolean;
@@ -149,7 +149,7 @@ Mueve los aliens, y efectua disparos al azar
 @param nivel t_nivel El nivel en juego
 @param jugador t_jugador El jugador que esta jugando
 }
-procedure jugar_turno_alien(var nivel:t_nivel; var jugador:t_jugador);
+procedure jugar_turno_alien(var nivel:t_nivel);
 var
 	se_disparo:boolean;
 	x_extremo:byte;
@@ -452,9 +452,9 @@ begin
 	{para regular las velocidades...}
     nivel.inicio_turno := now();
 
-    if jugar_turno_beto(nivel, jugador) then
+    if jugar_turno_beto(nivel) then
     begin
-    	jugar_turno_alien(nivel, jugador);
+    	jugar_turno_alien(nivel);
         jugar_turno_mundo(nivel, jugador);
         graficar_nivel(nivel, jugador);
 
@@ -485,7 +485,6 @@ function jugar_nivel(numero_nivel:byte; var jugador:t_jugador):t_resultado_nivel
 var
     nivel:t_nivel;
     resultado_turno:t_resultado_nivel;
-    i:integer;
 begin
     inicializar_nivel(nivel);
     nivel.numero := numero_nivel;

@@ -1,8 +1,6 @@
 unit entidad;
 
 interface
-uses
-    pdcommons;
 
 const
     ALTURA_BETO = 2;
