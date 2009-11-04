@@ -284,7 +284,7 @@ begin
     begin
        	if 	nivel.disparos_aliens[i].vivo
         	and (nivel.disparo_beto.x = nivel.disparos_aliens[i].x)
-            and (nivel.disparo_beto.y >= nivel.disparos_aliens[i].y)  then
+            and (nivel.disparo_beto.y <= nivel.disparos_aliens[i].y)  then
 		begin
         	{hay colisión, se destruyen los dos}
 			nivel.disparo_beto.vivo := false;
