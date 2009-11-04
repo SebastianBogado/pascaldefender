@@ -50,7 +50,6 @@ end;
 
 {
 Grafica la pantalla con las instrucciones del juego
-@todo escribir las instrucciones
 }
 procedure graficar_instrucciones();
 begin
@@ -63,7 +62,9 @@ begin
     writeln('El juego termina al pasar tres niveles, o perder tres vidas.');
     writeln();
     writeln('Para mover la nave de Beto, usar las flechas laterales para moverse');
-    writeln('y D para disparar');
+    writeln('y D para disparar.');
+    writeln();
+    writeln('Con P se pausa el juego hasta que se presione una tecla');
     writeln();
     writeln('Los marcianos van avanzando y destruiran la nave del Capitan si ');
     writeln('entran en contacto');
@@ -193,33 +194,35 @@ begin
     clreol();
     writeln();
 
+    {dibujar disparo Beto}
+    if nivel.disparo_beto.vivo then
+    	mapa[nivel.disparo_beto.y][nivel.disparo_beto.x] := '|';
+
+    {dibujar disparos aliens}
+    for i := 1 to CANTIDAD_DISPAROS_ALIENS do
+    	if nivel.disparos_aliens[i].vivo then
+			mapa[nivel.disparos_aliens[i].y][nivel.disparos_aliens[i].x] := '|';
+
     {dibujo a Beto}
     pisar_string(nivel.beto.x, '.A.', mapa[nivel.beto.y]);
     pisar_string(nivel.beto.x, 'IMI', mapa[nivel.beto.y+1]);
 
-    {dibujar escudos}
+    {dibujar escudos}                             
     for i := 1 to CANTIDAD_ESCUDOS do
     	if nivel.escudos[i].vivo then
 			for k := nivel.escudos[i].x to nivel.escudos[i].x + ANCHO_ESCUDO - 1 do
         		for j := nivel.escudos[i].y to nivel.escudos[i].y + ALTURA_ESCUDO - 1 do
             		mapa[j][k] := '#';
 
+	{dibujar aliens}
     for i := 1 to CANTIDAD_ALIENS do
     	if nivel.aliens[i].vivo then
-      		for k := nivel.aliens[i].x to nivel.aliens[i].x + ANCHO_ALIEN - 1 do
+      		for k := nivel.aliens[i].x to nivel.aliens[i].x + nivel.ancho_alien - 1 do
         		for j := nivel.aliens[i].y to nivel.aliens[i].y + ALTURA_ALIEN - 1 do
              		mapa[j][k] := 'A';
 
-	{dibujar disparo Beto}
-    if nivel.disparo_beto.vivo then
-    	mapa[nivel.disparo_beto.y][nivel.disparo_beto.x] := '|';
-    {dibujar disparos aliens}
-    for i := 1 to CANTIDAD_DISPAROS_ALIENS do
-    	if nivel.disparos_aliens[i].vivo then
-			mapa[nivel.disparos_aliens[i].y][nivel.disparos_aliens[i].x] := '|';
-
     for i := 1 to ALTURA_MAPA do
-        writeln(mapa[i]);
+        writeln('|',mapa[i],'|');
 
     cursoron();
 end;

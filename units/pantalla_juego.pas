@@ -60,9 +60,14 @@ begin
     for j := 1 to ESCUDOS_POR_REFUGIO do
     begin
         k := ((i-1)*ESCUDOS_POR_REFUGIO)+j; {auxiliar}
-        {ordenamos en rectangulos}
+        {ordenamos en rectangulos}        
         nivel.escudos[k].x := x_refugio + ((k-1) mod ANCHO_REFUGIO);
         nivel.escudos[k].y := y_refugio + ((j-1) div ANCHO_REFUGIO);
+                               
+        if	(nivel.escudos[k].y >= (y_refugio + (ALTURA_REFUGIO div 2) ))
+        	and (nivel.escudos[k].x >= (x_refugio + (ANCHO_REFUGIO div 3)))
+	        and (nivel.escudos[k].x < (x_refugio + ANCHO_REFUGIO - (ANCHO_REFUGIO div 3))) then
+        	nivel.escudos[k].vivo := false;
     end;
   end;
 
@@ -70,7 +75,7 @@ begin
   for i := 1 to CANTIDAD_ALIENS do
   begin
     {esto los acomoda de filas de ALIENS_POR_FILA naves cada una}
-    nivel.aliens[i].x := 1 + ((i-1) mod ALIENS_POR_FILA)*(ANCHO_ALIEN+1);
+    nivel.aliens[i].x := 1 + ((i-1) mod ALIENS_POR_FILA)*(nivel.ancho_alien+1);
     nivel.aliens[i].y := 1 + ((i-1) div ALIENS_POR_FILA)*(ALTURA_ALIEN+1);
   end;
   nivel.direccion_aliens := -1; {arrancan hacia la izquierda}
@@ -123,6 +128,7 @@ begin
                     end;
                 end;
                 'q': seguir_jugando := false; {abandonar la partida}
+                'p': readkey(); {pausa. espera otra tecla, para continuar}
     		end;
     	end;
 
@@ -159,7 +165,7 @@ begin
         {la flota se mueve a la derecha}
         begin
     		x_extremo := x_alien_extremo_der(nivel);
-        	if (x_extremo + ANCHO_ALIEN) < ANCHO_MAPA then
+        	if (x_extremo + nivel.ancho_alien) <= ANCHO_MAPA then
             {la flota no toca el borde derecho, muevo todos}
     		begin
     	    	for i := 1 to CANTIDAD_ALIENS do
@@ -168,6 +174,7 @@ begin
             else
             begin
             {están en el borde derecho, bajan e invierten direcion}
+            	{si no están abajo de todo...}
             	if (y_alien_extremo_inf(nivel) + ALTURA_ALIEN) < ALTURA_MAPA then
     	        	for i := 1 to CANTIDAD_ALIENS do
       					inc(nivel.aliens[i].y);
@@ -201,13 +208,16 @@ begin
                 {hay que disparar... pero hay que elegir quién, agarramos un alien al azar}
                 se_disparo := true;
                 j:= random(CANTIDAD_ALIENS) + 1;
-                while not nivel.aliens[j].vivo do
+
+                {buscamos un alien vivo, y que esté abajo}
+                while (not nivel.aliens[j].vivo) or (nivel.aliens[j].y < y_alien_extremo_inf(nivel)) do
     	            j:= random(CANTIDAD_ALIENS) + 1;
+
 
     			nivel.disparos_aliens[i].vivo := true;
 
                 {posicionamos el disparo}
-                nivel.disparos_aliens[i].x := nivel.aliens[j].x + (ANCHO_ALIEN div 2);
+                nivel.disparos_aliens[i].x := nivel.aliens[j].x + (nivel.ancho_alien div 2);
                 nivel.disparos_aliens[i].y := nivel.aliens[j].y + ALTURA_ALIEN - 1;
             end;
             inc(i);
@@ -274,7 +284,8 @@ begin
     begin
        	if 	nivel.disparos_aliens[i].vivo
         	and (nivel.disparo_beto.x = nivel.disparos_aliens[i].x)
-            and (nivel.disparo_beto.y = nivel.disparos_aliens[i].y)  then
+            and ((nivel.disparo_beto.y = (nivel.disparos_aliens[i].y+1))
+            	or (nivel.disparo_beto.y = nivel.disparos_aliens[i].y))  then
 		begin
         	{hay colisión, se destruyen los dos}
 			nivel.disparo_beto.vivo := false;
@@ -306,7 +317,7 @@ begin
     begin
        	if 	nivel.aliens[i].vivo
         	and (nivel.disparo_beto.x >= nivel.aliens[i].x)
-           	and (nivel.disparo_beto.x < (nivel.aliens[i].x + ANCHO_ALIEN))
+           	and (nivel.disparo_beto.x < (nivel.aliens[i].x + nivel.ancho_alien))
             and (nivel.disparo_beto.y >= nivel.aliens[i].y)
             and (nivel.disparo_beto.y < nivel.aliens[i].y + ALTURA_ALIEN)  then
 		begin
@@ -384,7 +395,7 @@ begin
     	   		if 	nivel.escudos[j].vivo
                 	and not (
         				(nivel.aliens[i].x >= nivel.escudos[j].x + ANCHO_ESCUDO)
-	        	   		or (nivel.aliens[i].x + ANCHO_ALIEN <= nivel.escudos[j].x)
+	        	   		or (nivel.aliens[i].x + nivel.ancho_alien <= nivel.escudos[j].x)
 		            	or (nivel.aliens[i].y >= nivel.escudos[j].y + ALTURA_ESCUDO)
 		            	or (nivel.aliens[i].y + ALTURA_ALIEN <= nivel.escudos[j].y)
               		) then
@@ -401,7 +412,7 @@ begin
             	if 	nivel.aliens[i].vivo
         			and not (
         				(nivel.aliens[i].x >= nivel.beto.x + ANCHO_BETO)
-	        	   		or (nivel.aliens[i].x + ANCHO_ALIEN <= nivel.beto.x)
+	        	   		or (nivel.aliens[i].x + nivel.ancho_alien <= nivel.beto.x)
 		            	or (nivel.aliens[i].y >= nivel.beto.y + ALTURA_BETO)
 		            	or (nivel.aliens[i].y + ALTURA_ALIEN <= nivel.beto.y)
               		) then
@@ -480,6 +491,10 @@ begin
     inicializar_nivel(nivel);
     nivel.numero := numero_nivel;
 
+    {el ancho del alien es variable, para que tenga distinta forma}
+    if (MAX_ANCHO_ALIEN - nivel.numero + 1) >= MIN_ANCHO_ALIEN then
+    	nivel.ancho_alien := MAX_ANCHO_ALIEN - nivel.numero + 1;
+
     resultado_turno := continuar;
 
     crear_entidades_nivel(nivel);
@@ -487,9 +502,7 @@ begin
     graficar_prenivel(nivel);
 
     while resultado_turno = continuar do
-    begin
         resultado_turno := jugar_turno(nivel, jugador);
-    end;
 
     jugar_nivel := resultado_turno;
 end;
@@ -498,7 +511,6 @@ end;
 {
 Corre cada uno de los niveles hasta que el jugador gana, muere o abandona.
 @return t_pantalla La pantalla a la que el usuario accederá luego
-@todo guardar puntos
 }
 function correr_juego():t_pantalla;
 var

@@ -15,7 +15,6 @@ implementation
 {
 Interpreta la elección de pantalla del usuario.
 @return t_pantalla La pantalla a la que el usuario quiere acceder
-@todo mostrar un error si el usuario elige una opción incorrecta
 }
 function pedir_pantalla():t_pantalla;
 var
