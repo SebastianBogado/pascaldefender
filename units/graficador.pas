@@ -219,7 +219,56 @@ begin
     	if nivel.aliens[i].vivo then
       		for k := nivel.aliens[i].x to nivel.aliens[i].x + nivel.ancho_alien - 1 do
         		for j := nivel.aliens[i].y to nivel.aliens[i].y + ALTURA_ALIEN - 1 do
-             		mapa[j][k] := 'A';
+                begin
+                	if nivel.numero = 1 then
+                    	if (k = nivel.aliens[i].x) then
+    						if (j = nivel.aliens[i].y) then
+                 				mapa[j][k] := 'q'
+                            else
+                            	mapa[j][k] := '\'
+                        else if (k = nivel.aliens[i].x + nivel.ancho_alien - 1) then
+                            if (j = nivel.aliens[i].y) then
+                 				mapa[j][k] := 'p'
+                            else
+                            	mapa[j][k] := '/'
+                        else
+                        	if (j = nivel.aliens[i].y + ALTURA_ALIEN - 1) then
+                 				mapa[j][k] := 'V'
+                            else
+                            	mapa[j][k] := 'w'
+                    else if (nivel.numero = 2) then
+                    	if (k = nivel.aliens[i].x) then
+    						if (j = nivel.aliens[i].y) then
+                 				mapa[j][k] := '<'
+                            else
+                            	mapa[j][k] := '|'
+                        else if (k = nivel.aliens[i].x + nivel.ancho_alien - 1) then
+                            if (j = nivel.aliens[i].y) then
+                 				mapa[j][k] := '>'
+                            else
+                            	mapa[j][k] := '|'
+                        else
+                        	if (j = nivel.aliens[i].y + ALTURA_ALIEN - 1) then
+                 				mapa[j][k] := 'Y'
+                            else
+                            	mapa[j][k] := 'X'
+                    else
+                    	if (k = nivel.aliens[i].x) then
+    						if (j = nivel.aliens[i].y) then
+                 				mapa[j][k] := 'W'
+                            else
+                            	mapa[j][k] := 'Y'
+                        else if (k = nivel.aliens[i].x + nivel.ancho_alien - 1) then
+                            if (j = nivel.aliens[i].y) then
+                 				mapa[j][k] := 'W'
+                            else
+                            	mapa[j][k] := 'Y'
+                        else
+                        	if (j = nivel.aliens[i].y + ALTURA_ALIEN - 1) then
+                 				mapa[j][k] := '='
+                            else
+                            	mapa[j][k] := '8';
+                end;
 
     for i := 1 to ALTURA_MAPA do
         writeln('|',mapa[i],'|');
