@@ -1,0 +1,364 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="7"/>
+    <General>
+      <Flags>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=".exe"/>
+      <UseAppBundle Value="False"/>
+      <Icon Value="0"/>
+      <ActiveEditorIndexAtStart Value="11"/>
+    </General>
+    <LazDoc Paths="docs"/>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <Units Count="19">
+      <Unit0>
+        <Filename Value="pascaldefender.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pascaldefender"/>
+        <CursorPos X="11" Y="4"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="148"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="pascaldefender.pas"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="pascaldefender"/>
+        <CursorPos X="1" Y="3"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="pantallaintroduccion.pas"/>
+        <UnitName Value="pantallaintroduccion"/>
+        <CursorPos X="14" Y="9"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="juego.pas"/>
+        <UnitName Value="juego"/>
+        <CursorPos X="31" Y="5"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="pantalla_juego_old.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pantalla_juego_old"/>
+        <CursorPos X="39" Y="9"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="148"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="units\pantalla_introduccion.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pantalla_introduccion"/>
+        <CursorPos X="25" Y="35"/>
+        <TopLine Value="15"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="148"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="units\pdcommons.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pdcommons"/>
+        <CursorPos X="5" Y="9"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="148"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="units\puntajes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="puntajes"/>
+        <CursorPos X="19" Y="19"/>
+        <TopLine Value="46"/>
+        <EditorIndex Value="6"/>
+        <UsageCount Value="147"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="units\pdbase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pdbase"/>
+        <CursorPos X="33" Y="21"/>
+        <TopLine Value="7"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="146"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="units\graficador.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="graficador"/>
+        <CursorPos X="41" Y="266"/>
+        <TopLine Value="208"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="145"/>
+        <Loaded Value="True"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="units\pantalla_hiscores.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pantalla_hiscores"/>
+        <CursorPos X="36" Y="17"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="8"/>
+        <UsageCount Value="143"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="units\pantalla_instrucciones.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pantalla_instrucciones"/>
+        <CursorPos X="34" Y="15"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="7"/>
+        <UsageCount Value="143"/>
+        <Loaded Value="True"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="units\nivel.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="nivel"/>
+        <CursorPos X="32" Y="26"/>
+        <TopLine Value="70"/>
+        <EditorIndex Value="9"/>
+        <UsageCount Value="140"/>
+        <Loaded Value="True"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="units\mapa.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="mapa"/>
+        <CursorPos X="35" Y="13"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="10"/>
+        <UsageCount Value="139"/>
+        <Loaded Value="True"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="units\entidad.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="entidad"/>
+        <CursorPos X="1" Y="4"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="12"/>
+        <UsageCount Value="139"/>
+        <Loaded Value="True"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="units\jugador.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="jugador"/>
+        <CursorPos X="27" Y="15"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="139"/>
+        <Loaded Value="True"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="units\juego.pas"/>
+        <UnitName Value="juego"/>
+        <CursorPos X="66" Y="46"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="14"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pantalla_juego"/>
+        <CursorPos X="28" Y="489"/>
+        <TopLine Value="477"/>
+        <EditorIndex Value="11"/>
+        <UsageCount Value="73"/>
+        <Loaded Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="units\timer.pas"/>
+        <UnitName Value="timer"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="19"/>
+      </Unit18>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="226" Column="41" TopLine="203"/>
+      </Position1>
+      <Position2>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="224" Column="34" TopLine="213"/>
+      </Position2>
+      <Position3>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="227" Column="20" TopLine="213"/>
+      </Position3>
+      <Position4>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="225" Column="59" TopLine="213"/>
+      </Position4>
+      <Position5>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="230" Column="34" TopLine="195"/>
+      </Position5>
+      <Position6>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="237" Column="43" TopLine="203"/>
+      </Position6>
+      <Position7>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="254" Column="46" TopLine="219"/>
+      </Position7>
+      <Position8>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="244" Column="46" TopLine="223"/>
+      </Position8>
+      <Position9>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="254" Column="51" TopLine="220"/>
+      </Position9>
+      <Position10>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="252" Column="39" TopLine="235"/>
+      </Position10>
+      <Position11>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="245" Column="76" TopLine="233"/>
+      </Position11>
+      <Position12>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="252" Column="36" TopLine="240"/>
+      </Position12>
+      <Position13>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="68" Column="36" TopLine="65"/>
+      </Position13>
+      <Position14>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="270" Column="46" TopLine="250"/>
+      </Position14>
+      <Position15>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="526" Column="50" TopLine="514"/>
+      </Position15>
+      <Position16>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="33" Column="32" TopLine="21"/>
+      </Position16>
+      <Position17>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="58" Column="37" TopLine="46"/>
+      </Position17>
+      <Position18>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="97" Column="44" TopLine="91"/>
+      </Position18>
+      <Position19>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="455" Column="30" TopLine="443"/>
+      </Position19>
+      <Position20>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="33" Column="32" TopLine="21"/>
+      </Position20>
+      <Position21>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="58" Column="37" TopLine="46"/>
+      </Position21>
+      <Position22>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="152" Column="46" TopLine="149"/>
+      </Position22>
+      <Position23>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="457" Column="29" TopLine="445"/>
+      </Position23>
+      <Position24>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="33" Column="32" TopLine="21"/>
+      </Position24>
+      <Position25>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="58" Column="37" TopLine="46"/>
+      </Position25>
+      <Position26>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="490" Column="28" TopLine="478"/>
+      </Position26>
+      <Position27>
+        <Filename Value="units\entidad.pas"/>
+        <Caret Line="66" Column="36" TopLine="43"/>
+      </Position27>
+      <Position28>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="491" Column="73" TopLine="476"/>
+      </Position28>
+      <Position29>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="33" Column="32" TopLine="21"/>
+      </Position29>
+      <Position30>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="58" Column="37" TopLine="46"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+    <PathDelim Value="\"/>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)\"/>
+      <OtherUnitFiles Value="units\"/>
+      <UnitOutputDirectory Value="bin"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="fpc"/>
+        <CStyleOperator Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>
