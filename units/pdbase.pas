@@ -13,6 +13,7 @@ uses
     pantalla_introduccion,
     pantalla_instrucciones,
     pantalla_hiscores,
+    pantalla_opciones,
     pantalla_juego;
 
 {
@@ -37,6 +38,8 @@ begin
                 pantalla := correr_juego();
             instrucciones:
                 pantalla := correr_instrucciones();
+            opciones:
+                pantalla := correr_opciones();
             hiscores:
                 pantalla := correr_hiscores();
             else

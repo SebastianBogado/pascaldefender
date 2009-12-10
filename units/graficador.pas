@@ -13,6 +13,7 @@ uses
 
 procedure graficar_introduccion();
 procedure graficar_instrucciones();
+procedure graficar_opciones();
 procedure graficar_victoria(var jugador:t_jugador);
 procedure graficar_derrota();
 procedure graficar_prenivel(var nivel:t_nivel);
@@ -24,13 +25,27 @@ function pedir_nombre():string;
 implementation
 
 {
+Un procedimiento auxiliar para centrar líneas de texto
+}
+
+procedure titulo (titulo:string; y:integer);
+begin
+	gotoxy(trunc((80/2)-(length(titulo))/2),y);
+	write(titulo);
+end;
+
+{
 Un procedimiento auxiliar para mostrar el título del programa
 }
 procedure encabezado();
 begin
-    writeln('Pascal Defender');
-    writeln('===============');
-    writeln('La heroica batalla del Capitan Beto');
+    titulo('______                   _  ______      __               _           ',1);
+    titulo('| ___ \                 | | |  _  \    / _|             | |          ',2);
+    titulo('| |_/ /_ _ ___  ___ __ _| | | | | |___| |_ ___ _ __   __| | ___ _ __ ',3);
+    titulo('|  __/ _` / __|/ __/ _` | | | | | / _ \  _/ _ \  _ \ / _` |/ _ \  __|',4);
+    titulo('| | | (_| \__ \ (_| (_| | | | |/ /  __/ ||  __/ | | | (_| |  __/ |   ',5);
+    titulo('\_|  \__,_|___/\___\__,_|_| |___/ \___|_| \___|_| |_|\__,_|\___|_|   ',6);
+    titulo('----------|La heroica batalla del Capitan Beto|----------',7);
     writeln();
 end;
 
@@ -41,13 +56,27 @@ procedure graficar_introduccion();
 begin
     clrscr();
     encabezado();
-    writeln('Seleccione una opcion:');
-    writeln('1. Jugar');
-    writeln('2. Instrucciones');
-    writeln('3. High Scores');
-    writeln('0. Salir');
+    titulo('1. Jugar',11);
+    titulo('2. Instrucciones',12);
+    titulo('3. High Scores',13);
+    titulo('4. Opciones',14);
+    titulo('0. Salir',15);
 end;
 
+{
+Grafica la pantalla con las opciones del juego
+}
+procedure graficar_opciones();
+
+
+begin
+    clrscr();
+    encabezado(); writeln;
+    titulo('1. Elegir skin de naves',10);
+    titulo('2. Modificar datos',11);
+    titulo('3. Baja del usuario',12);
+    titulo('4. Cambiar de usuario',13);
+    titulo('0. Volver al menu principal',14);
 {
 Grafica la pantalla con las instrucciones del juego
 }
@@ -55,7 +84,7 @@ procedure graficar_instrucciones();
 begin
     clrscr();
     encabezado();
-    writeln('Instrucciones');
+    titulo('Instrucciones',9);
     writeln();
     writeln('El objetivo del juego es destruir a todas las naves marcianas. ');
     writeln();
@@ -76,6 +105,7 @@ begin
     writeln('Presione cualquier tecla para volver al inicio.');
 end;
 
+
 {
 Muestra en pantalla los puntajes recibidos
 @param cantidad_puntajes byte La cantidad de puntajes que tiene el vector de puntajes
@@ -87,7 +117,8 @@ var
 begin
     clrscr();
     encabezado();
-    writeln('Puntajes Record');
+    titulo('Puntajes Record',9);
+    writeln;
     writeln('Hay ',cantidad_puntajes,' puntajes record registrados');
 
     for i := 1 to cantidad_puntajes do
@@ -147,8 +178,8 @@ end;
 procedure graficar_derrota();
 begin
     clrscr();
-    writeln('GAME OVER');
-    writeln('Presiona ENTER para continuar');
+    titulo('GAME OVER',10);
+    titulo('Presiona ENTER para continuar',11);
     readln();
 end;
 
@@ -196,12 +227,12 @@ begin
 
     {dibujar disparo Beto}
     if nivel.disparo_beto.vivo then
-    	mapa[nivel.disparo_beto.y][nivel.disparo_beto.x] := '|';
+    	mapa[nivel.disparo_beto.y][nivel.disparo_beto.x] := 'I';
 
     {dibujar disparos aliens}
     for i := 1 to CANTIDAD_DISPAROS_ALIENS do
     	if nivel.disparos_aliens[i].vivo then
-			mapa[nivel.disparos_aliens[i].y][nivel.disparos_aliens[i].x] := '|';
+			mapa[nivel.disparos_aliens[i].y][nivel.disparos_aliens[i].x] := '!';
 
     {dibujo a Beto}
     pisar_string(nivel.beto.x, '.A.', mapa[nivel.beto.y]);
