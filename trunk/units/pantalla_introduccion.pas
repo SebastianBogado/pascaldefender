@@ -29,6 +29,7 @@ begin
         '1': pantalla_seleccionada := juego;
         '2': pantalla_seleccionada := instrucciones;
         '3': pantalla_seleccionada := hiscores;
+        '4': pantalla_seleccionada := opciones;
         '0': pantalla_seleccionada := salida;
     end;
 
