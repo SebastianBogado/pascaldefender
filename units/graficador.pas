@@ -14,6 +14,13 @@ uses
 procedure graficar_introduccion();
 procedure graficar_instrucciones();
 procedure graficar_opciones();
+{@todo implementar
+procedure graficar_opciones_juego();
+procedure graficar_modificacion_datos();
+procedure graficar_baja_usuario();
+procedure graficar_login();
+procedure graficar_modificacion_datos();
+}
 procedure graficar_victoria(var jugador:t_jugador);
 procedure graficar_derrota();
 procedure graficar_prenivel(var nivel:t_nivel);
