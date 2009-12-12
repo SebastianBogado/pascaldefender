@@ -2,7 +2,7 @@ unit pantalla_opciones;
 {interfaz de opciones de naves y velocidad}
 
 interface
-
+ function correr_opciones():t_pantalla;
 uses
     crt,
     pdcommons,
@@ -43,7 +43,7 @@ end;
 {
 Muestra las todas opciones, y sub-opciones
 @returns t_pantalla La pantalla que debe correrse a continuación
-
+@todo completar el case
 }
 
 function pedir_opcion():t_pantalla;
