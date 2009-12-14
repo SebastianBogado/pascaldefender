@@ -3,7 +3,7 @@ unit puntajes;
 interface
 
 const
-    MAX_PUNTAJES = 20;
+    MAX_PUNTAJES = 100;
 
 type
     t_puntaje = Record

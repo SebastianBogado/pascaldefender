@@ -9,18 +9,14 @@ uses
     nivel,
     mapa,
     entidad,
-    jugador;
+    jugador,
+    lecater,
+    subopciones;
+
 
 procedure graficar_introduccion();
 procedure graficar_instrucciones();
 procedure graficar_opciones();
-{@todo implementar
-procedure graficar_opciones_juego();
-procedure graficar_modificacion_datos();
-procedure graficar_baja_usuario();
-procedure graficar_login();
-procedure graficar_modificacion_datos();
-}
 procedure graficar_victoria(var jugador:t_jugador);
 procedure graficar_derrota();
 procedure graficar_prenivel(var nivel:t_nivel);
@@ -28,13 +24,15 @@ procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
 procedure graficar_felicitaciones(var jugador:t_jugador);
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 function pedir_nombre():string;
+procedure graficar_conjuntos_naves();
 
 implementation
 
+var
+   beto1, beto2:string [4];
 {
 Un procedimiento auxiliar para centrar líneas de texto
 }
-
 procedure titulo (titulo:string; y:integer);
 begin
 	gotoxy(trunc((80/2)-(length(titulo))/2),y);
@@ -84,6 +82,22 @@ begin
     titulo('3. Baja del usuario',12);
     titulo('4. Cambiar de usuario',13);
     titulo('0. Volver al menu principal',14);
+end;
+
+{
+Grafica la pantalla con las opciones del juego
+}
+procedure graficar_conjuntos_naves();
+
+begin
+    clrscr();
+    encabezado(); writeln;
+    writeln;     writeln;     writeln;
+    writeln ('Usted puede elegir ', conjuntos, ' skins de naves');
+    writeln ('Cual desea elegir? Se aceptan solo opciones numericas');
+    writeln ('Puede presionar la tecla 0 (cero) para las opciones por defecto')
+end;
+
 {
 Grafica la pantalla con las instrucciones del juego
 }
@@ -162,14 +176,16 @@ Retorna un nombre que el usuario ingresa
 }
 function pedir_nombre():string;
 var
-    nombre:string;
+    nombre,auxs:string;
+
 begin
     clrscr();
-    writeln('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:');
-    readln(nombre);
-    writeln('Bienvenido ',nombre,'!');
-    writeln('Presiona ENTER para continuar');
-    readln();
+    titulo('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:',4);
+    write('                                                         '); read(nombre);
+    auxs:= 'Bienvenido ' + nombre + '!';
+    titulo (auxs,9);
+    titulo ('Presiona ENTER para continuar',11);
+    readkey();
 
     pedir_nombre := nombre;
 end;
@@ -224,7 +240,7 @@ begin
 
     gotoxy(1,1);
     cursoroff();
-
+    naves_por_defecto(vnaves);
     {cabecera}
     clreol();
     writeln('Nivel ',nivel.numero,', Puntos ',jugador.puntos,', Vidas ',jugador.vidas);
@@ -241,9 +257,12 @@ begin
     	if nivel.disparos_aliens[i].vivo then
 			mapa[nivel.disparos_aliens[i].y][nivel.disparos_aliens[i].x] := '!';
 
+    procesar_skins (vnaves, renglado);
     {dibujo a Beto}
-    pisar_string(nivel.beto.x, '.A.', mapa[nivel.beto.y]);
-    pisar_string(nivel.beto.x, 'IMI', mapa[nivel.beto.y+1]);
+    beto1:= vnaves[numero_conj_naves].beto[1,1] + vnaves[numero_conj_naves].beto[1,2] + vnaves[numero_conj_naves].beto[1,3];
+    beto2:= vnaves[numero_conj_naves].beto[2,1] + vnaves[numero_conj_naves].beto[2,2] + vnaves[numero_conj_naves].beto[2,3];
+    pisar_string(nivel.beto.x, beto1, mapa[nivel.beto.y]);
+    pisar_string(nivel.beto.x, beto2, mapa[nivel.beto.y+1]);
 
     {dibujar escudos}                             
     for i := 1 to CANTIDAD_ESCUDOS do
@@ -261,51 +280,51 @@ begin
                 	if nivel.numero = 1 then
                     	if (k = nivel.aliens[i].x) then
     						if (j = nivel.aliens[i].y) then
-                 				mapa[j][k] := 'q'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven1[1,1]
                             else
-                            	mapa[j][k] := '\'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven1[2,1]
                         else if (k = nivel.aliens[i].x + nivel.ancho_alien - 1) then
                             if (j = nivel.aliens[i].y) then
-                 				mapa[j][k] := 'p'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven1[1,3]
                             else
-                            	mapa[j][k] := '/'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven1[2,3]
                         else
                         	if (j = nivel.aliens[i].y + ALTURA_ALIEN - 1) then
-                 				mapa[j][k] := 'V'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven1[2,2]
                             else
-                            	mapa[j][k] := 'w'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven1[1,2]
                     else if (nivel.numero = 2) then
                     	if (k = nivel.aliens[i].x) then
     						if (j = nivel.aliens[i].y) then
-                 				mapa[j][k] := '<'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven2[1,1]
                             else
-                            	mapa[j][k] := '|'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven2[2,1]
                         else if (k = nivel.aliens[i].x + nivel.ancho_alien - 1) then
                             if (j = nivel.aliens[i].y) then
-                 				mapa[j][k] := '>'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven2[1,3]
                             else
-                            	mapa[j][k] := '|'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven2[2,3]
                         else
                         	if (j = nivel.aliens[i].y + ALTURA_ALIEN - 1) then
-                 				mapa[j][k] := 'Y'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven2[2,2]
                             else
-                            	mapa[j][k] := 'X'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven2[1,2]
                     else
                     	if (k = nivel.aliens[i].x) then
     						if (j = nivel.aliens[i].y) then
-                 				mapa[j][k] := 'W'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven3[1,1]
                             else
-                            	mapa[j][k] := 'Y'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven3[2,1]
                         else if (k = nivel.aliens[i].x + nivel.ancho_alien - 1) then
                             if (j = nivel.aliens[i].y) then
-                 				mapa[j][k] := 'W'
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven3[1,3]
                             else
-                            	mapa[j][k] := 'Y'
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven3[2,3]
                         else
                         	if (j = nivel.aliens[i].y + ALTURA_ALIEN - 1) then
-                 				mapa[j][k] := '='
+                 				mapa[j][k] := vnaves[numero_conj_naves].naven3[2,2]
                             else
-                            	mapa[j][k] := '8';
+                            	mapa[j][k] := vnaves[numero_conj_naves].naven3[1,2];
                 end;
 
     for i := 1 to ALTURA_MAPA do
