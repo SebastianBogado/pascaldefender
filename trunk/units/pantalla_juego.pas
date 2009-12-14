@@ -12,7 +12,9 @@ uses
     jugador,
     entidad,
     mapa,
-    graficador;
+    graficador,
+    subopciones,
+    lecater;
 
 function correr_juego():t_pantalla;
 
@@ -156,7 +158,7 @@ var
     i,j:integer;
 begin
 	{los aliens se mueven a cada nivel más rápido}
-	if millisecondspan(nivel.inicio_turno, nivel.inicio_turno_aliens) > (1000 div nivel.numero) then
+	if millisecondspan(nivel.inicio_turno, nivel.inicio_turno_aliens) > (vnaves[numero_conj_naves].velnave div nivel.numero) then
     begin
     nivel.inicio_turno_aliens := now();
 
@@ -252,7 +254,7 @@ begin
 	end;
 
 	{los disparos aliens se mueven a cada nivel más rápido}
-	if millisecondspan(nivel.inicio_turno, nivel.inicio_disparos_aliens) > (250 div nivel.numero) then
+	if millisecondspan(nivel.inicio_turno, nivel.inicio_disparos_aliens) > (trunc((vnaves[numero_conj_naves].velnave)/4) div nivel.numero) then
     begin
 	    nivel.inicio_disparos_aliens := now();
     	{idem al disparo de Beto, pero para cada disparo alienígena}
@@ -542,6 +544,9 @@ begin
     p.puntos := jugador.puntos;
     if intentar_guardar_puntaje(p) then
     	graficar_felicitaciones(jugador);
+
+    {guardado de puntos en el archivo binario}
+    guardar_puntajes (jugador);
 
     correr_juego := introduccion;
 end;

@@ -1,9 +1,12 @@
 program pascaldefender;
 
 uses 
-    pdbase;
+    pdbase,
+    pantalla_opciones,
+    subopciones;
 
 begin
-    correr_pd();
+     numero_conj_naves:=0;
+     correr_pd();
 end.
 
