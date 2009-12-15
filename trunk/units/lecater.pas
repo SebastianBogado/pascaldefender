@@ -37,6 +37,19 @@ procedure guardar_puntajes (rjugador: t_jugador);
 
 implementation
 
+const
+     {const para el log}
+     DIRECTORIO_LOG = 'Log.txt';
+     SEP = ',';
+     {textos de error a continuación}
+     ER_ARCHIVO = 'No se pudo abrir el archivo'; 
+     ER_TIPO_NAVE = 'Tipo de nave no reconocida';
+     ER_DIMENSION_NAVE = 'Dimension de nave invalida';
+     ER_CARAC_NO_VISIBLES = 'Caracteres en blanco';
+     ER_VELOCIDAD = 'La velocidad es un numero no valido';
+     
+type
+    t_error = (archivo, tipo_nave, dimension_nave, carac_no_visibles, velocidad);
 var
 	totrenglones:integer;
 	ar_texto: text;
@@ -76,8 +89,31 @@ end;
 {
 El procedimiento que guarda el tipo de error cometido si se encuentra algo mal
 }
-procedure logueador ({input: tipo error});
+procedure logueador (error : t_error);
+var
+   log : text;
+   str_crono : string[15];
+   
 begin
+   assign(log,DIRECTORIO_LOG);
+   {$i-}
+   append(log);
+   {$i+}
+   if IOresult <> 0 then
+      rewrite(log);
+   str_crono := formatdatetime ('YYYYMMDD","hh:nn', now); {da el formato el tiempo y lo pasa a una string}
+   write(log, str_crono, SEP);
+   case error of
+      archivo : writeln(log,ER_ARCHIVO);
+      tipo_nave : writeln(log,ER_TIPO_NAVE);
+      dimension_nave : writeln(log,ER_DIMENSION_NAVE);
+      carac_no_visibles : writeln(log,ER_CARAC_NO_VISIBLES);
+      velocidad : writeln(log,ER_VELOCIDAD)
+   {else
+      writeln(log,'Error no reconocido');}
+{lo pongo así por las dudas, sería ideal que esto no sucediera, pero qué sé yo}
+   end;
+   close(log);
 end;
 {
 Devuelve la cantidad de conjuntos de naves que existen
