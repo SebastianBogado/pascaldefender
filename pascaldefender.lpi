@@ -12,7 +12,7 @@
       <TargetFileExt Value=".exe"/>
       <UseAppBundle Value="False"/>
       <Icon Value="0"/>
-      <ActiveEditorIndexAtStart Value="7"/>
+      <ActiveEditorIndexAtStart Value="15"/>
     </General>
     <LazDoc Paths="docs"/>
     <VersionInfo>
@@ -78,7 +78,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="pantalla_introduccion"/>
         <CursorPos X="15" Y="8"/>
-        <TopLine Value="10"/>
+        <TopLine Value="8"/>
         <EditorIndex Value="3"/>
         <UsageCount Value="189"/>
         <Loaded Value="True"/>
@@ -98,7 +98,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="puntajes"/>
         <CursorPos X="31" Y="31"/>
-        <TopLine Value="73"/>
+        <TopLine Value="31"/>
         <EditorIndex Value="8"/>
         <UsageCount Value="188"/>
         <Loaded Value="True"/>
@@ -221,8 +221,8 @@
         <Filename Value="units\lecater.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="lecater"/>
-        <CursorPos X="48" Y="35"/>
-        <TopLine Value="16"/>
+        <CursorPos X="5" Y="52"/>
+        <TopLine Value="139"/>
         <EditorIndex Value="7"/>
         <UsageCount Value="48"/>
         <Loaded Value="True"/>
@@ -231,8 +231,8 @@
         <Filename Value="units\subopciones.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="subopciones"/>
-        <CursorPos X="108" Y="19"/>
-        <TopLine Value="1"/>
+        <CursorPos X="62" Y="33"/>
+        <TopLine Value="16"/>
         <EditorIndex Value="15"/>
         <UsageCount Value="46"/>
         <Loaded Value="True"/>
@@ -241,123 +241,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="units\subopciones.pas"/>
-        <Caret Line="20" Column="51" TopLine="6"/>
+        <Caret Line="17" Column="1" TopLine="1"/>
       </Position1>
       <Position2>
-        <Filename Value="units\subopciones.pas"/>
-        <Caret Line="17" Column="1" TopLine="1"/>
-      </Position2>
-      <Position3>
         <Filename Value="units\graficador.pas"/>
         <Caret Line="241" Column="11" TopLine="211"/>
-      </Position3>
-      <Position4>
+      </Position2>
+      <Position3>
         <Filename Value="units\pantalla_opciones.pas"/>
         <Caret Line="24" Column="101" TopLine="1"/>
+      </Position3>
+      <Position4>
+        <Filename Value="units\subopciones.pas"/>
+        <Caret Line="26" Column="77" TopLine="1"/>
       </Position4>
       <Position5>
         <Filename Value="units\subopciones.pas"/>
-        <Caret Line="26" Column="77" TopLine="1"/>
+        <Caret Line="29" Column="41" TopLine="12"/>
       </Position5>
       <Position6>
         <Filename Value="units\subopciones.pas"/>
-        <Caret Line="29" Column="41" TopLine="12"/>
+        <Caret Line="32" Column="9" TopLine="14"/>
       </Position6>
       <Position7>
         <Filename Value="units\subopciones.pas"/>
-        <Caret Line="32" Column="9" TopLine="14"/>
+        <Caret Line="33" Column="13" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="units\subopciones.pas"/>
-        <Caret Line="33" Column="13" TopLine="1"/>
-      </Position8>
-      <Position9>
         <Filename Value="units\pantalla_opciones.pas"/>
         <Caret Line="24" Column="110" TopLine="1"/>
+      </Position8>
+      <Position9>
+        <Filename Value="units\graficador.pas"/>
+        <Caret Line="146" Column="35" TopLine="129"/>
       </Position9>
       <Position10>
         <Filename Value="units\lecater.pas"/>
-        <Caret Line="22" Column="18" TopLine="56"/>
+        <Caret Line="236" Column="32" TopLine="203"/>
       </Position10>
       <Position11>
-        <Filename Value="units\graficador.pas"/>
-        <Caret Line="146" Column="35" TopLine="129"/>
+        <Filename Value="units\lecater.pas"/>
+        <Caret Line="24" Column="39" TopLine="7"/>
       </Position11>
       <Position12>
         <Filename Value="units\lecater.pas"/>
-        <Caret Line="236" Column="32" TopLine="203"/>
+        <Caret Line="236" Column="33" TopLine="204"/>
       </Position12>
       <Position13>
         <Filename Value="units\lecater.pas"/>
-        <Caret Line="24" Column="39" TopLine="7"/>
+        <Caret Line="231" Column="14" TopLine="206"/>
       </Position13>
       <Position14>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="236" Column="33" TopLine="204"/>
-      </Position14>
-      <Position15>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="231" Column="14" TopLine="206"/>
-      </Position15>
-      <Position16>
         <Filename Value="units\graficador.pas"/>
         <Caret Line="185" Column="12" TopLine="169"/>
+      </Position14>
+      <Position15>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="101" Column="50" TopLine="85"/>
+      </Position15>
+      <Position16>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="272" Column="24" TopLine="253"/>
       </Position16>
       <Position17>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="101" Column="50" TopLine="85"/>
+        <Caret Line="274" Column="14" TopLine="253"/>
       </Position17>
       <Position18>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="272" Column="24" TopLine="253"/>
+        <Caret Line="281" Column="30" TopLine="253"/>
       </Position18>
       <Position19>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="274" Column="14" TopLine="253"/>
+        <Caret Line="297" Column="44" TopLine="278"/>
       </Position19>
       <Position20>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="281" Column="30" TopLine="253"/>
+        <Caret Line="313" Column="30" TopLine="278"/>
       </Position20>
       <Position21>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="297" Column="44" TopLine="278"/>
+        <Caret Line="455" Column="17" TopLine="430"/>
       </Position21>
       <Position22>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="313" Column="30" TopLine="278"/>
+        <Caret Line="16" Column="16" TopLine="1"/>
       </Position22>
       <Position23>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="455" Column="17" TopLine="430"/>
+        <Caret Line="17" Column="12" TopLine="1"/>
       </Position23>
       <Position24>
         <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="16" Column="16" TopLine="1"/>
+        <Caret Line="257" Column="81" TopLine="238"/>
       </Position24>
       <Position25>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="17" Column="12" TopLine="1"/>
-      </Position25>
-      <Position26>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="257" Column="81" TopLine="238"/>
-      </Position26>
-      <Position27>
         <Filename Value="units\lecater.pas"/>
         <Caret Line="34" Column="50" TopLine="25"/>
+      </Position25>
+      <Position26>
+        <Filename Value="units\lecater.pas"/>
+        <Caret Line="232" Column="29" TopLine="207"/>
+      </Position26>
+      <Position27>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="546" Column="22" TopLine="516"/>
       </Position27>
       <Position28>
         <Filename Value="units\lecater.pas"/>
-        <Caret Line="232" Column="29" TopLine="207"/>
+        <Caret Line="231" Column="48" TopLine="208"/>
       </Position28>
       <Position29>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="546" Column="22" TopLine="516"/>
+        <Filename Value="units\lecater.pas"/>
+        <Caret Line="91" Column="73" TopLine="71"/>
       </Position29>
       <Position30>
         <Filename Value="units\lecater.pas"/>
-        <Caret Line="231" Column="48" TopLine="208"/>
+        <Caret Line="41" Column="6" TopLine="28"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
