@@ -112,17 +112,25 @@ y @conjuntos tiene el tag de la cantidad de conjuntos (lo lee de la segunda lín
 procedure apertura_archivo (var ar_texto:text; var renglado:t_renglado; var totrenglones:integer);
 var
 	contcant:integer;
+        error : t_error;
 begin
-	assign (ar_texto,'PDfile.apd');
-	reset (ar_texto);
-	contcant:=0;
-	while not eof (ar_texto) do
-		begin
-			inc(contcant);
-			readln (ar_texto,renglado[contcant])
-		end;
-	totrenglones:=contcant;
-	close (ar_texto)
+     assign (ar_texto,'PDfile.apd');
+     {$i-}
+     reset (ar_texto);
+     {$i+}
+     if IOresult <> 0 then
+        begin    
+             error := archivo;
+             logueador(error);
+        end;
+     contcant:=0;
+     while not eof (ar_texto) do
+	begin
+             inc(contcant);
+	     readln (ar_texto,renglado[contcant])
+	end;
+     totrenglones:=contcant;
+     close (ar_texto)
 end;
 {
 Una función que devuelve en qué línea del txt se encuentra
@@ -154,15 +162,9 @@ subprocess
 	var
 		t1,t2:byte;
 	begin
-	     for t1:=1 to ALTURA_BETO do
-		for t2:=1 to ANCHO_BETO do
-	            if caracteres_validos(ALTURA_BETO, ANCHO_BETO, tt, renglado) then
-                       vnaves[cont_co].beto[t1,t2]:=renglado[tt+t1][t2]
-                    else
-                        begin
-                             error := carac_no_visibles;
-                             logueador(error);
-                        end;
+		for t1:=1 to 2 do
+			for t2:=1 to 3 do
+				vnaves[cont_co].beto[t1,t2]:=renglado[tt+t1][t2]
 	end;
 {
 subprocess
@@ -171,15 +173,9 @@ subprocess
 	var
 		t3,t4:byte;
 	begin
-	     for t3:=1 to ALTURA_ALIEN do
-	         for t4:=1 to MAX_ANCHO_ALIEN do
-		     if caracteres_validos(ALTURA_ALIEN, MAX_ANCHO_ALIEN, tt, renglado) then
-                        vnaves[cont_co].beto[t3,t4]:=renglado[tt+t3][t4]
-                     else
-                         begin
-                              error := carac_no_visibles;
-                              logueador(error);
-                         end;
+		for t3:=1 to 2 do
+			for t4:=1 to 3 do
+				vnaves[cont_co].naven1[t3,t4]:=renglado[tt+t3][t4]
 	end;
 {
 subprocess
@@ -188,15 +184,9 @@ subprocess
 	var
 		t5,t6:byte;
 	begin
-	     for t5:=1 to ALTURA_ALIEN do
-		 for t6:=1 to (MAX_ANCHO_ALIEN - 1) do
-		     if caracteres_validos(ALTURA_ALIEN, MAX_ANCHO_ALIEN-1, tt, renglado) then
-                        vnaves[cont_co].beto[t5,t6]:=renglado[tt+t5][t6]
-                     else
-                         begin
-                              error := carac_no_visibles;
-                              logueador(error);
-                         end;
+		for t5:=1 to 2 do
+			for t6:=1 to 3 do
+				vnaves[cont_co].naven2[t5,t6]:=renglado[tt+t5][t6];
 	end;
 {
 subprocess
@@ -205,15 +195,9 @@ subprocess
 	var
 		t7,t8:byte;
 	begin
-	     for t7:=1 to ALTURA_ALIEN do
-		 for t8:=1 to MIN_ANCHO_ALIEN do
-		     if caracteres_validos(ALTURA_ALIEN, MIN_ANCHO_ALIEN, tt, renglado) then
-                        vnaves[cont_co].beto[t7,t8]:=renglado[tt+t7][t8]
-                     else
-                         begin
-                              error := carac_no_visibles;
-                              logueador(error);
-                         end;
+		for t7:=1 to 2 do
+			for t8:=1 to 3 do
+				vnaves[cont_co].naven3[t7,t8]:=renglado[tt+t7][t8];
 	end;
 {
 subprocess
