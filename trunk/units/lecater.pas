@@ -5,6 +5,8 @@ interface
 uses
     puntajes,
     jugador,
+    entidad,
+    log_de_errores,
     sysutils;
 
 const
@@ -37,19 +39,8 @@ procedure guardar_puntajes (rjugador: t_jugador);
 
 implementation
 
-const
-     {const para el log}
-     DIRECTORIO_LOG = 'Log.txt';
-     SEP = ',';
-     {textos de error a continuación}
-     ER_ARCHIVO = 'No se pudo abrir el archivo'; 
-     ER_TIPO_NAVE = 'Tipo de nave no reconocida';
-     ER_DIMENSION_NAVE = 'Dimension de nave invalida';
-     ER_CARAC_NO_VISIBLES = 'Caracteres en blanco';
-     ER_VELOCIDAD = 'La velocidad es un numero no valido';
+
      
-type
-    t_error = (archivo, tipo_nave, dimension_nave, carac_no_visibles, velocidad);
 var
 	totrenglones:integer;
 	ar_texto: text;
@@ -87,52 +78,31 @@ begin
 end;
 
 {
-El procedimiento que guarda el tipo de error cometido si se encuentra algo mal
-}
-procedure logueador (error : t_error);
-var
-   log : text;
-   str_crono : string[15];
-   
-begin
-   assign(log,DIRECTORIO_LOG);
-   {$i-}
-   append(log);
-   {$i+}
-   if IOresult <> 0 then
-      rewrite(log);
-   str_crono := formatdatetime ('YYYYMMDD","hh:nn', now); {da el formato el tiempo y lo pasa a una string}
-   write(log, str_crono, SEP);
-   case error of
-      archivo : writeln(log,ER_ARCHIVO);
-      tipo_nave : writeln(log,ER_TIPO_NAVE);
-      dimension_nave : writeln(log,ER_DIMENSION_NAVE);
-      carac_no_visibles : writeln(log,ER_CARAC_NO_VISIBLES);
-      velocidad : writeln(log,ER_VELOCIDAD)
-   {else
-      writeln(log,'Error no reconocido');}
-{lo pongo así por las dudas, sería ideal que esto no sucediera, pero qué sé yo}
-   end;
-   close(log);
-end;
-{
 Devuelve la cantidad de conjuntos de naves que existen
 }
 procedure cantidad_conjuntos_naves (var conjuntos:integer);
 var
-    archivo:text;
+    ar_naves:text;
     contcant:integer;
     cod:byte;
+    error : t_error;
 begin
-     assign (archivo,'PDfile.apd');
-     reset (archivo);
+     assign (ar_naves,'PDfile.apd');
+     {$i-}
+     reset (ar_naves);
+     {$i+}
+     if IOresult <> 0 then
+        begin    
+             error := archivo;
+             logueador(error);
+        end; 
      contcant:=0;
      repeat
            inc(contcant);
-           readln (archivo,renglado[contcant]);
+           readln (ar_naves,renglado[contcant]);
      until contcant=2;
      val(renglado[2][11],conjuntos,cod); {Acá lee explícitamente una ubicación del archivo en búsqueda del nro de conjuntos}
-     close (archivo)
+     close (ar_naves)
 end;
 
 {
@@ -174,6 +144,9 @@ Este procedimiento consta de subprocesos que extraen los datos (formas de naves 
 de @renglado y la colocan en un vector de registros, para luego poder ser utilizadas por el graficador
 }
 procedure procesar_skins (var vnaves: tv_navesp; var renglado:t_renglado);
+var
+   error : t_error; {no sé, pero me pinta para hacerla global interna. @todo justificar}
+                
 {
 subprocess
 }
@@ -181,9 +154,15 @@ subprocess
 	var
 		t1,t2:byte;
 	begin
-		for t1:=1 to 2 do
-			for t2:=1 to 3 do
-				vnaves[cont_co].beto[t1,t2]:=renglado[tt+t1][t2]
+	     for t1:=1 to ALTURA_BETO do
+		for t2:=1 to ANCHO_BETO do
+	            if caracteres_validos(ALTURA_BETO, ANCHO_BETO, tt, renglado) then
+                       vnaves[cont_co].beto[t1,t2]:=renglado[tt+t1][t2]
+                    else
+                        begin
+                             error := carac_no_visibles;
+                             logueador(error);
+                        end;
 	end;
 {
 subprocess
@@ -192,9 +171,15 @@ subprocess
 	var
 		t3,t4:byte;
 	begin
-		for t3:=1 to 2 do
-			for t4:=1 to 3 do
-				vnaves[cont_co].naven1[t3,t4]:=renglado[tt+t3][t4]
+	     for t3:=1 to ALTURA_ALIEN do
+	         for t4:=1 to MAX_ANCHO_ALIEN do
+		     if caracteres_validos(ALTURA_ALIEN, MAX_ANCHO_ALIEN, tt, renglado) then
+                        vnaves[cont_co].beto[t3,t4]:=renglado[tt+t3][t4]
+                     else
+                         begin
+                              error := carac_no_visibles;
+                              logueador(error);
+                         end;
 	end;
 {
 subprocess
@@ -203,9 +188,15 @@ subprocess
 	var
 		t5,t6:byte;
 	begin
-		for t5:=1 to 2 do
-			for t6:=1 to 3 do
-				vnaves[cont_co].naven2[t5,t6]:=renglado[tt+t5][t6];
+	     for t5:=1 to ALTURA_ALIEN do
+		 for t6:=1 to (MAX_ANCHO_ALIEN - 1) do
+		     if caracteres_validos(ALTURA_ALIEN, MAX_ANCHO_ALIEN-1, tt, renglado) then
+                        vnaves[cont_co].beto[t5,t6]:=renglado[tt+t5][t6]
+                     else
+                         begin
+                              error := carac_no_visibles;
+                              logueador(error);
+                         end;
 	end;
 {
 subprocess
@@ -214,9 +205,15 @@ subprocess
 	var
 		t7,t8:byte;
 	begin
-		for t7:=1 to 2 do
-			for t8:=1 to 3 do
-				vnaves[cont_co].naven3[t7,t8]:=renglado[tt+t7][t8];
+	     for t7:=1 to ALTURA_ALIEN do
+		 for t8:=1 to MIN_ANCHO_ALIEN do
+		     if caracteres_validos(ALTURA_ALIEN, MIN_ANCHO_ALIEN, tt, renglado) then
+                        vnaves[cont_co].beto[t7,t8]:=renglado[tt+t7][t8]
+                     else
+                         begin
+                              error := carac_no_visibles;
+                              logueador(error);
+                         end;
 	end;
 {
 subprocess
@@ -225,8 +222,13 @@ subprocess
 	var
 		cod:byte;
 	begin
-		val (renglado[tt],vnaves[cont_co].velnave,cod)
-	end;
+		val (renglado[tt],vnaves[cont_co].velnave,cod);
+                if (cod <> 0) then 
+                   begin
+                        error := velocidad;
+                        logueador(error);
+                   end;
+        end;
 
 {
 process
@@ -254,12 +256,15 @@ begin
 				proc_velocidad (cont_conj, tt+14)
 			end
 		else
-			{
-			Acá se podría poner para guardar que el archivo de log de la opción de naves que no anduvo, pero es general,
-			no se puede especificar el tipo de error, salvo que hagas un "tipo error" y lo vayas poniendo por todos lados
-			}
-			writeln ('El skin de naves ', cont_conj, ' no se puede usar. Tags incorrectas, verifique.');
-	end
+		        begin
+                             procesar_error_naves(renglado[tt+1]);
+                             procesar_error_naves(renglado[tt+4]);
+                             procesar_error_naves(renglado[tt+7]);
+                             procesar_error_naves(renglado[tt+10]);
+                             procesar_error_naves(renglado[tt+13]);
+                             writeln ('El skin de naves ', cont_conj, ' no se puede usar. Tags incorrectas, verifique.');
+	                end;
+        end
 end;
 
 

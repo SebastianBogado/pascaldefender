@@ -3,7 +3,7 @@ program pascaldefender;
 uses 
     pdbase,
     pantalla_opciones,
-    subopciones;
+    subopciones, log_de_errores;
 
 begin
      numero_conj_naves:=0;
