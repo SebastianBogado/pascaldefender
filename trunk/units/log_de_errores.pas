@@ -151,27 +151,32 @@ var error : t_error;
  
  {
  Subproceso
+ chequea, además de Beto, la dimensión y que esté bien escrito "[velocidad]",
+ porque eran cositas cortas
  }
   procedure chequeo_beto(var cadena : string[20]);
   var cadena_nave : string[8];
       cadena_dimension : string[6];
   begin
-       cadena_nave := copy(cadena, 1, 6);
-       
-       if (cadena_nave = '[beto]') then
+       if (cadena <> '[velocidad]') then
           begin
-               cadena_dimension := copy(cadena, 7, 5);
-               if (cadena_dimension <> '[2x3]') then
+               cadena_nave := copy(cadena, 1, 6);
+       
+               if (cadena_nave = '[beto]') then
                   begin
-                       error := dimension_nave;
-                       logueador(error);
-                  end
-       else
-           begin
-                error := tipo_nave;
-                logueador(error);
-           end;
-          end;
+                       cadena_dimension := copy(cadena, 7, 5);
+                       if (cadena_dimension <> '[2x3]') then
+                          begin
+                               error := dimension_nave;
+                               logueador(error);
+                          end
+               else
+                   begin
+                        error := tipo_nave;
+                        logueador(error);
+                   end;
+               end;
+       end;
   end;   
 {
 Cuerpo principal del proceso
