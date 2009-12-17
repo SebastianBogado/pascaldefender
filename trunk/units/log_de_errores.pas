@@ -5,22 +5,22 @@ interface
 uses
     SysUtils; 
 
-const
-     CANTIDAD_LINEAS_ARCHIVO = 100;
+
     
 type
     t_error = (archivo, tipo_nave, dimension_nave, carac_no_visibles, velocidad);
-    t_renglado= array[1..CANTIDAD_LINEAS_ARCHIVO] of string[50];  
+    t_mx_nave = array[1..2,1..3] of char;
+  
           
 procedure logueador(error : t_error);
 procedure procesar_error_naves(var cadena : string);
-function caracteres_validos(alto, ancho : byte; tt : byte; var renglado : t_renglado) : boolean; 
+function caracteres_validos(skin_nave : t_mx_nave) : boolean; 
  
 implementation
 
 const
      {const para el log}
-     DIRECTORIO_LOG = 'Log.csv';
+     DIRECTORIO_LOG = 'Log.txt';
      SEP = ',';
      {textos de error a continuación}
      ER_ARCHIVO = 'No se pudo abrir el archivo'; 
@@ -34,7 +34,6 @@ const
 El procedimiento que guarda el tipo de error cometido si se encuentra algo mal
 @param el tipo de error encontrado
 @return el log con la fecha y tipo de error escritos
-@todo verificar que NO HAYA FORMA ALGUNA de que se dé el else del case
 }
 procedure logueador (error : t_error);
 var
@@ -56,9 +55,6 @@ begin
           dimension_nave : writeln(log,ER_DIMENSION_NAVE);
           carac_no_visibles : writeln(log,ER_CARAC_NO_VISIBLES);
           velocidad : writeln(log,ER_VELOCIDAD)
-          {else
-          writeln(log,'Error no reconocido');}
-{lo pongo así por las dudas, sería ideal que esto no sucediera, pero qué sé yo}
      end;
      close(log);
 end; 
@@ -67,9 +63,7 @@ end;
 Trata punto por punto a la nave para chequear que todos los caracteres sean
 visibles
 }
-function caracteres_validos(alto, ancho : byte; 
-                                  tt : byte; 
-                            var renglado : t_renglado) : boolean;
+function caracteres_validos(skin_nave : t_mx_nave) : boolean;
 var
    carac_validos : boolean;
    i,j : byte;
@@ -78,10 +72,10 @@ var
 begin
      carac_validos := true;
      cont_carac_invalidos := 0;
-     for i := 1 to alto do
-        for j := 1 to ancho do
+     for i := 1 to 2 do
+        for j := 1 to 3 do
            begin
-              ascii_cod := ord(renglado[tt+i,j]);
+              ascii_cod := ord(skin_nave[i,j]);
               if ( (ascii_cod < 33) or (ascii_cod = 127) or (ascii_cod = 255) ) then
                  inc(cont_carac_invalidos);
               {
@@ -89,7 +83,7 @@ begin
               No se valida para mayor a 0 porque no puede devolver menor la función ord
               }
            end;
-     if cont_carac_invalidos = (alto * ancho) then {alto * ancho es la cantidad de caracteres}
+     if cont_carac_invalidos = 6 then {6 = alto * ancho de la matriz, es la cantidad de caracteres}
         carac_validos := false; 
      caracteres_validos := carac_validos;
 end;
@@ -120,7 +114,7 @@ var error : t_error;
        str(ancho_alien,cadenita);
        cadena_dimensiones := copy(cadena, 11, 5); 
 
-       if (cadena_dimensiones <> '[2x' + cadenita) then
+       if (cadena_dimensiones <> ('[2x' + cadenita)) then
           begin
                error := dimension_nave;
                logueador(error);
