@@ -12,8 +12,8 @@ type
     t_mx_nave = array[1..2,1..3] of char;
   
           
-procedure logueador(error : t_error);
-procedure procesar_error_naves(var cadena : string);
+procedure logueador(var error : t_error);
+procedure procesar_error_naves(var cadenaA : string);
 function caracteres_validos(skin_nave : t_mx_nave) : boolean; 
  
 implementation
@@ -28,33 +28,30 @@ const
      ER_DIMENSION_NAVE = 'Dimension de nave invalida';
      ER_CARAC_NO_VISIBLES = 'Caracteres en blanco';
      ER_VELOCIDAD = 'La velocidad es un numero no valido'; 
-
-    
 {
 El procedimiento que guarda el tipo de error cometido si se encuentra algo mal
 @param el tipo de error encontrado
 @return el log con la fecha y tipo de error escritos
 }
-procedure logueador (error : t_error);
+procedure logueador (var error : t_error);
 var
    log : text;
    str_crono : string[15];
+
    
 begin
-     assign(log,DIRECTORIO_LOG);
-     {$i-}
-     append(log);
-     {$i+}
-     if IOresult <> 0 then
-        rewrite(log);
+     assign (log, DIRECTORIO_LOG);
+     if NOT FileExists (DIRECTORIO_LOG) then
+        rewrite (log)
+     else
+          append(log);
      str_crono := formatdatetime ('YYYYMMDD","hh:nn', now); {da el formato el tiempo y lo pasa a una string}
-     write(log, str_crono, SEP);
      case error of
-          archivo : writeln(log,ER_ARCHIVO);
-          tipo_nave : writeln(log,ER_TIPO_NAVE);
-          dimension_nave : writeln(log,ER_DIMENSION_NAVE);
-          carac_no_visibles : writeln(log,ER_CARAC_NO_VISIBLES);
-          velocidad : writeln(log,ER_VELOCIDAD)
+          archivo : writeln(log,str_crono,SEP,ER_ARCHIVO);
+          tipo_nave : writeln(log,str_crono,SEP,ER_TIPO_NAVE);
+          dimension_nave : writeln(log,str_crono,SEP,ER_DIMENSION_NAVE);
+          carac_no_visibles : writeln(log,str_crono,SEP,ER_CARAC_NO_VISIBLES);
+          velocidad : writeln(log,str_crono,SEP,ER_VELOCIDAD)
      end;
      close(log);
 end; 
@@ -90,13 +87,15 @@ end;
 
 
 
-procedure procesar_error_naves(var cadena : string);
-var error : t_error; 
+procedure procesar_error_naves(var cadenaA : string);
+var
+   error : t_error;
  {
  Subproceso
  }
   procedure chequeo_dimensiones(var cadena : string[20]);
-  var cadena_dimensiones : string[6];
+  var
+      cadena_dimensiones : string[6];
       c , n : byte;
       ancho_alien : integer;
       cadenita : string[1];   
@@ -115,9 +114,9 @@ var error : t_error;
        cadena_dimensiones := copy(cadena, 11, 5); 
 
        if (cadena_dimensiones <> ('[2x' + cadenita)) then
-          begin
+         begin
                error := dimension_nave;
-               logueador(error);
+               logueador(error)
           end; 
          
   end; 
@@ -126,7 +125,8 @@ var error : t_error;
  Subproceso
  }
   procedure chequeo_alien(var cadena : string[20]);
-  var cadena_nave : string[12];
+  var
+     cadena_nave : string[12];
   begin
        cadena_nave := copy(cadena, 1, 10); 
 
@@ -149,7 +149,8 @@ var error : t_error;
  porque eran cositas cortas
  }
   procedure chequeo_beto(var cadena : string[20]);
-  var cadena_nave : string[8];
+  var
+      cadena_nave : string[8];
       cadena_dimension : string[6];
   begin
        if (cadena <> '[velocidad]') then
@@ -162,12 +163,12 @@ var error : t_error;
                        if (cadena_dimension <> '[2x3]') then
                           begin
                                error := dimension_nave;
-                               logueador(error);
+                               logueador(error)
                           end
                else
                    begin
                         error := tipo_nave;
-                        logueador(error);
+                        logueador(error)
                    end;
                end;
        end;
@@ -178,9 +179,9 @@ Cuerpo principal del proceso
 begin
      {las cadenas levantadas, para que estén correctas tienen que medir 15,
      en el caso de los marcianos, u 11 para Beto}
-     case length(cadena) of
-          15 : chequeo_alien(cadena);
-          11 : chequeo_beto(cadena);
+     case length(cadenaA) of
+          15 : chequeo_alien(cadenaA);
+          11 : chequeo_beto(cadenaA);
           else
               begin
                    error := tipo_nave;

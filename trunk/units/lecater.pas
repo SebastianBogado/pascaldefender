@@ -87,21 +87,21 @@ var
     cod:byte;
     error : t_error;
 begin
-     assign (ar_naves,'PDfile.apd');
-     {$i-}
-     reset (ar_naves);
-     {$i+}
-     if IOresult <> 0 then
-        begin    
+     assign (ar_naves, 'PDfile.apd');
+     if NOT FileExists ('PDfile.apd') then
+        begin
              error := archivo;
              logueador(error);
-        end; 
+             conjuntos:=0
+        end
+     else
+         reset (ar_naves);
      contcant:=0;
      repeat
            inc(contcant);
-           readln (ar_naves,renglado[contcant]);
+           readln (ar_naves,renglado[contcant]); {Acá lee explícitamente una ubicación del archivo en búsqueda del nro de conjuntos}
      until contcant=2;
-     val(renglado[2][11],conjuntos,cod); {Acá lee explícitamente una ubicación del archivo en búsqueda del nro de conjuntos}
+     val(renglado[2][11],conjuntos,cod);
      close (ar_naves)
 end;
 
@@ -112,23 +112,24 @@ y @conjuntos tiene el tag de la cantidad de conjuntos (lo lee de la segunda lín
 procedure apertura_archivo (var ar_texto:text; var renglado:t_renglado; var totrenglones:integer);
 var
 	contcant:integer;
-        error : t_error;
+    error : t_error;
 begin
-     assign (ar_texto,'PDfile.apd');
-     {$i-}
-     reset (ar_texto);
-     {$i+}
-     if IOresult <> 0 then
-        begin    
+     assign (ar_texto, 'PDfile.apd');
+     if NOT FileExists ('PDfile.apd') then
+        begin
              error := archivo;
              logueador(error);
-        end;
+             conjuntos:=0;
+             close (ar_texto)
+        end
+     else
+         reset (ar_texto);
      contcant:=0;
      while not eof (ar_texto) do
-	begin
-             inc(contcant);
+     Begin
+         inc(contcant);
 	     readln (ar_texto,renglado[contcant])
-	end;
+	  end;
      totrenglones:=contcant;
      close (ar_texto)
 end;
@@ -191,7 +192,7 @@ subprocess
                 else
                     begin
                          error := carac_no_visibles;
-                         logueador(error);
+                         logueador(error)
                     end;				
 	end;
 {
