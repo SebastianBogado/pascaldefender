@@ -15,10 +15,10 @@ const
 
 type
 	tr_navesp=record
-		beto: array [1..3,1..3] of char;
-		naven1: array[1..2,1..3] of char;
-		naven2: array[1..2,1..3] of char;
-		naven3: array[1..2,1..3] of char;
+		beto: t_mx_nave;
+		naven1: t_mx_nave;
+		naven2: t_mx_nave;
+		naven3: t_mx_nave;
 		velnave: integer
 		end;
 	tv_navesp= array[0..CANTIDAD_CONJ_ARCHIVO] of tr_navesp;
@@ -152,8 +152,7 @@ Este procedimiento consta de subprocesos que extraen los datos (formas de naves 
 de @renglado y la colocan en un vector de registros, para luego poder ser utilizadas por el graficador
 }
 procedure procesar_skins (var vnaves: tv_navesp; var renglado:t_renglado);
-var
-   error : t_error; {no sé, pero me pinta para hacerla global interna. @todo justificar}
+
                 
 {
 subprocess
@@ -161,21 +160,39 @@ subprocess
 	procedure proc_nave_beto (cont_co:byte; tt: byte);
 	var
 		t1,t2:byte;
+                error : t_error;
+                skin : t_mx_nave;
 	begin
 		for t1:=1 to 2 do
-			for t2:=1 to 3 do
-				vnaves[cont_co].beto[t1,t2]:=renglado[tt+t1][t2]
-	end;
+		    for t2:=1 to 3 do
+                        skin[t1,t2] := renglado[tt+t1][t2];
+                if caracteres_validos(skin) then
+                   vnaves[cont_co].beto := skin
+                else
+                    begin
+                         error := carac_no_visibles;
+                         logueador(error);
+                    end;
+end;
 {
 subprocess
 }
 	procedure proc_nave_n1 (cont_co:byte; tt: byte);
 	var
 		t3,t4:byte;
+                error : t_error;
+                skin : t_mx_nave;
 	begin
 		for t3:=1 to 2 do
-			for t4:=1 to 3 do
-				vnaves[cont_co].naven1[t3,t4]:=renglado[tt+t3][t4]
+		    for t4:=1 to 3 do
+                        skin[t3,t4] := renglado[tt+t3][t4];
+                if caracteres_validos(skin) then
+                   vnaves[cont_co].naven1 := skin
+                else
+                    begin
+                         error := carac_no_visibles;
+                         logueador(error);
+                    end;				
 	end;
 {
 subprocess
@@ -183,10 +200,19 @@ subprocess
 	procedure proc_nave_n2 (cont_co:byte; tt: byte);
 	var
 		t5,t6:byte;
+                error : t_error;
+                skin : t_mx_nave;
 	begin
 		for t5:=1 to 2 do
-			for t6:=1 to 3 do
-				vnaves[cont_co].naven2[t5,t6]:=renglado[tt+t5][t6];
+		    for t6:=1 to 3 do
+                        skin[t5,t6] := renglado[tt+t5][t6];
+                if caracteres_validos(skin) then
+                   vnaves[cont_co].naven2 := skin
+                else
+                    begin
+                         error := carac_no_visibles;
+                         logueador(error);
+                    end;				
 	end;
 {
 subprocess
@@ -194,10 +220,19 @@ subprocess
 	procedure proc_nave_n3 (cont_co:byte; tt: byte);
 	var
 		t7,t8:byte;
+                error : t_error;
+                skin : t_mx_nave;
 	begin
 		for t7:=1 to 2 do
-			for t8:=1 to 3 do
-				vnaves[cont_co].naven3[t7,t8]:=renglado[tt+t7][t8];
+		    for t8:=1 to 3 do
+                        skin[t7,t8] := renglado[tt+t7][t8];
+                if caracteres_validos(skin) then
+                   vnaves[cont_co].naven3 := skin
+                else
+                    begin
+                         error := carac_no_visibles;
+                         logueador(error);
+                    end;				
 	end;
 {
 subprocess
@@ -205,6 +240,7 @@ subprocess
 	procedure proc_velocidad (cont_co:byte; tt: byte);
 	var
 		cod:byte;
+                error : t_error;
 	begin
 		val (renglado[tt],vnaves[cont_co].velnave,cod);
                 if (cod <> 0) then 

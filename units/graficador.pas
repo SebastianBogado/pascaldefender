@@ -172,7 +172,6 @@ end;
 {
 Retorna un nombre que el usuario ingresa
 @param string El nombre ingresado
-@todo implementar el tipo t_nombre?
 }
 function pedir_nombre():string;
 var
@@ -191,10 +190,15 @@ begin
 end;
 
 procedure graficar_victoria(var jugador:t_jugador);
+var mensaje_felicitacion : string[80];
+    cad_puntaje : string[4];
 begin
     clrscr();
-    writeln('Sos un groso, ', jugador.nombre, '! Ganaste el juego con ',jugador.puntos,' puntos');
-    writeln('Presiona ENTER para continuar');
+    str(jugador.puntos, cad_puntaje);
+    mensaje_felicitacion := 'Sos un groso, ' + jugador.nombre + '! Ganaste el juego con ' + cad_puntaje + ' puntos';
+    titulo(mensaje_felicitacion,10);
+    titulo('Presiona ENTER para continuar',11);
+    readln();
     readln();
 end;
 
@@ -204,14 +208,19 @@ begin
     titulo('GAME OVER',10);
     titulo('Presiona ENTER para continuar',11);
     readln();
+    readln(); 
 end;
 
 
 procedure graficar_felicitaciones(var jugador:t_jugador);
+var mensaje_felicitacion : string[80];
+    cad_puntaje : string[4];
 begin
     clrscr();
-    writeln('Felicitaciones, ', jugador.nombre, ', con tus ', jugador.puntos, ' puntos lograste un nuevo HiScore!');
-    writeln('Presiona ENTER para continuar');
+    str(jugador.puntos, cad_puntaje);
+    mensaje_felicitacion := 'Felicitaciones, ' + jugador.nombre + ', con tus ' + cad_puntaje + ' puntos lograste un nuevo HiScore!';
+    titulo(mensaje_felicitacion,10);
+    titulo('Presiona ENTER para continuar',11);
     readln();
 end;
 
