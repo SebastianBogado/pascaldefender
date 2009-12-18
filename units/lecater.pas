@@ -5,7 +5,6 @@ interface
 uses
     puntajes,
     jugador,
-    entidad,
     log_de_errores,
     sysutils;
 
