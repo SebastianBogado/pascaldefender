@@ -105,25 +105,21 @@ procedure graficar_instrucciones();
 begin
     clrscr();
     encabezado();
-    titulo('Instrucciones',9);
+    titulo('INSTRUCCIONES',9);
     writeln();
-    writeln('El objetivo del juego es destruir a todas las naves marcianas. ');
-    writeln();
-    writeln('El juego termina al pasar tres niveles, o perder tres vidas.');
-    writeln();
-    writeln('Para mover la nave de Beto, usar las flechas laterales para moverse');
-    writeln('y D para disparar.');
-    writeln();
-    writeln('Con P se pausa el juego hasta que se presione una tecla');
-    writeln();
-    writeln('Los marcianos van avanzando y destruiran la nave del Capitan si ');
-    writeln('entran en contacto');
-    writeln();
-    writeln('En el primer nivel, cada nave destruida da 10 puntos; en el ');
-    writeln('segundo, 20 puntos y en el tercero, 40. Al ganar, se bonifica al ');
-    writeln('jugador con 1000 puntos. Cada vida perdida descuenta 300 puntos.');
-    writeln();
-    writeln('Presione cualquier tecla para volver al inicio.');
+    cursoroff();
+    titulo('El objetivo del juego es destruir a todas las naves marcianas.',11);
+    titulo('Para mover la nave de Beto, usar las flechas direccionales',13);
+    titulo('y D para disparar.',14);
+    titulo('Con P se pausa el juego hasta que se presione una tecla cualquiera',15);
+    titulo('Los marcianos van avanzando y destruirán la nave del Capitán Beto si',17);
+    titulo('entran en contacto',18);
+    titulo('El juego termina al pasar tres niveles, o perder las tres vidas.',20);
+    titulo('En el primer nivel, cada nave destruida da 10 puntos; en el',22);
+    titulo('segundo, 20 puntos y en el tercero, 40. Al ganar, se bonifica al',23);
+    titulo('jugador con 1000 puntos. Cada vida perdida descuenta 300 puntos.',24);
+    titulo('Presione cualquier tecla para volver al inicio.',26);
+    cursoroff()
 end;
 
 
@@ -182,7 +178,7 @@ var
 begin
     clrscr();
     titulo('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:',4);
-    write('                                                         '); read(nombre);
+    write('                                                                          '); read(nombre);
     auxs:= 'Bienvenido ' + nombre + '!';
     titulo (auxs,9);
     titulo ('Presiona ENTER para continuar',11);
@@ -210,7 +206,6 @@ begin
     titulo('GAME OVER',10);
     titulo('Presiona ENTER para continuar',11);
     readln();
-    readln(); 
 end;
 
 
@@ -339,8 +334,40 @@ begin
 
     for i := 1 to ALTURA_MAPA do
         writeln('|',mapa[i],'|');
+    {cursoron();}
+end;
 
-    cursoron();
+{
+Procedimiento para establecer las naves por defecto, si el usuario no elige nada
+o elige las naves predeterminadas
+}
+procedure naves_por_defecto(var vnaves: tv_navesp);
+begin
+     vnaves[0].beto[1,1]:='/';
+     vnaves[0].beto[1,2]:='U';
+     vnaves[0].beto[1,3]:='\';
+     vnaves[0].beto[2,1]:='<';
+     vnaves[0].beto[2,2]:='_';
+     vnaves[0].beto[2,3]:='>';
+     vnaves[0].naven1[1,1]:='H';
+     vnaves[0].naven1[2,1]:='|';
+     vnaves[0].naven1[1,3]:='H';
+     vnaves[0].naven1[2,3]:='|';
+     vnaves[0].naven1[2,2]:='^';
+     vnaves[0].naven1[1,2]:='+';
+     vnaves[0].naven2[1,1]:=')';
+     vnaves[0].naven2[2,1]:=']';
+     vnaves[0].naven2[1,3]:='(';
+     vnaves[0].naven2[2,3]:='[';
+     vnaves[0].naven2[2,2]:='Y';
+     vnaves[0].naven2[1,2]:='8';
+     vnaves[0].naven3[1,1]:='}';
+     vnaves[0].naven3[2,1]:='~';
+     vnaves[0].naven3[1,3]:='{';
+     vnaves[0].naven3[2,3]:='~';
+     vnaves[0].naven3[2,2]:='H';
+     vnaves[0].naven3[1,2]:='V';
+     vnaves[0].velnave:=1000;
 end;
 
 begin
