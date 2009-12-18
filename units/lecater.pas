@@ -5,7 +5,6 @@ interface
 uses
     puntajes,
     jugador,
-    log_de_errores,
     sysutils;
 
 const
@@ -13,6 +12,9 @@ const
 	CANTIDAD_LINEAS_ARCHIVO=100;
 
 type
+    t_error = (archivo, tipo_nave, dimension_nave, carac_no_visibles, velocidad);
+    t_mx_nave = array[1..2,1..3] of char;
+
 	tr_navesp=record
 		beto: t_mx_nave;
 		naven1: t_mx_nave;
@@ -20,8 +22,10 @@ type
 		naven3: t_mx_nave;
 		velnave: integer
 		end;
-	tv_navesp= array[0..CANTIDAD_CONJ_ARCHIVO] of tr_navesp;
+
+    tv_navesp= array[0..CANTIDAD_CONJ_ARCHIVO] of tr_navesp;
 	t_renglado= array[1..CANTIDAD_LINEAS_ARCHIVO] of string[50];
+
     file_t_puntaje= file of t_jugador;
 
  var
@@ -29,57 +33,204 @@ type
 	vnaves: tv_navesp;
     conjuntos:integer;
     fpuntajes:file_t_puntaje;
+    mirador,nosirve:boolean;
 
-procedure procesar_skins (var vnaves: tv_navesp; var renglado:t_renglado);
-procedure cantidad_conjuntos_naves (var conjuntos:integer);
-procedure naves_por_defecto(var vnaves: tv_navesp);
+procedure procesar_skins (var vnaves: tv_navesp; var renglado: t_renglado; c_conjuntos:integer; var nosirve:boolean);
+procedure cantidad_conjuntos_naves (var conjuntos:integer; var mirador:boolean);
 procedure guardar_puntajes (rjugador: t_jugador);
 
 
 implementation
-
-
-     
+const
+     {const para el log}
+     DIRECTORIO_LOG = 'Log.txt';
+     SEP = ',';
+     {textos de error a continuación}
+     ER_ARCHIVO = 'No se pudo abrir el archivo';
+     ER_TIPO_NAVE = 'Tipo de nave no reconocida';
+     ER_DIMENSION_NAVE = 'Dimension de nave invalida';
+     ER_CARAC_NO_VISIBLES = 'Caracteres en blanco';
+     ER_VELOCIDAD = 'La velocidad es un numero no valido';
 var
-	totrenglones:integer;
-	ar_texto: text;
+    	ar_texto: text;
+    totrenglones:integer;
+
+{loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog}
+
+
 {
-Procedimiento para establecer las naves por defecto, si el usuario no elige nada
-o elige las naves predeterminadas
+El procedimiento que guarda el tipo de error cometido si se encuentra algo mal
+@param el tipo de error encontrado
+@return el log con la fecha y tipo de error escritos
 }
-procedure naves_por_defecto(var vnaves: tv_navesp);
+procedure logueador (var error : t_error);
+var
+   log : text;
+   str_crono : string[15];
+
+
 begin
-     vnaves[0].beto[1,1]:='/';
-     vnaves[0].beto[1,2]:='U';
-     vnaves[0].beto[1,3]:='\';
-     vnaves[0].beto[2,1]:='<';
-     vnaves[0].beto[2,2]:='_';
-     vnaves[0].beto[2,3]:='>';
-     vnaves[0].naven1[1,1]:='H';
-     vnaves[0].naven1[2,1]:='|';
-     vnaves[0].naven1[1,3]:='H';
-     vnaves[0].naven1[2,3]:='|';
-     vnaves[0].naven1[2,2]:='^';
-     vnaves[0].naven1[1,2]:='+';
-     vnaves[0].naven2[1,1]:=')';
-     vnaves[0].naven2[2,1]:=']';
-     vnaves[0].naven2[1,3]:='(';
-     vnaves[0].naven2[2,3]:='[';
-     vnaves[0].naven2[2,2]:='Y';
-     vnaves[0].naven2[1,2]:='8';
-     vnaves[0].naven3[1,1]:='}';
-     vnaves[0].naven3[2,1]:='~';
-     vnaves[0].naven3[1,3]:='{';
-     vnaves[0].naven3[2,3]:='~';
-     vnaves[0].naven3[2,2]:='H';
-     vnaves[0].naven3[1,2]:='V';
-     vnaves[0].velnave:=1000;
+     assign (log, DIRECTORIO_LOG);
+     if NOT FileExists (DIRECTORIO_LOG) then
+        rewrite (log)
+     else
+          append(log);
+     str_crono := formatdatetime ('YYYYMMDD","hh:nn', now); {da el formato el tiempo y lo pasa a una string}
+     case error of
+          archivo : writeln(log,str_crono,SEP,ER_ARCHIVO);
+          tipo_nave : writeln(log,str_crono,SEP,ER_TIPO_NAVE);
+          dimension_nave : writeln(log,str_crono,SEP,ER_DIMENSION_NAVE);
+          carac_no_visibles : writeln(log,str_crono,SEP,ER_CARAC_NO_VISIBLES);
+          velocidad : writeln(log,str_crono,SEP,ER_VELOCIDAD)
+     end;
+     close(log);
 end;
+
+{
+Trata punto por punto a la nave para chequear que todos los caracteres sean
+visibles
+}
+function caracteres_validos(skin_nave : t_mx_nave) : boolean;
+var
+   carac_validos : boolean;
+   i,j : byte;
+   cont_carac_invalidos : byte;
+   ascii_cod : byte;
+begin
+     carac_validos := true;
+     cont_carac_invalidos := 0;
+     for i := 1 to 2 do
+        for j := 1 to 3 do
+           begin
+              ascii_cod := ord(skin_nave[i,j]);
+              if ( (ascii_cod < 33) or (ascii_cod = 127) or (ascii_cod = 255) ) then
+                 inc(cont_carac_invalidos);
+              {
+              Los valores entre 0 y 32, el 127 y 255 son caracteres no visibles
+              No se valida para mayor a 0 porque no puede devolver menor la función ord
+              }
+           end;
+     if cont_carac_invalidos = 6 then {6 = alto * ancho de la matriz, es la cantidad de caracteres}
+        carac_validos := false;
+     caracteres_validos := carac_validos;
+end;
+
+
+
+procedure procesar_error_naves(var cadena : string; var saltear:boolean);
+var
+   error : t_error;
+ {
+ Subproceso
+ }
+  procedure chequeo_dimensiones(var cadena : string[20]; nivel : byte);
+  var
+      cadena_dimensiones : string[6];
+      c : byte;
+      ancho_alien : integer;
+      cadenita : string[1];
+  begin
+       {Existe una relación lineal entre el nivel y el ancho del alien:
+       n = 1, ancho = 5;
+       n = 2, ancho = 4;
+       n = 3, ancho = 3;
+       n + ancho = 6, será nuestra variable c (constante, en realidad), y n llega
+       por parámetro "nivel"
+       }
+       c := 6;
+
+
+       {c - nivel = ancho alien}
+       ancho_alien := c - nivel;
+       str(ancho_alien,cadenita);
+       cadena_dimensiones := copy(cadena, 11, 5);
+
+       if (cadena_dimensiones <> ('[2x' + cadenita + ']')) then
+         begin
+               error := dimension_nave;
+               logueador(error)
+          end;
+
+  end;
+
+ {
+ Subproceso
+ }
+  procedure chequeo_alien(var cadena : string[20]);
+  var
+     cadena_nave : string[10];
+  begin
+       cadena_nave := copy(cadena, 1, 10);
+
+       if cadena_nave = '[alien_n1]' then
+            chequeo_dimensiones(cadena, 1)
+       else if cadena_nave = '[alien_n2]' then
+               chequeo_dimensiones(cadena, 2)
+            else if cadena_nave = '[alien_n3]' then
+                    chequeo_dimensiones(cadena, 3)
+                 else
+                     begin
+                          error := tipo_nave;
+                          logueador(error)
+                     end;
+  end;
+
+ {
+ Subproceso
+ chequea, además de Beto, la dimensión y que esté bien escrito "[velocidad]",
+ porque eran cositas cortas
+ }
+  procedure chequeo_beto(var cadena : string[20]);
+  var
+      cadena_nave : string[8];
+      cadena_dimension : string[6];
+  begin
+       if (cadena <> '[velocidad]') then
+          begin
+               cadena_nave := copy(cadena, 1, 6);
+
+               if (cadena_nave = '[beto]') then
+                  begin
+                       cadena_dimension := copy(cadena, 7, 5);
+                       if (cadena_dimension <> '[2x3]') then
+                          begin
+                               error := dimension_nave;
+                               logueador(error)
+                          end;
+                  end
+               else
+                   begin
+                        error := tipo_nave;
+                        logueador(error)
+                   end;
+           end;
+  end;
+
+{
+Cuerpo principal del proceso
+}
+begin
+     {las cadenas levantadas, para que estén correctas tienen que medir 15,
+     en el caso de los marcianos, u 11 para Beto}
+     saltear:=false;
+     case length(cadena) of
+          15 : chequeo_alien(cadena);
+          11 : chequeo_beto(cadena);
+          else
+              begin
+                   error := tipo_nave;
+                   logueador(error);
+                   saltear:=true
+              end;
+     end;
+end;
+
+{loooooooooooooooooooooooooooooooooooooooooooooooooooooog}
 
 {
 Devuelve la cantidad de conjuntos de naves que existen
 }
-procedure cantidad_conjuntos_naves (var conjuntos:integer);
+procedure cantidad_conjuntos_naves (var conjuntos:integer; var mirador:boolean);
 var
     ar_naves:text;
     contcant:integer;
@@ -87,14 +238,17 @@ var
     error : t_error;
 begin
      assign (ar_naves, 'PDfile.apd');
+     mirador:=false;
      if NOT FileExists ('PDfile.apd') then
         begin
              error := archivo;
              logueador(error);
-             conjuntos:=0
+             conjuntos:=0;
+             mirador:=false
         end
      else
-         reset (ar_naves);
+         begin reset (ar_naves); mirador:=true end;
+
      contcant:=0;
      repeat
            inc(contcant);
@@ -138,7 +292,7 @@ Una función que devuelve en qué línea del txt se encuentra
 function buscar_linea_encabezado (renglon:t_renglado; conjun:byte):byte;
 var
 	tt:byte;
-	opcionb:string[2];
+    opcionb:string[3];
 	patronp:string[70];
 begin
 	str(conjun,opcionb);
@@ -151,7 +305,7 @@ end;
 Este procedimiento consta de subprocesos que extraen los datos (formas de naves y velocidad)
 de @renglado y la colocan en un vector de registros, para luego poder ser utilizadas por el graficador
 }
-procedure procesar_skins (var vnaves: tv_navesp; var renglado:t_renglado);
+procedure procesar_skins (var vnaves: tv_navesp; var renglado:t_renglado; c_conjuntos:integer; VAR nosirve:boolean);
 
                 
 {
@@ -254,39 +408,35 @@ subprocess
 process
 }
 var
-	tt,cont_conj:byte;
+	tt:byte;
+    saltear1,saltear2,saltear3,saltear4,saltear5:boolean;
 begin
         apertura_archivo (ar_texto, renglado, totrenglones);
-        cantidad_conjuntos_naves (conjuntos);
-	for cont_conj:=1 to conjuntos do
-	begin
-		tt:=buscar_linea_encabezado (renglado, cont_conj);
-		if (
-			(renglado[tt+1]='[beto][2x3]') AND
-			(renglado[tt+4]='[alien_n1][2x5]') AND
-			(renglado[tt+7]='[alien_n2][2x4]') AND
-			(renglado[tt+10]='[alien_n3][2x3]') AND
-			(renglado[tt+13]='[velocidad]')
-		) then
-			begin
-				proc_nave_beto (cont_conj, tt+1); {"tt+1" es la posición relativa al encabezado que tiene el tag de la nave, siempre}
-				proc_nave_n1 (cont_conj, tt+4);
-				proc_nave_n2 (cont_conj, tt+7);
-				proc_nave_n3 (cont_conj, tt+10);
-				proc_velocidad (cont_conj, tt+14)
+		tt:=buscar_linea_encabezado (renglado, c_conjuntos);
+        nosirve:=false;
+		if NOT mirador then begin
+           nosirve:=true; writeln ('Elija otro conjunto de naves, por favor (mirador)') end
+        else  begin
+              procesar_error_naves(renglado[tt+1],saltear1);
+              procesar_error_naves(renglado[tt+4],saltear2);
+              procesar_error_naves(renglado[tt+7],saltear3);
+              procesar_error_naves(renglado[tt+10],saltear4);
+              procesar_error_naves(renglado[tt+13],saltear5)
+              end;
+          if ( saltear1
+             OR saltear2
+             OR saltear3
+             OR saltear4
+             OR saltear5) then begin
+                          nosirve:=true; writeln ('Elija otro conjunto de naves, por favor (saltear)') end
+          else begin
+                proc_nave_beto (c_conjuntos, tt+1); {"tt+1" es la posición relativa al encabezado que tiene el tag de la nave, siempre}
+				proc_nave_n1 (c_conjuntos, tt+4);
+				proc_nave_n2 (c_conjuntos, tt+7);
+				proc_nave_n3 (c_conjuntos, tt+10);
+				proc_velocidad (c_conjuntos, tt+14)
 			end
-		else
-		        begin
-                             procesar_error_naves(renglado[tt+1]);
-                             procesar_error_naves(renglado[tt+4]);
-                             procesar_error_naves(renglado[tt+7]);
-                             procesar_error_naves(renglado[tt+10]);
-                             procesar_error_naves(renglado[tt+13]);
-                             writeln ('El skin de naves ', cont_conj, ' no se puede usar. Tags incorrectas, verifique.');
-	                end;
-        end
 end;
-
 
 
 procedure guardar_puntajes (rjugador: t_jugador);
@@ -302,7 +452,6 @@ begin
      write (fpuntajes, rjugador);
      close (fpuntajes)
 end;
-
 
 end.
 
