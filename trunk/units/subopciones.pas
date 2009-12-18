@@ -39,6 +39,7 @@ repeat
               cefinit:=true
            end;
 until cefinit;
+procesar_skins (vnaves, renglado);
 subopcion1:=aux
 end;
 {

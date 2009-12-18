@@ -153,7 +153,7 @@ procedure graficar_prenivel(var nivel:t_nivel);
 var
 	segundos:byte;
 begin
-	cursoroff();
+    cursoroff();
     clrscr();
     writeln('Nivel ',nivel.numero);
 
@@ -166,6 +166,8 @@ begin
     	delay(1000 {1 segundo});
     	dec(segundos);
     end;
+     
+    
     cursoron();
 end;
 
@@ -249,7 +251,7 @@ begin
 
     gotoxy(1,1);
     cursoroff();
-    naves_por_defecto(vnaves);
+    
     {cabecera}
     clreol();
     writeln('Nivel ',nivel.numero,', Puntos ',jugador.puntos,', Vidas ',jugador.vidas);
@@ -266,7 +268,6 @@ begin
     	if nivel.disparos_aliens[i].vivo then
 			mapa[nivel.disparos_aliens[i].y][nivel.disparos_aliens[i].x] := '!';
 
-    procesar_skins (vnaves, renglado);
     {dibujo a Beto}
     beto1:= vnaves[numero_conj_naves].beto[1,1] + vnaves[numero_conj_naves].beto[1,2] + vnaves[numero_conj_naves].beto[1,3];
     beto2:= vnaves[numero_conj_naves].beto[2,1] + vnaves[numero_conj_naves].beto[2,2] + vnaves[numero_conj_naves].beto[2,3];
@@ -342,5 +343,6 @@ begin
     cursoron();
 end;
 
+begin
+naves_por_defecto(vnaves);   {inicializa las naves por defecto}
 end.
-

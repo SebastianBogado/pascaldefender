@@ -13,7 +13,7 @@ type
   
           
 procedure logueador(var error : t_error);
-procedure procesar_error_naves(var cadenaA : string);
+procedure procesar_error_naves(var cadena : string);
 function caracteres_validos(skin_nave : t_mx_nave) : boolean; 
  
 implementation
@@ -87,16 +87,16 @@ end;
 
 
 
-procedure procesar_error_naves(var cadenaA : string);
+procedure procesar_error_naves(var cadena : string);
 var
    error : t_error;
  {
  Subproceso
  }
-  procedure chequeo_dimensiones(var cadena : string[20]);
+  procedure chequeo_dimensiones(var cadena : string[20]; nivel : byte);
   var
       cadena_dimensiones : string[6];
-      c , n : byte;
+      c : byte;
       ancho_alien : integer;
       cadenita : string[1];   
   begin
@@ -104,16 +104,18 @@ var
        n = 1, ancho = 5;
        n = 2, ancho = 4;
        n = 3, ancho = 3;
-       n + ancho = 6, será nuestra variable c, y n está en cadena[9]
+       n + ancho = 6, será nuestra variable c (constante, en realidad), y n llega
+       por parámetro "nivel"
        }
        c := 6;
-       n := byte(cadena[9]);
-       {c - n = ancho alien}
-       ancho_alien := c - n;
+       
+       
+       {c - nivel = ancho alien}
+       ancho_alien := c - nivel;
        str(ancho_alien,cadenita);
        cadena_dimensiones := copy(cadena, 11, 5); 
 
-       if (cadena_dimensiones <> ('[2x' + cadenita)) then
+       if (cadena_dimensiones <> ('[2x' + cadenita + ']')) then
          begin
                error := dimension_nave;
                logueador(error)
@@ -126,21 +128,21 @@ var
  }
   procedure chequeo_alien(var cadena : string[20]);
   var
-     cadena_nave : string[12];
+     cadena_nave : string[10];
   begin
        cadena_nave := copy(cadena, 1, 10); 
 
-       if ((cadena_nave = '[alien_n1]')
-        or (cadena_nave = '[alien_n2]')
-        or (cadena_nave = '[alien_n3]')) then
-        
-        chequeo_dimensiones(cadena) 
-     
-       else
-           begin
-                error := tipo_nave;
-                logueador(error);
-           end;
+       if cadena_nave = '[alien_n1]' then
+            chequeo_dimensiones(cadena, 1)
+       else if cadena_nave = '[alien_n2]' then
+               chequeo_dimensiones(cadena, 2)
+            else if cadena_nave = '[alien_n3]' then
+                    chequeo_dimensiones(cadena, 3)
+                 else
+                     begin
+                          error := tipo_nave;
+                          logueador(error)
+                     end;
   end;   
  
  {
@@ -164,24 +166,25 @@ var
                           begin
                                error := dimension_nave;
                                logueador(error)
-                          end
+                          end;
+                  end
                else
                    begin
                         error := tipo_nave;
                         logueador(error)
                    end;
-               end;
-       end;
-  end;   
+           end;
+  end;
+  
 {
 Cuerpo principal del proceso
 }    
 begin
      {las cadenas levantadas, para que estén correctas tienen que medir 15,
      en el caso de los marcianos, u 11 para Beto}
-     case length(cadenaA) of
-          15 : chequeo_alien(cadenaA);
-          11 : chequeo_beto(cadenaA);
+     case length(cadena) of
+          15 : chequeo_alien(cadena);
+          11 : chequeo_beto(cadena);
           else
               begin
                    error := tipo_nave;
