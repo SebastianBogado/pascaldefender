@@ -95,7 +95,8 @@ begin
     writeln;     writeln;     writeln;
     writeln ('Usted puede elegir ', conjuntos, ' skins de naves');
     writeln ('Cual desea elegir? Se aceptan solo opciones numericas');
-    writeln ('Puede presionar la tecla 0 (cero) para las opciones por defecto')
+    writeln ('Puede presionar la tecla 0 (cero) para las opciones por defecto');
+    writeln
 end;
 
 {
@@ -107,7 +108,6 @@ begin
     encabezado();
     titulo('INSTRUCCIONES',9);
     writeln();
-    cursoroff();
     titulo('El objetivo del juego es destruir a todas las naves marcianas.',11);
     titulo('Para mover la nave de Beto, usar las flechas direccionales',13);
     titulo('y D para disparar.',14);
@@ -119,9 +119,12 @@ begin
     titulo('segundo, 20 puntos y en el tercero, 40. Al ganar, se bonifica al',23);
     titulo('jugador con 1000 puntos. Cada vida perdida descuenta 300 puntos.',24);
     titulo('Presione cualquier tecla para volver al inicio.',26);
-    cursoroff()
 end;
 
+procedure acercade();
+begin
+
+end;
 
 {
 Muestra en pantalla los puntajes recibidos
@@ -178,7 +181,7 @@ var
 begin
     clrscr();
     titulo('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:',4);
-    write('                                                                          '); read(nombre);
+    write('                                                    '); read(nombre);
     auxs:= 'Bienvenido ' + nombre + '!';
     titulo (auxs,9);
     titulo ('Presiona ENTER para continuar',11);
@@ -196,7 +199,6 @@ begin
     mensaje_felicitacion := 'Sos un groso, ' + jugador.nombre + '! Ganaste el juego con ' + cad_puntaje + ' puntos';
     titulo(mensaje_felicitacion,10);
     titulo('Presiona ENTER para continuar',11);
-    readln();
     readln();
 end;
 
