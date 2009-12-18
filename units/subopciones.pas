@@ -36,19 +36,24 @@ repeat
                  writeln ('No es una opción numérica. Por favor, reingrese')
             else if (numero_conj_naves > conjuntos) then
                       writeln ('Ese conjunto de naves NO existe, solo existen ', conjuntos, ' para elegir. Por favor, reingrese.')
-                 else if numero_conj_naves = 0 then begin
-                         cefinit:=true; nosirve:=false end
-                      else
+                 else if numero_conj_naves = 0 then
                       begin
-                          aux:=numero_conj_naves;
-                          procesar_skins (vnaves, renglado,aux,nosirve);
-                          cefinit:=true
-                      end;
+                         cefinit:=true;
+                         nosirve:=false
+                      end
+                         else
+                             begin
+                                  aux:=numero_conj_naves;
+                                  procesar_skins (vnaves, renglado,aux,nosirve);
+                                  cefinit:=true
+                             end;
       until cefinit;
 until NOT nosirve;
+
 subopcion1:=aux
 
 end;
+
 {
 
 }

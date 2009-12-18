@@ -52,11 +52,11 @@ const
      ER_CARAC_NO_VISIBLES = 'Caracteres en blanco';
      ER_VELOCIDAD = 'La velocidad es un numero no valido';
 var
-    	ar_texto: text;
+    ar_texto: text;
     totrenglones:integer;
 
-{loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog}
 
+{OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO}
 
 {
 El procedimiento que guarda el tipo de error cometido si se encuentra algo mal
@@ -112,7 +112,7 @@ begin
            end;
      if cont_carac_invalidos = 6 then {6 = alto * ancho de la matriz, es la cantidad de caracteres}
         carac_validos := false;
-     caracteres_validos := carac_validos;
+        caracteres_validos := carac_validos;
 end;
 
 
@@ -148,7 +148,8 @@ var
        if (cadena_dimensiones <> ('[2x' + cadenita + ']')) then
          begin
                error := dimension_nave;
-               logueador(error)
+               logueador(error);
+               saltear:=true
           end;
 
   end;
@@ -171,7 +172,8 @@ var
                  else
                      begin
                           error := tipo_nave;
-                          logueador(error)
+                          logueador(error);
+                          saltear:=true
                      end;
   end;
 
@@ -195,13 +197,15 @@ var
                        if (cadena_dimension <> '[2x3]') then
                           begin
                                error := dimension_nave;
-                               logueador(error)
+                               logueador(error);
+                               saltear:=true
                           end;
                   end
                else
                    begin
                         error := tipo_nave;
-                        logueador(error)
+                        logueador(error);
+                        saltear:=true
                    end;
            end;
   end;
@@ -225,7 +229,7 @@ begin
      end;
 end;
 
-{loooooooooooooooooooooooooooooooooooooooooooooooooooooog}
+{OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO}
 
 {
 Devuelve la cantidad de conjuntos de naves que existen
@@ -247,21 +251,26 @@ begin
              mirador:=false
         end
      else
-         begin reset (ar_naves); mirador:=true end;
+         begin
+              reset (ar_naves);
+              mirador:=true;
+              contcant:=0;
+              repeat
+                    inc(contcant);
+                    {Acá lee explícitamente una ubicación del archivo en búsqueda del nro de conjuntos}
+                    readln (ar_naves,renglado[contcant]);
+              until contcant=2;
 
-     contcant:=0;
-     repeat
-           inc(contcant);
-           readln (ar_naves,renglado[contcant]); {Acá lee explícitamente una ubicación del archivo en búsqueda del nro de conjuntos}
-     until contcant=2;
-     val(renglado[2][11],conjuntos,cod);
-     close (ar_naves)
+              val(renglado[2][11],conjuntos,cod);
+              close (ar_naves)
+          end
 end;
 
 {
 Abre el archivo de texto, además utiliza @renglado para guardar cada línea del mismo, @totrenglones guarda el total de línas
 y @conjuntos tiene el tag de la cantidad de conjuntos (lo lee de la segunda línea)
 }
+
 procedure apertura_archivo (var ar_texto:text; var renglado:t_renglado; var totrenglones:integer);
 var
 	contcant:integer;
@@ -276,15 +285,17 @@ begin
              close (ar_texto)
         end
      else
+     begin
          reset (ar_texto);
-     contcant:=0;
-     while not eof (ar_texto) do
-     Begin
-         inc(contcant);
-	     readln (ar_texto,renglado[contcant])
-	  end;
-     totrenglones:=contcant;
-     close (ar_texto)
+         contcant:=0;
+         while not eof (ar_texto) do
+         begin
+              inc(contcant);
+	          readln (ar_texto,renglado[contcant])
+	          end;
+         totrenglones:=contcant;
+         close (ar_texto)
+     end
 end;
 {
 Una función que devuelve en qué línea del txt se encuentra
@@ -414,8 +425,12 @@ begin
         apertura_archivo (ar_texto, renglado, totrenglones);
 		tt:=buscar_linea_encabezado (renglado, c_conjuntos);
         nosirve:=false;
-		if NOT mirador then begin
-           nosirve:=true; writeln ('Elija otro conjunto de naves, por favor (mirador)') end
+		if NOT mirador then
+           begin
+           nosirve:=true;
+           writeln ('El archivo de naves no es válido o no existe. Por favor ingrese la opción por defecto (0)')
+           writeln ()
+           end
         else  begin
               procesar_error_naves(renglado[tt+1],saltear1);
               procesar_error_naves(renglado[tt+4],saltear2);
@@ -427,15 +442,21 @@ begin
              OR saltear2
              OR saltear3
              OR saltear4
-             OR saltear5) then begin
-                          nosirve:=true; writeln ('Elija otro conjunto de naves, por favor (saltear)') end
-          else begin
+             OR saltear5) then
+                          begin
+                             nosirve:=true;
+                             writeln ('Ese skins de naves no sirve por problemas con el archivo. Corríjalo.');
+                             writeln ('Por favor ingrese otra opción.');
+                             writeln ()
+                          end
+          else
+              begin
                 proc_nave_beto (c_conjuntos, tt+1); {"tt+1" es la posición relativa al encabezado que tiene el tag de la nave, siempre}
 				proc_nave_n1 (c_conjuntos, tt+4);
 				proc_nave_n2 (c_conjuntos, tt+7);
 				proc_nave_n3 (c_conjuntos, tt+10);
 				proc_velocidad (c_conjuntos, tt+14)
-			end
+			  end
 end;
 
 
