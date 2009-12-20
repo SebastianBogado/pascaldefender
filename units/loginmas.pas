@@ -164,8 +164,8 @@ gotoxy(1,7);
 Write('Clave: ');
 
 gotoxy(1,9); write('Elija una de estas preguntas secretas para recordar la contraseña en caso de olvido:');
-gotoxy(1,10); write('a- Nombre del primer chico/a que te gustó');
-gotoxy(1,11); write('b- Nombre de la ciudad donde nació tu abuelo paterno');
+gotoxy(1,10); write('a- Nombre del primer chico/a que te gust',ord(162));
+gotoxy(1,11); write('b- Nombre de la ciudad donde naci',ord(162),' tu abuelo paterno');
 gotoxy(1,12); write('c- Nombre del juego preferido en la escuela primaria');
 gotoxy(1,13);
 Write('Pregunta elegida: ');

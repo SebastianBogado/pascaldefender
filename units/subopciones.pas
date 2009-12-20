@@ -33,9 +33,9 @@ repeat
             t_apretada:=readkey;
             val (t_apretada, numero_conj_naves,cod);
             if cod<>0 then
-                 writeln ('No es una opción numérica. Por favor, reingrese')
+                 writeln ('No es una opci',chr(162),'n num',chr(130),'rica. Por favor, reingrese')
             else if (numero_conj_naves > conjuntos) then
-                      writeln ('Ese conjunto de naves NO existe, solo existen ', conjuntos, ' para elegir. Por favor, reingrese.')
+                      writeln ('Ese conjunto de naves NO existe, s',chr(162),'lo existen ', conjuntos, ' para elegir. Por favor, reingrese.')
                  else if numero_conj_naves = 0 then
                       begin
                          cefinit:=true;
