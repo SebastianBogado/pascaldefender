@@ -5,6 +5,7 @@ interface
 uses
     puntajes,
     jugador,
+    crt,
     sysutils;
 
 const
@@ -35,21 +36,33 @@ type
     fpuntajes:file_t_puntaje;
     mirador,nosirve:boolean;
 
+procedure naves_por_defecto(var vnaves: tv_navesp);
 procedure procesar_skins (var vnaves: tv_navesp; var renglado: t_renglado; c_conjuntos:integer; var nosirve:boolean);
 procedure cantidad_conjuntos_naves (var conjuntos:integer; var mirador:boolean);
 procedure guardar_puntajes (rjugador: t_jugador);
 
 implementation
 const
+     {valores por defecto}
+     BETO_DEF : t_mx_nave = (('/','U','\'),('<','_','>'));
+     ALIEN_1_DEF : t_mx_nave = (('H','+','H'),('|','^','|'));
+     ALIEN_2_DEF : t_mx_nave = ((')','8','('),(']','Y','['));
+     ALIEN_3_DEF : t_mx_nave = (('}','V','{'),('~','H','~'));
+     VELOCIDAD_DEF = 1000;
+     
      {const para el log}
      DIRECTORIO_LOG = 'Log.txt';
      SEP = ',';
+     
      {textos de error a continuación}
      ER_ARCHIVO = 'No se pudo abrir el archivo';
      ER_TIPO_NAVE = 'Tipo de nave no reconocida';
      ER_DIMENSION_NAVE = 'Dimension de nave invalida';
      ER_CARAC_NO_VISIBLES = 'Caracteres en blanco';
      ER_VELOCIDAD = 'La velocidad es un numero no valido';
+     {Información para el usuario. Se anexa al mensaje de error, por eso tiene
+     ". " al principio}
+     ASIGNACION_DEF = '. Se asignara la opcion por defecto.';
 var
     ar_texto: text;
     totrenglones:integer;
@@ -111,12 +124,12 @@ begin
            end;
      if cont_carac_invalidos = 6 then {6 = alto * ancho de la matriz, es la cantidad de caracteres}
         carac_validos := false;
-        caracteres_validos := carac_validos;
+     caracteres_validos := carac_validos;
 end;
 
 
 
-procedure procesar_error_naves(var cadena : string; var saltear:boolean);
+procedure procesar_error_tags(var cadena : string; var saltear:boolean);
 var
    error : t_error;
  {
@@ -148,6 +161,7 @@ var
          begin
                error := dimension_nave;
                logueador(error);
+               writeln(ER_DIMENSION_NAVE, ASIGNACION_DEF); {aviso para el usuario}
                saltear:=true
           end;
 
@@ -172,6 +186,7 @@ var
                      begin
                           error := tipo_nave;
                           logueador(error);
+                          writeln(ER_TIPO_NAVE, ASIGNACION_DEF); {aviso para el usuario}
                           saltear:=true
                      end;
   end;
@@ -197,6 +212,7 @@ var
                           begin
                                error := dimension_nave;
                                logueador(error);
+                               writeln(ER_DIMENSION_NAVE, ASIGNACION_DEF); {aviso para el usuario}
                                saltear:=true
                           end;
                   end
@@ -204,6 +220,7 @@ var
                    begin
                         error := tipo_nave;
                         logueador(error);
+                        writeln(ER_TIPO_NAVE, ASIGNACION_DEF); {aviso para el usuario}
                         saltear:=true
                    end;
            end;
@@ -223,6 +240,7 @@ begin
               begin
                    error := tipo_nave;
                    logueador(error);
+                   writeln(ER_TIPO_NAVE, ASIGNACION_DEF); {aviso para el usuario}
                    saltear:=true
               end;
      end;
@@ -247,6 +265,7 @@ begin
              conjuntos:=0;
              error := archivo;
              logueador(error);
+             writeln(ER_ARCHIVO, ASIGNACION_DEF); {aviso para el usuario}
              mirador:=false
         end
      else
@@ -280,6 +299,7 @@ begin
         begin
              error := archivo;
              logueador(error);
+             writeln(ER_ARCHIVO, ASIGNACION_DEF); {aviso para el usuario}
              conjuntos:=0;
              close (ar_texto)
         end
@@ -311,6 +331,21 @@ begin
 		if renglon[tt]= patronp then
 			buscar_linea_encabezado:=tt;
 end;
+
+{
+Procedimiento para establecer las naves por defecto, si el usuario no elige nada
+o elige las naves predeterminadas
+}
+procedure naves_por_defecto(var vnaves: tv_navesp);
+begin
+     vnaves[0].beto := BETO_DEF;
+     vnaves[0].naven1 := ALIEN_1_DEF;
+     vnaves[0].naven2 := ALIEN_2_DEF;
+     vnaves[0].naven3 := ALIEN_3_DEF;
+
+     vnaves[0].velnave := VELOCIDAD_DEF;
+end; 
+
 {
 Este procedimiento consta de subprocesos que extraen los datos (formas de naves y velocidad)
 de @renglado y la colocan en un vector de registros, para luego poder ser utilizadas por el graficador
@@ -334,8 +369,10 @@ subprocess
                    vnaves[cont_co].beto := skin
                 else
                     begin
+                         vnaves[cont_co].beto := BETO_DEF;
                          error := carac_no_visibles;
                          logueador(error);
+                         writeln(ER_CARAC_NO_VISIBLES, ASIGNACION_DEF) {aviso para el usuario}
                     end;
 end;
 {
@@ -354,8 +391,10 @@ subprocess
                    vnaves[cont_co].naven1 := skin
                 else
                     begin
+                         vnaves[cont_co].naven1 := ALIEN_1_DEF;
                          error := carac_no_visibles;
-                         logueador(error)
+                         logueador(error);
+                         writeln(ER_CARAC_NO_VISIBLES, ASIGNACION_DEF) {aviso para el usuario}
                     end;				
 	end;
 {
@@ -374,8 +413,10 @@ subprocess
                    vnaves[cont_co].naven2 := skin
                 else
                     begin
+                         vnaves[cont_co].naven2 := ALIEN_2_DEF;
                          error := carac_no_visibles;
                          logueador(error);
+                         writeln(ER_CARAC_NO_VISIBLES, ASIGNACION_DEF) {aviso para el usuario}
                     end;				
 	end;
 {
@@ -394,8 +435,10 @@ subprocess
                    vnaves[cont_co].naven3 := skin
                 else
                     begin
+                         vnaves[cont_co].naven3 := ALIEN_3_DEF;
                          error := carac_no_visibles;
                          logueador(error);
+                         writeln(ER_CARAC_NO_VISIBLES, ASIGNACION_DEF) {aviso para el usuario}
                     end;				
 	end;
 {
@@ -409,8 +452,10 @@ subprocess
 		val (renglado[tt],vnaves[cont_co].velnave,cod);
                 if (cod <> 0) then 
                    begin
+                        vnaves[cont_co].velnave := VELOCIDAD_DEF;
                         error := velocidad;
                         logueador(error);
+                        writeln(ER_VELOCIDAD, ASIGNACION_DEF) {aviso para el usuario}
                    end;
         end;
 
@@ -431,31 +476,40 @@ begin
            writeln ()
            end
         else  begin
-              procesar_error_naves(renglado[tt+1],saltear1);
-              procesar_error_naves(renglado[tt+4],saltear2);
-              procesar_error_naves(renglado[tt+7],saltear3);
-              procesar_error_naves(renglado[tt+10],saltear4);
-              procesar_error_naves(renglado[tt+13],saltear5)
+              {Beto}
+              proc_nave_beto (c_conjuntos, tt+1); {"tt+1" es la posición relativa al encabezado que tiene el tag de la nave, siempre}
+              procesar_error_tags(renglado[tt+1],saltear1);
+              if saltear1 then
+                 vnaves[c_conjuntos].beto := BETO_DEF;
+              {Alien 1}    	      
+              proc_nave_n1 (c_conjuntos, tt+4);
+              procesar_error_tags(renglado[tt+4],saltear2);
+              if saltear2 then 
+                 vnaves[c_conjuntos].naven1 := ALIEN_1_DEF;	      
+              {Alien 2}
+              proc_nave_n2 (c_conjuntos, tt+7);
+              procesar_error_tags(renglado[tt+7],saltear3);
+              if saltear3 then 
+                 vnaves[c_conjuntos].naven2 := ALIEN_2_DEF; 	      
+              {Alien 3}
+              proc_nave_n3 (c_conjuntos, tt+10);
+              procesar_error_tags(renglado[tt+10],saltear4);
+              if saltear4 then 
+                 vnaves[c_conjuntos].naven3 := ALIEN_3_DEF;	      
+              {Velocidad}
+              proc_velocidad (c_conjuntos, tt+14);
+              procesar_error_tags(renglado[tt+13],saltear5); 
+              if saltear5 then 
+                 vnaves[c_conjuntos].velnave := VELOCIDAD_DEF;
+                 
+              readkey;
+              {Luego de que el usuario esté avisado, se borran los avisos 
+              gotoxy(1,16);
+              readkey;}
+              {clreol}   
+              
               end;
-          if ( saltear1
-             OR saltear2
-             OR saltear3
-             OR saltear4
-             OR saltear5) then
-                          begin
-                             nosirve:=true;
-                             writeln ('Ese skins de naves no sirve por problemas con el archivo. Corr',chr(161),'jalo.');
-                             writeln ('Por favor ingrese otra opci',chr(162),'n.');
-                             writeln ()
-                          end
-          else
-              begin
-                proc_nave_beto (c_conjuntos, tt+1); {"tt+1" es la posición relativa al encabezado que tiene el tag de la nave, siempre}
-				proc_nave_n1 (c_conjuntos, tt+4);
-				proc_nave_n2 (c_conjuntos, tt+7);
-				proc_nave_n3 (c_conjuntos, tt+10);
-				proc_velocidad (c_conjuntos, tt+14)
-			  end
+
 end;
 
 

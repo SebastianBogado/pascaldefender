@@ -2,7 +2,7 @@
 unit graficador;
 
 interface
-
+ 
 uses
     crt,
     puntajes,
@@ -12,7 +12,7 @@ uses
     jugador,
     lecater,
     subopciones;
-
+    
 
 procedure graficar_introduccion();
 procedure graficar_instrucciones();
@@ -149,7 +149,7 @@ begin
     titulo('Cingolani, Federico',15);
     titulo('Knack, Iv'+chr(160)+'n',16);
     titulo('Sol'+chr(160)+', Rub'+chr(130)+'n',17);
-    titulo('Un agradecimiento especial a Mart'+chr(130)+'n Lebuchorskyj,',19);
+    titulo('Un agradecimiento especial a Mart'+chr(161)+'n Lebuchorskyj,',19);
     titulo('por su paciencia y dedicaci'+chr(162)+'n',20);
     titulo('@COPYLEFT 2009',23);
     titulo('Presione una tecla para volver',25);
@@ -382,38 +382,7 @@ begin
     cursoron();
 end;
 
-{
-Procedimiento para establecer las naves por defecto, si el usuario no elige nada
-o elige las naves predeterminadas
-}
-procedure naves_por_defecto(var vnaves: tv_navesp);
-begin
-     vnaves[0].beto[1,1]:='/';
-     vnaves[0].beto[1,2]:='U';
-     vnaves[0].beto[1,3]:='\';
-     vnaves[0].beto[2,1]:='<';
-     vnaves[0].beto[2,2]:='_';
-     vnaves[0].beto[2,3]:='>';
-     vnaves[0].naven1[1,1]:='H';
-     vnaves[0].naven1[2,1]:='|';
-     vnaves[0].naven1[1,3]:='H';
-     vnaves[0].naven1[2,3]:='|';
-     vnaves[0].naven1[2,2]:='^';
-     vnaves[0].naven1[1,2]:='+';
-     vnaves[0].naven2[1,1]:=')';
-     vnaves[0].naven2[2,1]:=']';
-     vnaves[0].naven2[1,3]:='(';
-     vnaves[0].naven2[2,3]:='[';
-     vnaves[0].naven2[2,2]:='Y';
-     vnaves[0].naven2[1,2]:='8';
-     vnaves[0].naven3[1,1]:='}';
-     vnaves[0].naven3[2,1]:='~';
-     vnaves[0].naven3[1,3]:='{';
-     vnaves[0].naven3[2,3]:='~';
-     vnaves[0].naven3[2,2]:='H';
-     vnaves[0].naven3[1,2]:='V';
-     vnaves[0].velnave:=1000;
-end;
+
 
 begin
 naves_por_defecto(vnaves);   {inicializa las naves por defecto}
