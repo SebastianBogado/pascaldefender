@@ -39,7 +39,6 @@ procedure procesar_skins (var vnaves: tv_navesp; var renglado: t_renglado; c_con
 procedure cantidad_conjuntos_naves (var conjuntos:integer; var mirador:boolean);
 procedure guardar_puntajes (rjugador: t_jugador);
 
-
 implementation
 const
      {const para el log}
@@ -245,9 +244,9 @@ begin
      mirador:=false;
      if NOT FileExists ('PDfile.apd') then
         begin
+             conjuntos:=0;
              error := archivo;
              logueador(error);
-             conjuntos:=0;
              mirador:=false
         end
      else

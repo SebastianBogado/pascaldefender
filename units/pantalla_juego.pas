@@ -24,20 +24,6 @@ implementation
 const
     CANTIDAD_NIVELES = 3;
 
-{
-Crea un jugador y lo inicializa con un nombre pedido al usuario
-@return t_jugador EL jugador creado.
-}
-function crear_jugador():t_jugador;
-var
-    jugador:t_jugador;
-begin
-    inicializar_jugador(jugador);
-    jugador.nombre := pedir_nombre();
-
-    crear_jugador := jugador;
-end;
-
 
 {
 Crea las entidades para un nivel
@@ -522,7 +508,7 @@ begin
     numero_nivel := 0;
     resultado_nivel := gano;
 
-    jugador := crear_jugador();
+    graficar_nombre(jugador);
 
     {corremos todos los niveles}
     while((resultado_nivel = gano) and (numero_nivel < CANTIDAD_NIVELES)) do

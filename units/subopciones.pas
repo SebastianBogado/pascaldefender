@@ -4,7 +4,9 @@ interface
 
 uses
     crt,
-    lecater;
+    lecater,
+    loginmas;
+
 var
    numero_conj_naves:integer;
 
@@ -28,14 +30,27 @@ begin
      cefinit:=false;
      aux:=0;
 
+if conjuntos=0 then begin
+   writeln('No hay skins para elegir, posible error de PDfile.apd');
+   writeln('Presione 0 para volver'); readkey() end
+
+else
+
+begin
 repeat
       repeat
             t_apretada:=readkey;
             val (t_apretada, numero_conj_naves,cod);
             if cod<>0 then
-                 writeln ('No es una opci',chr(162),'n num',chr(130),'rica. Por favor, reingrese')
+               begin
+                 writeln ('No es una opci',chr(162),'n num',chr(162),'rica. Por favor, reingrese');
+                 writeln ()
+               end
             else if (numero_conj_naves > conjuntos) then
-                      writeln ('Ese conjunto de naves NO existe, s',chr(162),'lo existen ', conjuntos, ' para elegir. Por favor, reingrese.')
+                    begin
+                      writeln ('S',chr(162),'lo existen ', conjuntos, ' para elegir. Por favor, reingrese.');
+                      writeln ()
+                    end
                  else if numero_conj_naves = 0 then
                       begin
                          cefinit:=true;
@@ -51,7 +66,7 @@ repeat
 until NOT nosirve;
 
 subopcion1:=aux
-
+end
 end;
 
 {
@@ -59,23 +74,17 @@ end;
 }
 procedure subopcion2();
 begin
-  clrscr;
-  writeln('lalala');
-  readkey
+  Modificar_Usuario(Participante,INDICE_DAT)
 end;
 
 procedure subopcion3();
 begin
-  clrscr;
-  writeln('lalala');
-  readkey
+  Baja_Usuario(Participante,INDICE_DAT)
 end;
 
 procedure subopcion4();
 begin
-  clrscr;
-  writeln('lalala');
-  readkey
+   Menu_Login_Principal (participante)
 end;
 
 end.

@@ -2,11 +2,11 @@ program pascaldefender;
 
 uses 
     pdbase,
-    pantalla_opciones,
-    subopciones;
+    subopciones,
+    loginmas;
 
 begin
+     Menu_Login_Principal (Participante);
      numero_conj_naves:=0;
-     correr_pd();
 end.
 
