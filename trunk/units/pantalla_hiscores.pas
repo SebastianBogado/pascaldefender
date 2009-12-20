@@ -5,8 +5,13 @@ interface
 uses
     crt,
     pdcommons,
+    jugador,
     puntajes,
     graficador;
+
+var
+   rjugador:t_jugador;
+
 
 function correr_hiscores():t_pantalla;
 
@@ -28,7 +33,8 @@ begin
     graficar_hiscores(cantidad_puntajes, puntajes);
     readkey();
 
-    correr_hiscores := introduccion;
+
+    correr_hiscores := introduccion
 end;
 
 end.

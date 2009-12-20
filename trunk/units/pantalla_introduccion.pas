@@ -21,7 +21,7 @@ var
     pantalla_seleccionada:t_pantalla;
     tecla_ingresada:char;
 begin
-     pantalla_seleccionada := introduccion;
+    pantalla_seleccionada := introduccion;
     tecla_ingresada := readkey();
     write(tecla_ingresada);
     case tecla_ingresada of
@@ -29,6 +29,7 @@ begin
         '2': pantalla_seleccionada := instrucciones;
         '3': pantalla_seleccionada := hiscores;
         '4': pantalla_seleccionada := opciones;
+        '5': pantalla_seleccionada := acercade;
         '0': pantalla_seleccionada := salida;
     end;
      pedir_pantalla := pantalla_seleccionada;

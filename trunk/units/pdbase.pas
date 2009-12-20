@@ -14,7 +14,8 @@ uses
     pantalla_instrucciones,
     pantalla_hiscores,
     pantalla_opciones,
-    pantalla_juego;
+    pantalla_juego,
+    pantalla_acercade;
 
 {
 Maneja el paso de una pantalla del programa a otra. Cada ejecución
@@ -40,6 +41,8 @@ begin
                 pantalla := correr_instrucciones();
             opciones:
                 pantalla := correr_opciones();
+            acercade:
+                pantalla:= correr_acercade();
             hiscores:
                 pantalla := correr_hiscores();
             else

@@ -2,6 +2,9 @@ unit jugador;
 
 interface
 
+uses
+    loginmas;
+
 type
     t_jugador = Record
               nombre : string;
@@ -20,7 +23,7 @@ Inicializa el jugador con valores predeterminados.
 }
 procedure inicializar_jugador(var jugador:t_jugador);
 begin
-     jugador.nombre := 'Jugador';
+     jugador.nombre := Participante.Usuario;
      jugador.puntos := 0;
      jugador.vidas  := 3;
 end;

@@ -23,13 +23,16 @@ procedure graficar_prenivel(var nivel:t_nivel);
 procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
 procedure graficar_felicitaciones(var jugador:t_jugador);
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
-function pedir_nombre():string;
+procedure graficar_nombre( var jugadora:t_jugador);
 procedure graficar_conjuntos_naves();
+procedure graficar_acercade();
+procedure graficar_loginmas();
 
 implementation
 
 var
    beto1, beto2:string [4];
+   jugadora:t_jugador;
 {
 Un procedimiento auxiliar para centrar líneas de texto
 }
@@ -65,15 +68,14 @@ begin
     titulo('2. Instrucciones',12);
     titulo('3. High Scores',13);
     titulo('4. Opciones',14);
-    titulo('0. Salir',15);
+    titulo('5. Acerca De',15);
+    titulo('0. Salir',16);
 end;
 
 {
 Grafica la pantalla con las opciones del juego
 }
 procedure graficar_opciones();
-
-
 begin
     clrscr();
     encabezado(); writeln;
@@ -88,13 +90,12 @@ end;
 Grafica la pantalla con las opciones del juego
 }
 procedure graficar_conjuntos_naves();
-
 begin
     clrscr();
     encabezado(); writeln;
     writeln;     writeln;     writeln;
     writeln ('Usted puede elegir ', conjuntos, ' skins de naves');
-    writeln (chr(168),'Cual desea elegir? Se aceptan s',chr(162),'lo opciones num',chr(130),'ricas');
+    writeln (chr(168),'Cu',chr(160),'l desea elegir? Se aceptan s',chr(162),'lo opciones num',chr(130),'ricas');
     writeln ('Puede presionar la tecla 0 (cero) para las opciones por defecto');
     writeln
 end;
@@ -106,7 +107,7 @@ procedure graficar_instrucciones();
 begin
     clrscr();
     encabezado();
-    titulo('INSTRUCCIONES',9);
+    titulo('I N S T R U C C I O N E S',9);
     writeln();
     titulo('El objetivo del juego es destruir a todas las naves marcianas.',11);
     titulo('Para mover la nave de Beto, usar las flechas direccionales',13);
@@ -121,9 +122,38 @@ begin
     titulo('Presione cualquier tecla para volver al inicio.',26);
 end;
 
-procedure acercade();
+procedure graficar_loginmas();
 begin
+    clrscr();
+    encabezado();
+	titulo('P R I N C I P A L',10);
+	titulo('1.Entrar',13);
+	titulo('2.Nuevo Usuario',14);
+	titulo('3.Olvide Password',15);
+	titulo('0.Salir',16)
 
+end;
+
+procedure graficar_acercade();
+begin
+    textbackground (5);
+    clrscr();
+    textcolor (128);
+    encabezado();
+    textcolor (0);
+    titulo('Este juego fue desarrollado para el trabajo pr'+chr(160)+'ctico de la c'+chr(160)+'tedra de',9);
+    titulo('Algoritmos y Programaci'+chr(162)+'n I, del Ing. Pablo Guarna',10);
+    titulo('INTEGRANTES',12);
+    titulo('Amarillo, Emilio',13);
+    titulo('Bogado, Sebasti'+chr(160)+'n',14);
+    titulo('Cingolani, Federico',15);
+    titulo('Knack, Iv'+chr(160)+'n',16);
+    titulo('Sol'+chr(160)+', Rub'+chr(130)+'n',17);
+    titulo('Un agradecimiento especial a Mart'+chr(130)+'n Lebuchorskyj,',19);
+    titulo('por su paciencia y dedicaci'+chr(162)+'n',20);
+    titulo('@COPYLEFT 2009',23);
+    titulo('Presione una tecla para volver',25);
+    textbackground (0)
 end;
 
 {
@@ -151,47 +181,60 @@ end;
 procedure graficar_prenivel(var nivel:t_nivel);
 var
 	segundos:byte;
+    auxs,auxi,auxi2,auxs2:string;
 begin
     cursoroff();
     clrscr();
-    writeln('Nivel ',nivel.numero);
 
+    str (nivel.numero,auxi);
+    auxs:= 'Nivel ' + auxi;
+    titulo (auxs,11);
     segundos := 3;
     while segundos > 0 do
     begin
-    	gotoxy(1,2);
     	clreol();
-        write('Arranca en ',segundos,'s');
+        str (segundos,auxi2);
+        auxs2 := 'Arranca en ' + auxi2 + 's';
+        titulo (auxs2,15);
     	delay(1000 {1 segundo});
     	dec(segundos);
     end;
-     
-    
+
     cursoron();
 end;
 
 {
-Retorna un nombre que el usuario ingresa
-@param string El nombre ingresado
+GRAFICAR SALUTACION
 }
-function pedir_nombre():string;
+procedure graficar_nombre( var jugadora:t_jugador);
 var
-    nombre,auxs:string;
+    nombre,auxs,cortes:string;
 
 begin
     clrscr();
-    titulo(chr(173)+'Hola! Antes de empezar, al Capit'+chr(160)+'n Beto le gustar'+chr(161)+'a saber tu nombre:',4);
-    write('                                                    '); read(nombre);
-    auxs:= chr(173)+'Bienvenido ' + nombre + '!';
-    titulo (auxs,9);
-    titulo ('Presiona ENTER para continuar',11);
+    inicializar_jugador (jugadora);
+    nombre:= jugadora.nombre;
+    case nombre[length(nombre)] of
+    'A' : cortes :='a ';
+    'a' : cortes :='a ';
+    else
+        cortes:='o '
+    end;
+    auxs:= chr(173)+'Bienvenid' + cortes + nombre + '!';
+    titulo (auxs,7);
     readkey();
-
-    pedir_nombre := nombre;
+    titulo(chr(173)+'El Capit'+chr(160)+'n Beto te pide tu ayuda!',13);
+    titulo ('Juntos, '+chr(173)+'vamos a destruir a los malvados alien'+chr(161)+'genas!',14);
+    titulo ('Presiona ENTER para continuar',20);
+    readkey();
 end;
+{
 
+
+}
 procedure graficar_victoria(var jugador:t_jugador);
-var mensaje_felicitacion : string[80];
+var
+   mensaje_felicitacion : string;
     cad_puntaje : string[4];
 begin
     clrscr();
@@ -217,7 +260,7 @@ var mensaje_felicitacion : string[80];
 begin
     clrscr();
     str(jugador.puntos, cad_puntaje);
-    mensaje_felicitacion := chr(173)+'Felicitaciones, ' + jugador.nombre + ', con tus ' + cad_puntaje + ' puntos lograste un nuevo HiScore!';
+    mensaje_felicitacion := 'Felicitaciones, ' + jugador.nombre + ', con tus ' + cad_puntaje + ' puntos '+chr(173)+'lograste un nuevo HiScore!';
     titulo(mensaje_felicitacion,10);
     titulo('Presiona ENTER para continuar',11);
     readln();
@@ -336,7 +379,7 @@ begin
 
     for i := 1 to ALTURA_MAPA do
         writeln('|',mapa[i],'|');
-    {cursoron();}
+    cursoron();
 end;
 
 {
