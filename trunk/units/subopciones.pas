@@ -43,7 +43,7 @@ repeat
             val (t_apretada, numero_conj_naves,cod);
             if cod<>0 then
                begin
-                 writeln ('No es una opci',chr(162),'n num',chr(162),'rica. Por favor, reingrese');
+                 writeln ('No es una opci',chr(162),'n num',chr(130),'rica. Por favor, reingrese');
                  writeln ()
                end
             else if (numero_conj_naves > conjuntos) then

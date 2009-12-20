@@ -1,5 +1,5 @@
 [pascaldefender_file]
-[cantidad=3]
+[cantidad=4]
 
 [opcion_1]
 [beto][2x3]
@@ -19,8 +19,8 @@ Y=Y
 
 [opcion_2]
 [beto][2x3]
-/^\
-\H/
+   
+   
 [alien_n1][2x5]
 _T_
 qup
@@ -48,7 +48,23 @@ qup
 *_*
 /!\
 [velocidad]
-500
+50
 
+
+[opcion_4]
+[beto][2x3]
+/I\
+| |
+[alien_n1][2x4]
+/O\
+)!(
+[alien_n2][2x4]
+\_/
+<U>
+[alien_n3][2x3]
+*_*
+/!\
+[velocidad]
+500
 
 [/pascaldefender_file]
