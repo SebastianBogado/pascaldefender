@@ -428,7 +428,7 @@ begin
 		if NOT mirador then
            begin
            nosirve:=true;
-           writeln ('El archivo de naves no es válido o no existe. Por favor ingrese la opción por defecto (0)')
+           writeln ('El archivo de naves no es v',chr(160),'lido o no existe. Por favor ingrese la opci',chr(162),'n por defecto (0)');
            writeln ()
            end
         else  begin
@@ -445,8 +445,8 @@ begin
              OR saltear5) then
                           begin
                              nosirve:=true;
-                             writeln ('Ese skins de naves no sirve por problemas con el archivo. Corríjalo.');
-                             writeln ('Por favor ingrese otra opción.');
+                             writeln ('Ese skins de naves no sirve por problemas con el archivo. Corr',chr(161),'jalo.');
+                             writeln ('Por favor ingrese otra opci',chr(162),'n.');
                              writeln ()
                           end
           else

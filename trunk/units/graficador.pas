@@ -50,7 +50,7 @@ begin
     titulo('|  __/ _` / __|/ __/ _` | | | | | / _ \  _/ _ \  _ \ / _` |/ _ \  __|',4);
     titulo('| | | (_| \__ \ (_| (_| | | | |/ /  __/ ||  __/ | | | (_| |  __/ |   ',5);
     titulo('\_|  \__,_|___/\___\__,_|_| |___/ \___|_| \___|_| |_|\__,_|\___|_|   ',6);
-    titulo('----------|La heroica batalla del Capitan Beto|----------',7);
+    titulo('----------|La heroica batalla del Capit'+chr(160)+'n Beto|----------',7);
     writeln();
 end;
 
@@ -81,7 +81,7 @@ begin
     titulo('2. Modificar datos',11);
     titulo('3. Baja del usuario',12);
     titulo('4. Cambiar de usuario',13);
-    titulo('0. Volver al menu principal',14);
+    titulo('0. Volver al men'+chr(163)+' principal',14);
 end;
 
 {
@@ -94,7 +94,7 @@ begin
     encabezado(); writeln;
     writeln;     writeln;     writeln;
     writeln ('Usted puede elegir ', conjuntos, ' skins de naves');
-    writeln ('Cual desea elegir? Se aceptan solo opciones numericas');
+    writeln (chr(168),'Cual desea elegir? Se aceptan s',chr(162),'lo opciones num',chr(130),'ricas');
     writeln ('Puede presionar la tecla 0 (cero) para las opciones por defecto');
     writeln
 end;
@@ -112,7 +112,7 @@ begin
     titulo('Para mover la nave de Beto, usar las flechas direccionales',13);
     titulo('y D para disparar.',14);
     titulo('Con P se pausa el juego hasta que se presione una tecla cualquiera',15);
-    titulo('Los marcianos van avanzando y destruirán la nave del Capitán Beto si',17);
+    titulo('Los marcianos van avanzando y destruir'+chr(160)+'n la nave del Capit'+chr(160)+'n Beto si',17);
     titulo('entran en contacto',18);
     titulo('El juego termina al pasar tres niveles, o perder las tres vidas.',20);
     titulo('En el primer nivel, cada nave destruida da 10 puntos; en el',22);
@@ -137,9 +137,9 @@ var
 begin
     clrscr();
     encabezado();
-    titulo('Puntajes Record',9);
+    titulo('Puntajes R'+chr(130)+'cord',9);
     writeln;
-    writeln('Hay ',cantidad_puntajes,' puntajes record registrados');
+    writeln('Hay ',cantidad_puntajes,' puntajes r',chr(130),'cord registrados');
 
     for i := 1 to cantidad_puntajes do
         writeln('#', i,' - ',puntajes[i].puntos,' ',puntajes[i].nombre);
@@ -180,9 +180,9 @@ var
 
 begin
     clrscr();
-    titulo('Hola! Antes de empezar, al Capitan Beto le gustaria saber tu nombre:',4);
+    titulo(chr(173)+'Hola! Antes de empezar, al Capit'+chr(160)+'n Beto le gustar'+chr(161)+'a saber tu nombre:',4);
     write('                                                    '); read(nombre);
-    auxs:= 'Bienvenido ' + nombre + '!';
+    auxs:= chr(173)+'Bienvenido ' + nombre + '!';
     titulo (auxs,9);
     titulo ('Presiona ENTER para continuar',11);
     readkey();
@@ -196,7 +196,7 @@ var mensaje_felicitacion : string[80];
 begin
     clrscr();
     str(jugador.puntos, cad_puntaje);
-    mensaje_felicitacion := 'Sos un groso, ' + jugador.nombre + '! Ganaste el juego con ' + cad_puntaje + ' puntos';
+    mensaje_felicitacion := chr(173)+'Sos un groso, ' + jugador.nombre + '! Ganaste el juego con ' + cad_puntaje + ' puntos';
     titulo(mensaje_felicitacion,10);
     titulo('Presiona ENTER para continuar',11);
     readln();
@@ -217,7 +217,7 @@ var mensaje_felicitacion : string[80];
 begin
     clrscr();
     str(jugador.puntos, cad_puntaje);
-    mensaje_felicitacion := 'Felicitaciones, ' + jugador.nombre + ', con tus ' + cad_puntaje + ' puntos lograste un nuevo HiScore!';
+    mensaje_felicitacion := chr(173)+'Felicitaciones, ' + jugador.nombre + ', con tus ' + cad_puntaje + ' puntos lograste un nuevo HiScore!';
     titulo(mensaje_felicitacion,10);
     titulo('Presiona ENTER para continuar',11);
     readln();
