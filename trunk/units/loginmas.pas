@@ -854,9 +854,10 @@ begin
     textcolor(0);
     if upcase(Participante.Usuario)='ADMIN' then
 		administrador:=true;
+    textcolor(15);
     correr_pd();
-    textbackground(0);
-    textcolor(0)
+    textbackground(0)
+
 end;
 
 
@@ -1068,7 +1069,8 @@ var
 	salir:boolean;
 	IndiceDat:longint;
 begin
-
+        textcolor(15);
+        
 	IndiceDat:=0;  // Variable que pasar� al Menu de Bienvenida la posici�n del Participante Ingresado.
 	salir := false;
 

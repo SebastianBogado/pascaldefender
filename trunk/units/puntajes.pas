@@ -4,6 +4,7 @@ interface
 
 uses
     jugador,
+    crt,
     sysutils;
 
 const
@@ -93,6 +94,7 @@ begin
               read (fpuntajes, rjugador);
               writeln (rjugador.nombre, ' ', rjugador.puntos)
          end;
+     readkey();
      close (fpuntajes)
 end;
 
