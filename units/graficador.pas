@@ -139,8 +139,8 @@ end;
 
 procedure graficar_acercade();
 begin
-    textbackground (5);
-    clrscr();
+    textbackground (5); {colorinches} 
+    clrscr();            
     textcolor (128);
     encabezado();
     textcolor (0);
@@ -157,6 +157,7 @@ begin
     titulo('@COPYLEFT 2009',23);
     titulo('Presione una tecla para volver',25);
     textbackground (0);
+    textcolor(15);
 
 end;
 
@@ -172,6 +173,7 @@ begin
     clrscr();
     encabezado();
     titulo('Puntajes R'+chr(130)+'cord',9);
+    writeln();
 
     mostrar_puntajes (CONSTA);
     
