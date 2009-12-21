@@ -5,12 +5,8 @@ interface
 uses
     crt,
     pdcommons,
-    jugador,
-    puntajes,
-    graficador;
-
-var
-   rjugador:t_jugador;
+    graficador,
+    loginmas;
 
 
 function correr_hiscores():t_pantalla;
@@ -23,16 +19,37 @@ Obtiene los mejores puntajes y los muestra.
 @retorna t_pantalla La pantalla que debe correrse a continuación
 }
 function correr_hiscores():t_pantalla;
+
 var
-    cantidad_puntajes : byte;
-    puntajes : t_puntajes;
+ t_apretada:char;
+ cod,aux:integer;
+ cefinit:boolean;
+
 begin
-    cantidad_puntajes := obtener_cantidad_puntajes();
-    puntajes := obtener_puntajes();
-
-    graficar_hiscores(cantidad_puntajes, puntajes);
-    readkey();
-
+     cod:=-1;
+     cefinit:=false;
+     if	administrador then
+        begin
+            repeat
+            clrscr;
+            writeln ('Señor admin, cuántos puntajes desea ver?');
+            t_apretada:=readkey;
+            val (t_apretada, aux,cod);
+            if cod<>0 then
+               begin
+                 writeln ('No es una opción numérica. Por favor, reingrese');
+                 writeln ()
+               end
+            else
+                begin
+                    writeln(); writeln();
+                    graficar_hiscores(aux);
+                    cefinit:=true
+                 end;
+            until cefinit;
+        end
+    else
+        graficar_hiscores(MOSTRAR_PUNT);
 
     correr_hiscores := introduccion
 end;

@@ -3,7 +3,6 @@ unit lecater;
 interface
 
 uses
-    puntajes,
     jugador,
     crt,
     sysutils;
@@ -16,7 +15,7 @@ type
     t_error = (archivo, tipo_nave, dimension_nave, carac_no_visibles, velocidad);
     t_mx_nave = array[1..2,1..3] of char;
 
-	tr_navesp=record
+	 tr_navesp=record
 		beto: t_mx_nave;
 		naven1: t_mx_nave;
 		naven2: t_mx_nave;
@@ -25,21 +24,19 @@ type
 		end;
 
     tv_navesp= array[0..CANTIDAD_CONJ_ARCHIVO] of tr_navesp;
-	t_renglado= array[1..CANTIDAD_LINEAS_ARCHIVO] of string[50];
+	 t_renglado= array[1..CANTIDAD_LINEAS_ARCHIVO] of string[50];
 
     file_t_puntaje= file of t_jugador;
 
- var
-	renglado: t_renglado;
-	vnaves: tv_navesp;
-    conjuntos:integer;
-    fpuntajes:file_t_puntaje;
-    mirador,nosirve:boolean;
+var
+   renglado: t_renglado;
+   vnaves: tv_navesp;
+   conjuntos:integer;
+   mirador,nosirve:boolean;
 
 procedure naves_por_defecto(var vnaves: tv_navesp);
 procedure procesar_skins (var vnaves: tv_navesp; var renglado: t_renglado; c_conjuntos:integer; var nosirve:boolean);
 procedure cantidad_conjuntos_naves (var conjuntos:integer; var mirador:boolean);
-procedure guardar_puntajes (rjugador: t_jugador);
 
 implementation
 const
@@ -503,29 +500,11 @@ begin
                  vnaves[c_conjuntos].velnave := VELOCIDAD_DEF;
                  
               readkey;
-              {Luego de que el usuario esté avisado, se borran los avisos 
-              gotoxy(1,16);
-              readkey;}
-              {clreol}   
-              
+
               end;
 
 end;
 
-
-procedure guardar_puntajes (rjugador: t_jugador);
-var
-   fpuntajes:file_t_puntaje;
-begin
-     assign (fpuntajes, 'puntajes.bin');
-     if NOT FileExists ('puntajes.bin') then
-        rewrite (fpuntajes)
-     else
-         reset (fpuntajes);
-     seek (fpuntajes, filesize(fpuntajes));
-     write (fpuntajes, rjugador);
-     close (fpuntajes)
-end;
 
 end.
 

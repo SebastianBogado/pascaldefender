@@ -2,110 +2,102 @@ unit puntajes;
 
 interface
 
+uses
+    jugador,
+    sysutils;
+
 const
-    MAX_PUNTAJES = 100;
+     MAX_USUARIOS=1000;
 
 type
-    t_puntaje = Record
-              nombre : string;
-              puntos : integer;
-    end;
-    t_puntajes = Array [1..MAX_PUNTAJES] of t_puntaje;
+    file_t_jugador= file of t_jugador;
 
-function obtener_puntajes():t_puntajes;
-function obtener_cantidad_puntajes() : byte;
-function intentar_guardar_puntaje(var puntaje:t_puntaje):boolean;
-procedure guardar_puntaje(var puntaje : t_puntaje );
+    r_idx = record
+          puntaje,posicion:integer;
+            end;
 
+    tv_ridx = array[1..MAX_USUARIOS] of r_idx;
+
+
+var
+       fpuntajes:file_t_jugador;
+       v_idx_punt : tv_ridx;
+       rjugador:t_jugador;
+       maximo:integer;
+
+
+procedure guardar_puntajes (var rjugador: t_jugador);
+procedure mostrar_puntajes (var hastadonde:integer);
 
 implementation
-{
-variables globales, pero privadas
-Los puntajes se almacenan globales dentro de la unit, para que el almacenamiento
-de los puntajes sea transparente para los desarrolladores que utilicen las
-funciones de agregado y obtención de puntajes.
-}
+
+procedure guardar_puntajes (var rjugador: t_jugador);
 var
-    mejores_puntajes : t_puntajes;
-    cantidad_mejores_puntajes : byte;
-
-{
-Devuelve los mejores puntajes almacenados ordenados de mayor a menor.
-@returns t_puntajes La lista de los puntajes
-}
-function obtener_puntajes():t_puntajes;
+   fpuntajes:file_t_jugador;
 begin
-    obtener_puntajes := mejores_puntajes;
+     assign (fpuntajes, 'puntajes.bin');
+     if NOT FileExists ('puntajes.bin') then
+        rewrite (fpuntajes)
+     else
+         reset (fpuntajes);
+     seek (fpuntajes, filesize(fpuntajes));
+     write (fpuntajes, rjugador);
+     close (fpuntajes)
 end;
 
-{
-Devuelve la cantidad de puntajes almacenados.
-@returns byte La cantidad de puntajes
-}
-function obtener_cantidad_puntajes() : byte;
-begin
-    obtener_cantidad_puntajes := cantidad_mejores_puntajes;
-end;
-
-
-
-procedure swap(var a : t_puntaje; var b : t_puntaje);
+procedure ordenar_vector (var v_idx_punt: tv_ridx; var maximo:integer);
 var
-    aux : t_puntaje;
+   i,j,aux,aux1:integer;
 begin
-    aux := a;
-    a := b;
-    b := aux;
+for i:=1 to (maximo-1) do
+    for j:=(i+1) to maximo do
+        if v_idx_punt[i].puntaje<v_idx_punt[j].puntaje then
+           begin
+                aux:=v_idx_punt[i].puntaje;
+                v_idx_punt[i].puntaje:=v_idx_punt[j].puntaje;
+                v_idx_punt[j].puntaje:=aux;
+
+                aux1:=v_idx_punt[i].posicion;
+                v_idx_punt[i].posicion:=v_idx_punt[j].posicion;
+                v_idx_punt[j].posicion:=aux1;
+           end;
 end;
 
-{
-Almacena un puntaje, Ordena la lista luego de cada inserción, e incrementa
-la variable global cantidad_mejores_puntajes
-@param t_puntajes El puntaje a almacenar
-}
-procedure guardar_puntaje(var puntaje : t_puntaje );
+procedure indexar_puntajes (var fpuntajes:file_t_jugador; var v_idx_punt: tv_ridx; var maximo:integer);
 var
-   i : byte;
-   mayor : boolean;
+   n:integer;
 begin
-    inc(cantidad_mejores_puntajes);
-    i := cantidad_mejores_puntajes;
-    mejores_puntajes[i].nombre := puntaje.nombre;
-    mejores_puntajes[i].puntos := puntaje.puntos;
-    mayor := true;
-    while ((mayor) and (i > 1)) do
-          if (mejores_puntajes[i].puntos) > (mejores_puntajes[i-1].puntos) then
-             begin
-                  swap(mejores_puntajes[i],mejores_puntajes[i-1]);
-                  dec(i);
-             end
-             else
-                 mayor := false;
+     n:=0;
+     while not eof (fpuntajes) do
+           begin
+                read (fpuntajes,rjugador);
+                v_idx_punt[n+1].puntaje:=rjugador.puntos;
+                v_idx_punt[n+1].posicion:=n;
+                inc(n)
+           end;
+     maximo := n;
+     ordenar_vector (v_idx_punt, maximo);
 end;
 
-{
 
-}
-function intentar_guardar_puntaje(var puntaje:t_puntaje):boolean;
+procedure mostrar_puntajes (var hastadonde:integer);
 var
-	grabo:boolean;
+   i:integer;
 begin
-	grabo := false;
-	{si hay slots disponibles, o es mejor puntaje que el último}
-	if	(cantidad_mejores_puntajes < MAX_PUNTAJES)
-    	or (puntaje.puntos > mejores_puntajes[cantidad_mejores_puntajes].puntos) then
-        begin
-            grabo := true;
-            guardar_puntaje(puntaje);
-        end;
-
-	intentar_guardar_puntaje := grabo;
+     assign (fpuntajes, 'puntajes.bin');
+     reset (fpuntajes);
+     indexar_puntajes (fpuntajes,v_idx_punt, maximo);
+     for i:=1 to hastadonde do
+         begin
+              seek (fpuntajes,v_idx_punt[i].posicion);
+              read (fpuntajes, rjugador);
+              writeln (rjugador.nombre, ' ', rjugador.puntos)
+         end;
+     close (fpuntajes)
 end;
 
 
 
-begin
-{inicializa las variables globales privadas de la unit}
-cantidad_mejores_puntajes := 0;
 end.
+
 
