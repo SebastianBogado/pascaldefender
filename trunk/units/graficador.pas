@@ -12,15 +12,18 @@ uses
     jugador,
     lecater,
     subopciones;
-    
 
+const
+     MOSTRAR_PUNT = 12;
+
+  
 procedure graficar_introduccion();
 procedure graficar_instrucciones();
 procedure graficar_opciones();
 procedure graficar_victoria(var jugador:t_jugador);
 procedure graficar_derrota();
 procedure graficar_prenivel(var nivel:t_nivel);
-procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
+procedure graficar_hiscores(CONSTA:integer);
 procedure graficar_felicitaciones(var jugador:t_jugador);
 procedure graficar_nivel(var nivel:t_nivel; var jugador:t_jugador);
 procedure graficar_nombre( var jugadora:t_jugador);
@@ -153,7 +156,8 @@ begin
     titulo('por su paciencia y dedicaci'+chr(162)+'n',20);
     titulo('@COPYLEFT 2009',23);
     titulo('Presione una tecla para volver',25);
-    textbackground (0)
+    textbackground (0);
+
 end;
 
 {
@@ -161,20 +165,17 @@ Muestra en pantalla los puntajes recibidos
 @param cantidad_puntajes byte La cantidad de puntajes que tiene el vector de puntajes
 @param puntajes t_puntajes El listado de los puntajes a mostrar
 }
-procedure graficar_hiscores(cantidad_puntajes:byte; var puntajes:t_puntajes);
+procedure graficar_hiscores(CONSTA:integer);
 var
     i:byte;
 begin
     clrscr();
     encabezado();
     titulo('Puntajes R'+chr(130)+'cord',9);
-    writeln;
-    writeln('Hay ',cantidad_puntajes,' puntajes r',chr(130),'cord registrados');
 
-    for i := 1 to cantidad_puntajes do
-        writeln('#', i,' - ',puntajes[i].puntos,' ',puntajes[i].nombre);
-
-    writeln('');
+    mostrar_puntajes (CONSTA);
+    
+    writeln();
     writeln('Presione cualquier tecla para volver al inicio.');
 end;
 

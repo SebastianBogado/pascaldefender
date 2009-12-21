@@ -503,7 +503,7 @@ var
     jugador:t_jugador;
     resultado_nivel:t_resultado_nivel;
     numero_nivel:integer;
-    p:t_puntaje;
+
 begin
     numero_nivel := 0;
     resultado_nivel := gano;
@@ -525,11 +525,7 @@ begin
     else if resultado_nivel = perdio then
         graficar_derrota();
 
-	{guardado de puntos}
-	p.nombre := jugador.nombre;
-    p.puntos := jugador.puntos;
-    if intentar_guardar_puntaje(p) then
-    	graficar_felicitaciones(jugador);
+   	graficar_felicitaciones(jugador);
 
     {guardado de puntos en el archivo binario}
     guardar_puntajes (jugador);

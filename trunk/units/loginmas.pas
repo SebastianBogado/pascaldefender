@@ -34,6 +34,7 @@ Ficha_Jugador = record
 var
    Participante: Ficha_Jugador;
    INDICE_DAT:longint;
+   administrador:boolean;
 
 
 procedure Menu_Login_Principal (var participante:Ficha_Jugador);
@@ -308,7 +309,7 @@ Write('Usuario: ');
 gotoxy(1,7);
 Write('Clave: ');
 
-gotoxy(1,9); write('Elija una de estas preguntas secretas para recordar la contrase�a en caso de olvido:');
+gotoxy(1,9); write('Elija una de estas preguntas secretas para recordar la contrase',chr(164),'a en caso de olvido:');
 gotoxy(1,10); write('a- Nombre del primer chico/a que te gust',chr(162));
 gotoxy(1,11); write('b- Nombre de la ciudad donde naci',chr(162),' tu abuelo paterno');
 gotoxy(1,12); write('c- Nombre del juego preferido en la escuela primaria');
@@ -846,80 +847,16 @@ until (Datos_OK=true) or (Confirma[1]='X');
 end;
 
 
-procedure Listar_Mejores_Puntajes;
+procedure Menu_Bienvenida(var Participante:Ficha_Jugador; var INDICE_DAT:longint; var administrador:boolean );
 begin
-clrscr;
-writeln('Listar Mejores');
-readkey;
-end;
-
-procedure Listar_Usuarios_Inactivos;
-begin
-clrscr;
-writeln('Listar Inactivos');
-readkey;
-end;
-
-procedure Menu_Bienvenida(var Participante:Ficha_Jugador; var INDICE_DAT:longint );
-
-var
-	op:char;
-	salir:boolean;
-	administrador:boolean;
-
-begin
-
-	salir:= false;
 	administrador:=false;
     textbackground(0);
-    correr_pd();
-    textbackground(0) {
-Es lo que engancha con el juego anterior
-}
-
-{codigo original, sin modificar
-
-     repeat
-		textbackground(4);
-		textcolor(15);
-		clrscr;
-		gotoxy(10,2); writeln('Bienvenido ', upcase(Participante.Usuario));
-
-		gotoxy(10,5);
-		writeln('1.Jugar');
-		gotoxy(10,7);
-		writeln('2.Modificar datos personales');
-		gotoxy(10,9);
-		writeln('3.Darme de baja');
-
-		if upcase(Participante.Usuario)='ADMIN' then
-		begin
+    textcolor(0);
+    if upcase(Participante.Usuario)='ADMIN' then
 		administrador:=true;
-		gotoxy(10,11);
-		writeln('4.Listar Mejores Puntajes');
-		gotoxy(10,13);
-		write('5.Listar Usuarios Inactivos');
-		end;
-
-
-
-		gotoxy(10,15);
-		writeln('0.Salir');
-		gotoxy(10,17);
-		write('Ingrese su opcion: ');
-		op := readkey;
-		case op of
-			'1': jugar(Participante);
-			'2': Modificar_Usuario(Participante,INDICE_DAT);
-			'3': Baja_Usuario(Participante,INDICE_DAT);
-			'4','5':if administrador then
-									if op='4'then Listar_Mejores_Puntajes
-									else Listar_Usuarios_Inactivos;
-			'0': salir := true;
-		end;
-		if INDICE_DAT=-1 then salir:=true;
-
-	until salir;}
+    correr_pd();
+    textbackground(0);
+    textcolor(0)
 end;
 
 
@@ -1140,7 +1077,7 @@ begin
         graficar_loginmas();
 		op := readkey;
 		case op of
-			'1': if Ingresa_Usuario(Participante,IndiceDat) then Menu_Bienvenida(Participante,IndiceDat);
+			'1': if Ingresa_Usuario(Participante,IndiceDat) then Menu_Bienvenida(Participante,IndiceDat,administrador);
 			'2': Alta_Jugador(Participante);
 			'3': Olvido_Password;
 			'0': salir := true;
