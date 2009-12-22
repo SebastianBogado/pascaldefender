@@ -12,7 +12,7 @@
       <TargetFileExt Value=".exe"/>
       <UseAppBundle Value="False"/>
       <Icon Value="0"/>
-      <ActiveEditorIndexAtStart Value="6"/>
+      <ActiveEditorIndexAtStart Value="13"/>
     </General>
     <LazDoc Paths="docs"/>
     <VersionInfo>
@@ -31,12 +31,12 @@
         <Display Value=""/>
       </local>
     </RunParams>
-    <Units Count="24">
+    <Units Count="25">
       <Unit0>
         <Filename Value="pascaldefender.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pascaldefender"/>
-        <CursorPos X="23" Y="12"/>
+        <CursorPos X="26" Y="10"/>
         <TopLine Value="1"/>
         <EditorIndex Value="0"/>
         <UsageCount Value="200"/>
@@ -49,21 +49,21 @@
         <UnitName Value="pascaldefender"/>
         <CursorPos X="1" Y="3"/>
         <TopLine Value="1"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="8"/>
       </Unit1>
       <Unit2>
         <Filename Value="pantallaintroduccion.pas"/>
         <UnitName Value="pantallaintroduccion"/>
         <CursorPos X="14" Y="9"/>
         <TopLine Value="1"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="8"/>
       </Unit2>
       <Unit3>
         <Filename Value="juego.pas"/>
         <UnitName Value="juego"/>
         <CursorPos X="31" Y="5"/>
         <TopLine Value="1"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="8"/>
       </Unit3>
       <Unit4>
         <Filename Value="pantalla_juego_old.pas"/>
@@ -77,9 +77,9 @@
         <Filename Value="units\pantalla_introduccion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pantalla_introduccion"/>
-        <CursorPos X="15" Y="8"/>
+        <CursorPos X="101" Y="18"/>
         <TopLine Value="1"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -87,9 +87,9 @@
         <Filename Value="units\pdcommons.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pdcommons"/>
-        <CursorPos X="53" Y="14"/>
+        <CursorPos X="84" Y="9"/>
         <TopLine Value="1"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit6>
@@ -97,9 +97,9 @@
         <Filename Value="units\puntajes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="puntajes"/>
-        <CursorPos X="84" Y="9"/>
-        <TopLine Value="9"/>
-        <EditorIndex Value="7"/>
+        <CursorPos X="6" Y="103"/>
+        <TopLine Value="62"/>
+        <EditorIndex Value="8"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -107,8 +107,8 @@
         <Filename Value="units\pdbase.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pdbase"/>
-        <CursorPos X="54" Y="25"/>
-        <TopLine Value="1"/>
+        <CursorPos X="126" Y="40"/>
+        <TopLine Value="12"/>
         <EditorIndex Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -117,9 +117,9 @@
         <Filename Value="units\graficador.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="graficador"/>
-        <CursorPos X="44" Y="14"/>
-        <TopLine Value="1"/>
-        <EditorIndex Value="16"/>
+        <CursorPos X="58" Y="103"/>
+        <TopLine Value="157"/>
+        <EditorIndex Value="17"/>
         <UsageCount Value="204"/>
         <Loaded Value="True"/>
       </Unit9>
@@ -127,9 +127,9 @@
         <Filename Value="units\pantalla_hiscores.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pantalla_hiscores"/>
-        <CursorPos X="55" Y="27"/>
+        <CursorPos X="1" Y="1"/>
         <TopLine Value="1"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
       </Unit10>
@@ -139,7 +139,7 @@
         <UnitName Value="pantalla_instrucciones"/>
         <CursorPos X="7" Y="28"/>
         <TopLine Value="1"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
       </Unit11>
@@ -148,8 +148,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="nivel"/>
         <CursorPos X="61" Y="75"/>
-        <TopLine Value="32"/>
-        <EditorIndex Value="10"/>
+        <TopLine Value="75"/>
+        <EditorIndex Value="11"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
       </Unit12>
@@ -159,7 +159,7 @@
         <UnitName Value="mapa"/>
         <CursorPos X="35" Y="13"/>
         <TopLine Value="1"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="12"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit13>
@@ -169,7 +169,7 @@
         <UnitName Value="entidad"/>
         <CursorPos X="1" Y="4"/>
         <TopLine Value="1"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="15"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit14>
@@ -177,9 +177,9 @@
         <Filename Value="units\jugador.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="jugador"/>
-        <CursorPos X="23" Y="15"/>
+        <CursorPos X="29" Y="19"/>
         <TopLine Value="1"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit15>
@@ -188,16 +188,16 @@
         <UnitName Value="juego"/>
         <CursorPos X="66" Y="46"/>
         <TopLine Value="1"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="3"/>
       </Unit16>
       <Unit17>
         <Filename Value="units\pantalla_juego.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pantalla_juego"/>
-        <CursorPos X="13" Y="545"/>
-        <TopLine Value="502"/>
-        <EditorIndex Value="13"/>
-        <UsageCount Value="156"/>
+        <CursorPos X="46" Y="53"/>
+        <TopLine Value="31"/>
+        <EditorIndex Value="14"/>
+        <UsageCount Value="192"/>
         <Loaded Value="True"/>
       </Unit17>
       <Unit18>
@@ -205,46 +205,46 @@
         <UnitName Value="timer"/>
         <CursorPos X="1" Y="1"/>
         <TopLine Value="1"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="8"/>
       </Unit18>
       <Unit19>
         <Filename Value="units\pantalla_opciones.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pantalla_opciones"/>
-        <CursorPos X="58" Y="24"/>
-        <TopLine Value="1"/>
-        <EditorIndex Value="4"/>
-        <UsageCount Value="96"/>
+        <CursorPos X="26" Y="31"/>
+        <TopLine Value="7"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="132"/>
         <Loaded Value="True"/>
       </Unit19>
       <Unit20>
         <Filename Value="units\lecater.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="lecater"/>
-        <CursorPos X="14" Y="289"/>
-        <TopLine Value="249"/>
-        <EditorIndex Value="6"/>
-        <UsageCount Value="90"/>
+        <CursorPos X="45" Y="488"/>
+        <TopLine Value="457"/>
+        <EditorIndex Value="7"/>
+        <UsageCount Value="126"/>
         <Loaded Value="True"/>
       </Unit20>
       <Unit21>
         <Filename Value="units\subopciones.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="subopciones"/>
-        <CursorPos X="23" Y="47"/>
-        <TopLine Value="13"/>
-        <EditorIndex Value="15"/>
-        <UsageCount Value="88"/>
+        <CursorPos X="52" Y="89"/>
+        <TopLine Value="64"/>
+        <EditorIndex Value="16"/>
+        <UsageCount Value="124"/>
         <Loaded Value="True"/>
       </Unit21>
       <Unit22>
         <Filename Value="units\loginmas.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="loginmas"/>
-        <CursorPos X="45" Y="203"/>
-        <TopLine Value="160"/>
-        <EditorIndex Value="12"/>
-        <UsageCount Value="35"/>
+        <CursorPos X="73" Y="1297"/>
+        <TopLine Value="1266"/>
+        <EditorIndex Value="13"/>
+        <UsageCount Value="71"/>
         <Loaded Value="True"/>
       </Unit22>
       <Unit23>
@@ -252,126 +252,139 @@
         <UnitName Value="log_de_errores"/>
         <CursorPos X="25" Y="19"/>
         <TopLine Value="156"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="54"/>
       </Unit23>
+      <Unit24>
+        <Filename Value="units\pantalla_acercade.pas"/>
+        <UnitName Value="pantalla_acercade"/>
+        <CursorPos X="73" Y="21"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="26"/>
+        <Loaded Value="True"/>
+      </Unit24>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="459" Column="17" TopLine="457"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="969" Column="61" TopLine="954"/>
       </Position1>
       <Position2>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="460" Column="20" TopLine="457"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="974" Column="1" TopLine="954"/>
       </Position2>
       <Position3>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="475" Column="16" TopLine="457"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="62" Column="59" TopLine="30"/>
       </Position3>
       <Position4>
-        <Filename Value="units\pantalla_juego.pas"/>
-        <Caret Line="507" Column="42" TopLine="487"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="969" Column="60" TopLine="954"/>
       </Position4>
       <Position5>
-        <Filename Value="pascaldefender.lpr"/>
-        <Caret Line="6" Column="16" TopLine="1"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="58" Column="74" TopLine="30"/>
       </Position5>
       <Position6>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="288" Column="91" TopLine="266"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="985" Column="2" TopLine="975"/>
       </Position6>
       <Position7>
         <Filename Value="units\loginmas.pas"/>
-        <Caret Line="9" Column="36" TopLine="1"/>
+        <Caret Line="62" Column="47" TopLine="774"/>
       </Position7>
       <Position8>
-        <Filename Value="units\loginmas.pas"/>
-        <Caret Line="19" Column="15" TopLine="1"/>
+        <Filename Value="units\subopciones.pas"/>
+        <Caret Line="96" Column="37" TopLine="60"/>
       </Position8>
       <Position9>
-        <Filename Value="units\loginmas.pas"/>
-        <Caret Line="26" Column="27" TopLine="1"/>
+        <Filename Value="units\subopciones.pas"/>
+        <Caret Line="98" Column="44" TopLine="60"/>
       </Position9>
       <Position10>
         <Filename Value="units\loginmas.pas"/>
-        <Caret Line="28" Column="59" TopLine="1"/>
+        <Caret Line="61" Column="38" TopLine="41"/>
       </Position10>
       <Position11>
         <Filename Value="units\loginmas.pas"/>
-        <Caret Line="135" Column="47" TopLine="115"/>
+        <Caret Line="15" Column="12" TopLine="25"/>
       </Position11>
       <Position12>
         <Filename Value="units\loginmas.pas"/>
-        <Caret Line="140" Column="22" TopLine="115"/>
+        <Caret Line="61" Column="42" TopLine="41"/>
       </Position12>
       <Position13>
         <Filename Value="units\loginmas.pas"/>
-        <Caret Line="142" Column="23" TopLine="115"/>
+        <Caret Line="1009" Column="10" TopLine="1022"/>
       </Position13>
       <Position14>
         <Filename Value="units\loginmas.pas"/>
-        <Caret Line="143" Column="21" TopLine="115"/>
+        <Caret Line="61" Column="11" TopLine="41"/>
       </Position14>
       <Position15>
         <Filename Value="units\loginmas.pas"/>
-        <Caret Line="326" Column="52" TopLine="306"/>
+        <Caret Line="55" Column="18" TopLine="41"/>
       </Position15>
       <Position16>
-        <Filename Value="units\loginmas.pas"/>
-        <Caret Line="331" Column="55" TopLine="306"/>
+        <Filename Value="units\subopciones.pas"/>
+        <Caret Line="14" Column="1" TopLine="1"/>
       </Position16>
       <Position17>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="422" Column="31" TopLine="397"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="62" Column="11" TopLine="30"/>
       </Position17>
       <Position18>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="39" Column="123" TopLine="13"/>
+        <Filename Value="units\subopciones.pas"/>
+        <Caret Line="97" Column="38" TopLine="61"/>
       </Position18>
       <Position19>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="311" Column="95" TopLine="300"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="62" Column="36" TopLine="37"/>
       </Position19>
       <Position20>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="39" Column="79" TopLine="19"/>
+        <Filename Value="units\subopciones.pas"/>
+        <Caret Line="97" Column="37" TopLine="61"/>
       </Position20>
       <Position21>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="38" Column="23" TopLine="19"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="55" Column="1" TopLine="42"/>
       </Position21>
       <Position22>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="40" Column="76" TopLine="20"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="982" Column="30" TopLine="973"/>
       </Position22>
       <Position23>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="18" Column="1" TopLine="1"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="1281" Column="1" TopLine="1182"/>
       </Position23>
       <Position24>
-        <Filename Value="units\subopciones.pas"/>
-        <Caret Line="44" Column="1" TopLine="18"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="62" Column="58" TopLine="25"/>
       </Position24>
       <Position25>
-        <Filename Value="units\subopciones.pas"/>
-        <Caret Line="26" Column="16" TopLine="6"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="51" Column="27" TopLine="32"/>
       </Position25>
       <Position26>
-        <Filename Value="units\subopciones.pas"/>
-        <Caret Line="48" Column="22" TopLine="18"/>
+        <Filename Value="units\pantalla_juego.pas"/>
+        <Caret Line="530" Column="1" TopLine="487"/>
       </Position26>
       <Position27>
-        <Filename Value="units\pantalla_opciones.pas"/>
-        <Caret Line="20" Column="39" TopLine="1"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="63" Column="85" TopLine="781"/>
       </Position27>
       <Position28>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="419" Column="35" TopLine="405"/>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="1080" Column="32" TopLine="1066"/>
       </Position28>
       <Position29>
-        <Filename Value="units\lecater.pas"/>
-        <Caret Line="400" Column="43" TopLine="380"/>
+        <Filename Value="units\subopciones.pas"/>
+        <Caret Line="89" Column="52" TopLine="64"/>
       </Position29>
+      <Position30>
+        <Filename Value="units\loginmas.pas"/>
+        <Caret Line="55" Column="4" TopLine="35"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

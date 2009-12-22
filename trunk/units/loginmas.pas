@@ -58,8 +58,9 @@ var
 procedure Menu_Login_Principal (var participante:Ficha_Jugador);
 procedure Baja_Usuario(var Participante:Ficha_Jugador; var INDICE_ARCHIVO_DAT:longint);
 procedure Modificar_Usuario(var Participante:Ficha_Jugador; var INDICE_ARCHIVO_DAT:longint);
-function Ingresa_Usuario(var Jugador:Ficha_Jugador; var INDICE_DAT:longint):boolean;
+function Ingresa_Usuario(var Jugador:Ficha_Jugador; var INDICE_DAT:longint; var administrador:boolean):boolean;
 procedure Listar_Usuarios_Inactivos (var diasa:tsalvacion);
+
 
 implementation
 
@@ -969,15 +970,12 @@ end;
 
 
 
-procedure Menu_Bienvenida(var Participante:Ficha_Jugador; var INDICE_DAT:longint; var administrador:boolean );
+procedure Menu_Bienvenida(var Participante:Ficha_Jugador; var INDICE_DAT:longint);
 var
 	f: File of Ficha_Jugador;
 
 
 begin
-	administrador:=false;
-    if upcase(Participante.Usuario)='ADMIN' then
-		administrador:=true;
     {
     guardar la última fecha de ingreso
     }
@@ -999,11 +997,7 @@ begin
 end;
 
 
-{procedure Listar_Usuarios_Inactivos_S (var diasa:string[5]);
-
-   Listar_Usuarios_Inactivos (diasa);}
-
-function Ingresa_Usuario(var Jugador:Ficha_Jugador; var INDICE_DAT:longint):boolean;
+function Ingresa_Usuario(var Jugador:Ficha_Jugador; var INDICE_DAT:longint; var administrador:boolean):boolean;
 
 var
 Password_Dat:string[8];
@@ -1023,6 +1017,7 @@ Datos_OK:=false;
 
 Jugador.Usuario:='';
 Jugador.Clave:='';
+
 
 
 // Última fecha de ingreso
@@ -1076,6 +1071,9 @@ begin
 
 end;
 
+administrador:=false;
+    if upcase(Jugador.Usuario)='ADMIN' then
+		administrador:=true;
 
 if Confirma[1] in['s','S'] then
 
@@ -1293,7 +1291,7 @@ begin
         graficar_loginmas();
 		op := readkey;
 		case op of
-			'1': if Ingresa_Usuario(Participante,IndiceDat) then Menu_Bienvenida(Participante,IndiceDat,administrador);
+			'1': if Ingresa_Usuario(Participante,IndiceDat,administrador) then Menu_Bienvenida(Participante,IndiceDat);
 			'2': Alta_Jugador(Participante);
 			'3': Olvido_Password;
 			'0': salir := true;

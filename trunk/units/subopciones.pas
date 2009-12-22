@@ -71,22 +71,25 @@ subopcion1:=aux
 end
 end;
 
-{
-
-}
 procedure subopcion2();
 begin
-  Modificar_Usuario(Participante,INDICE_DAT)
+  Modificar_Usuario(Participante,INDICE_DAT);
+  textbackground (0);
+  textcolor(15)
 end;
 
 procedure subopcion3();
 begin
-  Baja_Usuario(Participante,INDICE_DAT)
+  Baja_Usuario(Participante,INDICE_DAT);
+  textbackground (0);
+  textcolor(15)
 end;
 
 procedure subopcion4();
 begin
-   Menu_Login_Principal (participante)
+   Ingresa_Usuario(Participante, INDICE_DAT,administrador);
+   textbackground (0);
+   textcolor(15)
 end;
 
 procedure subopcion5();
