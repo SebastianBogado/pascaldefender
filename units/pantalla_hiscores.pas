@@ -32,12 +32,12 @@ begin
         begin
             repeat
             clrscr;
-            writeln ('Señor admin, ',chr(168),'cu',chr(160),'ntos puntajes desea ver?');
+            writeln ('Señor admin, cuántos puntajes desea ver?');
             t_apretada:=readkey;
             val (t_apretada, aux,cod);
             if cod<>0 then
                begin
-                 writeln ('No es una opci',chr(162),'n num',chr(130),'rica. Por favor, reingrese');
+                 writeln ('No es una opción numérica. Por favor, reingrese');
                  writeln ()
                end
             else

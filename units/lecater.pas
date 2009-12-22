@@ -498,13 +498,11 @@ begin
               procesar_error_tags(renglado[tt+13],saltear5); 
               if saltear5 then 
                  vnaves[c_conjuntos].velnave := VELOCIDAD_DEF;
-                 
-              readkey;
 
+              readkey()
               end;
 
 end;
 
 
 end.
-

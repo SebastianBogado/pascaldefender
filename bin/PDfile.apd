@@ -15,12 +15,12 @@ qwp
 W8W
 Y=Y
 [velocidad]
-1200
+1100
 
 [opcion_2]
 [beto][2x3]
-   
-   
+/¨\
+)8(
 [alien_n1][2x5]
 _T_
 qup
@@ -31,13 +31,13 @@ qup
 /M\
 \W/
 [velocidad]
-800
+700
 
 
 [opcion_3]
-[beto][2x1]
-/I\
-| |
+[beto][2x3]
+/^\
+\_/
 [alien_n1][2x5]
 /O\
 )!(
@@ -48,14 +48,13 @@ qup
 *_*
 /!\
 [velocidad]
-50
-
+400
 
 [opcion_4]
 [beto][2x3]
-/I\
-| |
-[alien_n1][2x4]
+_I_
+/=\
+[alien_n1][2x5]
 /O\
 )!(
 [alien_n2][2x4]
@@ -65,6 +64,7 @@ qup
 *_*
 /!\
 [velocidad]
-500
+100
+
 
 [/pascaldefender_file]
