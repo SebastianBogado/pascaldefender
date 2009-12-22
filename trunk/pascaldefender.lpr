@@ -7,6 +7,6 @@ uses
 
 begin
      Menu_Login_Principal (Participante);
-     numero_conj_naves:=0;
+     numero_conj_naves:=0
 end.
 

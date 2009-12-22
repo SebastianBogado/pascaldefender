@@ -1,0 +1,20 @@
+20091218,22:10,No se pudo abrir el archivo
+20091218,22:10,No se pudo abrir el archivo
+20091218,22:10,No se pudo abrir el archivo
+20091218,22:10,No se pudo abrir el archivo
+20091218,22:21,No se pudo abrir el archivo
+20091218,22:21,No se pudo abrir el archivo
+20091218,22:21,No se pudo abrir el archivo
+20091218,22:21,No se pudo abrir el archivo
+20091218,22:27,No se pudo abrir el archivo
+20091218,22:27,No se pudo abrir el archivo
+20091219,00:02,No se pudo abrir el archivo
+20091219,00:02,No se pudo abrir el archivo
+20091219,00:04,Dimension de nave invalida
+20091219,14:19,Dimension de nave invalida
+20091221,13:54,Dimension de nave invalida
+20091221,13:54,La velocidad es un numero no valido
+20091221,13:54,Caracteres en blanco
+20091221,14:08,Dimension de nave invalida
+20091221,14:10,Dimension de nave invalida
+20091221,17:43,Dimension de nave invalida
