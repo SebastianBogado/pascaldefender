@@ -45,12 +45,12 @@ repeat
             val (t_apretada, numero_conj_naves,cod);
             if cod<>0 then
                begin
-                 writeln ('No es una opción numérica. Por favor, reingrese');
+                 writeln ('No es una opci',chr(162),'n num',chr(130),'rica. Por favor, reingrese');
                  writeln ()
                end
             else if (numero_conj_naves > conjuntos) then
                     begin
-                      writeln ('Solo existen ', conjuntos, ' para elegir. Por favor, reingrese.');
+                      writeln ('S',chr(162),'lo existen ', conjuntos, ' para elegir. Por favor, reingrese.');
                       writeln ()
                     end
                  else if numero_conj_naves = 0 then
@@ -97,7 +97,7 @@ var
    desdecuando:string[5];
 begin
      clrscr;
-     writeln ('Introduzca la cantidad de días a informar');
+     writeln ('Introduzca la cantidad de d',chr(161),'as a informar');
      readln (desdecuando);
      Listar_Usuarios_Inactivos (desdecuando);
      readkey()

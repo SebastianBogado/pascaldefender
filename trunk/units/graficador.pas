@@ -145,6 +145,7 @@ procedure graficar_loginmas();
 begin
     clrscr();
     encabezado();
+    textcolor(15);
 	titulo('P R I N C I P A L',10);
 	titulo('1.Entrar',13);
 	titulo('2.Nuevo Usuario',14);
