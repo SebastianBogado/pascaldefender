@@ -31,6 +31,11 @@ begin
         '4': pantalla_seleccionada := opciones;
         '5': pantalla_seleccionada := acercade;
         '0': pantalla_seleccionada := salida;
+        else
+            begin
+                 gotoxy(44,16);
+                 clreol;
+            end;
     end;
      pedir_pantalla := pantalla_seleccionada;
 end;
