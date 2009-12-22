@@ -92,7 +92,7 @@ begin
          begin
               seek (fpuntajes,v_idx_punt[i].posicion);
               read (fpuntajes, rjugador);
-              writeln (rjugador.nombre, ' ', rjugador.puntos)
+              writeln (i,' - ',rjugador.nombre, ' ', rjugador.puntos)
          end;
      readkey();
      close (fpuntajes)
