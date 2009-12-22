@@ -8,6 +8,9 @@ uses
     graficador,
     loginmas;
 
+const
+   mostrardoce=12;
+
 
 function correr_hiscores():t_pantalla;
 
@@ -21,7 +24,7 @@ Obtiene los mejores puntajes y los muestra.
 function correr_hiscores():t_pantalla;
 
 var
- t_apretada:char;
+ t_apretada:string[5];
  cod,aux:integer;
  cefinit:boolean;
 
@@ -33,7 +36,7 @@ begin
             repeat
             clrscr;
             writeln ('Se',chr(164),'or admin, ',chr(168),'cu',chr(160),'ntos puntajes desea ver?');
-            t_apretada:=readkey;
+            readln (t_apretada);
             val (t_apretada, aux,cod);
             if cod<>0 then
                begin
@@ -49,7 +52,7 @@ begin
             until cefinit;
         end
     else
-        graficar_hiscores(MOSTRAR_PUNT);
+        graficar_hiscores(mostrardoce);
 
     correr_hiscores := introduccion
 end;

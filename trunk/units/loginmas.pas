@@ -60,7 +60,7 @@ procedure Baja_Usuario(var Participante:Ficha_Jugador; var INDICE_ARCHIVO_DAT:lo
 procedure Modificar_Usuario(var Participante:Ficha_Jugador; var INDICE_ARCHIVO_DAT:longint);
 function Ingresa_Usuario(var Jugador:Ficha_Jugador; var INDICE_DAT:longint; var administrador:boolean):boolean;
 procedure Listar_Usuarios_Inactivos (var diasa:tsalvacion);
-
+procedure Actualizar_Usuarios_Dat;
 
 implementation
 
@@ -121,6 +121,9 @@ begin
 end;
 
 
+
+
+
 Function Existe_Archivo(Nombre_Archivo: String ):boolean;
 Var F: File;
 begin
@@ -131,6 +134,10 @@ Reset(F);
 Existe_Archivo:=(IoResult=0) and (Nombre_Archivo<> '');
 Close(F);
 end;
+
+
+
+
 
 function Caracter_Valido(c:char; estilo:byte):boolean;
 
@@ -150,7 +157,7 @@ end;
 
 
 Procedure leecampo(var item:byte; var entrada:string; longitud:byte; estilo:byte);
-var
+var 
 i,j: byte;
 item_actual: byte;
 ini_fila,ini_col: byte;
@@ -159,7 +166,7 @@ c:char;
 begin
 
 item_actual:=item;
-i:=length(entrada);
+i:=length(entrada); 
 
 
 textcolor(BLACK);
@@ -179,16 +186,16 @@ else
 for j:=1 to i do write('*');
 
 
-Repeat
+Repeat 
 
-c:=readkey();
+c:=readkey(); 
 
 case c of
 
 #8:
-if i>0 then
+if i>0 then 
 begin
-write(c); write(' '); write(c);
+write(c); write(' '); write(c); 
 delete(entrada,i,1);
 dec(i);
 end;
@@ -204,16 +211,16 @@ end;
 			  end;
     end;
 
-#27: begin
+#27: begin 
      item:=255;
 	 end;
 
-
+	 
 #13: begin
      inc(item);
 	 end;
 
-else
+else 
 if (i<longitud) and Caracter_Valido(c,estilo) then
 begin
 if estilo<>0 then Write(c) else Write('*');
@@ -247,7 +254,7 @@ end;
 procedure Intercambio(var a,b: Ficha_Jugador_Usuario_Indice);
 var
    aux : Ficha_Jugador_Usuario_Indice;
-
+   
 begin
    aux := a;
    a := b;
@@ -257,7 +264,7 @@ end;
 procedure Intercambia_X_Fecha(var a,b: Ficha_Jugador_Fecha_Indice);
 var
    aux : Ficha_Jugador_Fecha_Indice;
-
+   
 begin
    aux := a;
    a := b;
@@ -271,18 +278,18 @@ procedure Indexa_X_Usuarios(var f:file of Ficha_Jugador);
 var
    h:file of Ficha_Jugador_Usuario_Indice;
    indice:Indice_Usuarios;
-   registro:Ficha_Jugador;
+   registro:Ficha_Jugador;   
    i,j,cantidad_registros: longint;
    no_intercambio : boolean;
-
+ 
 begin
 
  reset(f);
  cantidad_registros:=filesize(f);
 
- j:=1;
+ j:=1; 
  for i:=1 to cantidad_registros do
- begin
+ begin 
  read(f,registro);
   if registro.Marca<>255 then
   begin
@@ -305,18 +312,18 @@ begin
             end;
       inc(i);
    until ((i = cantidad_registros) or (no_intercambio));
-
+ 
  assign(h,'usuarios.idx');
  rewrite(h);
  reset(h);
-
+ 
  for i:=1 to cantidad_registros do
  begin
  write(h,indice[i]);
  end;
  close(h);
 
-
+ 
 end;
 
 procedure Indexa_X_Fecha(var f:file of Ficha_Jugador);
@@ -324,18 +331,18 @@ procedure Indexa_X_Fecha(var f:file of Ficha_Jugador);
 var
    h:file of Ficha_Jugador_Fecha_Indice;
    indice:Indice_Fecha;
-   registro:Ficha_Jugador;
+   registro:Ficha_Jugador;   
    i,j,cantidad_registros: longint;
    no_intercambio : boolean;
-
+ 
 begin
 
  reset(f);
  cantidad_registros:=filesize(f);
 
- j:=1;
+ j:=1; 
  for i:=1 to cantidad_registros do
- begin
+ begin 
  read(f,registro);
   if registro.Marca<>255 then
   begin
@@ -358,20 +365,90 @@ begin
             end;
       inc(i);
    until ((i = cantidad_registros) or (no_intercambio));
-
+ 
  assign(h,'fechas.idx');
  rewrite(h);
  reset(h);
-
+ 
  for i:=1 to cantidad_registros do
  begin
  write(h,indice[i]);
  end;
  close(h);
 
-
+ 
 end;
 
+
+Procedure Actualizar_Usuarios_Dat;
+
+var
+   fusers, fusbak, fusaux: file of Ficha_Jugador;
+   ultima_depuracion,hoy:string[8];
+   f_ud: file of string[8];
+   usuario: Ficha_Jugador;
+
+Begin
+	
+	hoy:= formatdatetime ('YYYYMMDD', now); 
+		
+	if not Existe_Archivo('depurado.dat') then
+	begin
+	assign (f_ud,'depurado.dat');
+	rewrite(f_ud);
+	write(f_ud,hoy);
+	close(f_ud);	
+	end 
+		
+		else
+		
+		if Existe_Archivo('usuarios.dat') then
+			begin
+			assign (f_ud,'depurado.dat');
+			reset  (f_ud);
+			read(f_ud,ultima_depuracion);
+			close(f_ud);
+		
+			if CompararStringFechas(hoy,ultima_depuracion) > 30 then
+				begin
+				assign (fusers, 'usuarios.dat');
+				assign (fusbak, 'usuarios.bak');
+				assign (fusaux, 'usersaux.dat');
+				reset  (fusers);
+				rewrite(fusbak);
+				rewrite(fusaux);
+		
+				while not eof(fusers) do
+				Begin
+					read(fusers, usuario);
+					write(fusbak, usuario);
+					if usuario.marca <> 255 then write(fusaux, usuario);
+				end;	
+				close(fusers);
+				close(fusaux);
+				close(fusbak);
+
+				
+				
+				assign (fusers, 'usuarios.dat');
+				erase  (fusers);
+				
+				assign (fusaux, 'usersaux.dat');
+				rename (fusaux, 'usuarios.dat');
+
+				Indexa_X_Usuarios(fusaux);
+				
+				close(fusaux);
+				
+				hoy:= formatdatetime ('YYYYMMDD', now); 
+				assign (f_ud,'depurado.dat');
+				rewrite(f_ud);
+				write(f_ud,hoy);
+				close(f_ud);	
+				
+				end;
+		end;
+end;
 
 
 
@@ -383,15 +460,15 @@ var
    posicion:    longint;
    v_indice:    Indice_Usuarios;
    registro:    Ficha_Jugador_Usuario_Indice;
-
-
+ 
+   
 begin
 
    reset(archivo_idx);
    fin:= filesize(archivo_idx);
-
+   
    for i:=1 to fin do
-   begin
+   begin 
    read(archivo_idx,registro);
    v_indice[i].Usuario := registro.Usuario;
    v_indice[i].Posicion:= registro.Posicion;
@@ -411,8 +488,8 @@ begin
       end;
    if encontrado then
       posicion := medio-1;
-
-   Posicion_Usuario_Idx:= posicion;
+      
+   Posicion_Usuario_Idx:= posicion;     
 end;
 
 
@@ -482,7 +559,7 @@ begin
 	case item of
 
 	255: Confirma[1]:='X';  //Sale de Altas!
-
+	
 	0:	item:=8;
 
 	1:	begin
@@ -490,12 +567,12 @@ begin
 		leecampo(item,Jugador.Nombre, 20, ALFANUMERICO);
 		end;
 
-	2:	begin
+	2:	begin 
 		gotoxy(20,4);
 		leecampo(item,Jugador.Apellido, 20, ALFANUMERICO);
 		end;
-
-	3:	begin
+  
+	3:	begin 
 		gotoxy(20,5);
 		leecampo(item,Jugador.Mail, 40, ALFANUMERICO);
 		end;
@@ -514,7 +591,7 @@ begin
 		repeat
 		item:=6;
 		gotoxy(20,13);
-		leecampo(item,Jugador.Pregunta, 1, ALFANUMERICO);
+		leecampo(item,Jugador.Pregunta, 1, ALFANUMERICO); 
 		until Jugador.Pregunta[1] in ['a'..'c','A'..'C'];
 
 	7:
@@ -525,11 +602,11 @@ begin
 
 	8:	begin
 		gotoxy(20,16);
-		leecampo(item,Confirma, 1, AFIRMA_NIEGA);
+		leecampo(item,Confirma, 1, AFIRMA_NIEGA); 
 		end;
 	9:
 		item:=1;
-
+	
 	end;
 
 end;
@@ -548,7 +625,7 @@ begin
 	item:=4;
 	Confirma[1]:='N';
 	end
-
+	
 		else
 		if length(Jugador.Clave)<6 then
 		begin
@@ -560,13 +637,13 @@ begin
 		Confirma[1]:='N';
 		end
 
-			else
+			else 
 				if Existe_Archivo('usuarios.idx') then
 				begin
 				assign(g,'usuarios.idx');
 				reset(g);
-
-					if Posicion_Usuario_Idx(Jugador.Usuario,g)<> -1 then
+				
+					if Posicion_Usuario_Idx(Jugador.Usuario,g)<> -1 then 
 					begin
 					textbackground(9);
 					textcolor(12);
@@ -575,16 +652,16 @@ begin
 					Datos_OK:=false;
 					item:=4;
 					Confirma[1]:='N';
-					end
+					end 
 					else Datos_OK:=true;
-
+			 
 				close(g);
 				end
 
-					else Datos_OK:=true;  //Primer Usuario!
-
+					else Datos_OK:=true;  //Primer Usuario!	
+			
 end;
-
+	
 until (Datos_OK=true) or (Confirma[1]='X');
 
 //______________________________________________
@@ -595,32 +672,32 @@ until (Datos_OK=true) or (Confirma[1]='X');
 if Confirma[1] in ['s','S'] then
 
 begin
-	if Existe_Archivo('usuarios.dat') then
+	if Existe_Archivo('usuarios.dat') then 
 	begin
 	assign(f,'usuarios.dat');
 	reset(f);
 	seek(f, filesize(f));
-	Jugador.Ultimo_Ingreso := formatdatetime ('YYYYMMDD', now);
+	Jugador.Ultimo_Ingreso := formatdatetime ('YYYYMMDD', now); 
 	write(f, Jugador);
 	Indexa_X_Usuarios(f);
     close(f);
 	end
 
-	else
-	begin
+	else 
+	begin   
 	assign(f,'usuarios.dat');
 	rewrite(f);
 	reset(f);
-	Jugador.Ultimo_Ingreso := formatdatetime ('YYYYMMDD', now);
+	Jugador.Ultimo_Ingreso := formatdatetime ('YYYYMMDD', now); 
 	write(f, Jugador);
 	close(f);
     //Crea archivo indice por usuario.
-
+  
 	Jugador_idx.Usuario:=upcase(Jugador.Usuario);
 	Jugador_idx.Posicion:=0;
 	assign(g,'usuarios.idx');
 	rewrite(g);
-	reset(g);
+	reset(g); 
 	write(g, Jugador_idx);
 	close(g);
 	end;
@@ -665,29 +742,29 @@ textcolor(15);
 
 		leecampo(item,Usuario, 8, ALFANUMERICO);
 		if item=255 then Confirma[1]:='X';
-
+        
 	    if ((length(Usuario)<6) and (upcase(Usuario)<>'ADMIN')) and (item<>255) then
-
+		
 			begin
 			textbackground(12);
 			textcolor(15);
 			gotoxy(20,18); write('EL USUARIO DEBE TENER AL MENOS 6 CARACTERES'); readkey;
 			gotoxy(20,18); write('                                           ');
-
+			
 			end
-
+	
 		else
-
+		
 
 			if Existe_Archivo('usuarios.idx') then
-
+		
 					begin
 					assign(g,'usuarios.idx');
 					reset(g);
 					Posi_Idx:=Posicion_Usuario_Idx(Usuario,g);
-
+									    
 						if Posi_Idx<> -1 then   //Si el Usuario Exite entonces...
-
+						
 							begin
 							seek(g,Posi_Idx);
 							read(g,Jugador_Idx);
@@ -696,36 +773,36 @@ textcolor(15);
 							seek(f,Jugador_idx.Posicion);
 							read(f,registro);
 							close(f);
-
+						
 							gotoxy(1,10);
 							textbackground(12);
 							textcolor(15);
-
-
+								
+						
 							case registro.Pregunta[1] of
-
+						
 								'a':write('Nombre del primer chico/a que te gust',chr(162),': ');
 								'b':write('Nombre de la ciudad donde naci',chr(162),' tu abuelo paterno: ');
 								'c':write('Nombre del juego preferido en la escuela primaria: ');
-
+						
 							end;
-
+						
 							leecampo(item,Respuesta_Secreta, 20, ALFANUMERICO);
-
+							
 							if item=255 then Confirma[1]:='X';
-
-
+        					
+						
 							if  (Respuesta_Secreta=registro.Respuesta) and (item<>255) then    //respondió correctamente a la pregunta secreta?
-
+						
 								begin
 								textbackground(12);
 								textcolor(15);
 								gotoxy(1,12); write('SU PASSWORD ES: ',registro.Clave); readkey;
 								Datos_OK:=true;
-								end
-
+								end 
+						
 								else
-
+							
 								begin
 								textbackground(12);
 								textcolor(15);
@@ -733,12 +810,12 @@ textcolor(15);
 								gotoxy(1,10); write('                                                                    ');
 								Datos_OK:=false;
 								end;
-
+							
 							end
 
-
+						
 						else // si no existe usuario hacer...
-
+					
 						begin
 						textbackground(12);
 						textcolor(15);
@@ -746,7 +823,7 @@ textcolor(15);
 						gotoxy(20,18); write('                    ');
 						Datos_OK:=false;
 						end;
-
+			 
 					close(g);
 				end
 
@@ -759,22 +836,10 @@ textcolor(15);
 					Datos_OK:=false;
 					Confirma[1]:='X';
 					end;
-
+			
 until (Datos_OK=true) or (Confirma[1]='X');
 
 end;
-
-
-procedure Jugar(var Participante:Ficha_Jugador);
-begin
-textbackground(13);
-textcolor(15);
-clrscr;
-writeln('Juega el usuario: ', Participante.Usuario);
-readkey;
-end;
-
-
 
 //***************************************************************************************
 
@@ -828,7 +893,7 @@ begin
 	case item of
 
 	255: Confirma[1]:='X';  //Sale de Altas!
-
+	
 	0:	item:=1;
 
 	1:	begin
@@ -836,26 +901,26 @@ begin
 		leecampo(item,Participante.Nombre, 20, ALFANUMERICO);
 		end;
 
-	2:	begin
+	2:	begin 
 		gotoxy(20,4);
 		leecampo(item,Participante.Apellido, 20, ALFANUMERICO);
 		end;
-
-	3:	begin
+  
+	3:	begin 
 		gotoxy(20,5);
 		leecampo(item,Participante.Mail, 40, ALFANUMERICO);
 		end;
 
-
+		
 	4:	begin
 		gotoxy(20,7);
 		leecampo(item,Participante.Clave, 8, OCULTO);
 		end;
-
+		
 	5:	repeat
 		item:=5;
 		gotoxy(20,13);
-		leecampo(item,Participante.Pregunta, 1, ALFANUMERICO);
+		leecampo(item,Participante.Pregunta, 1, ALFANUMERICO); 
 		until Participante.Pregunta[1] in ['a'..'c','A'..'C'];
 
 	6:
@@ -866,12 +931,12 @@ begin
 
 	7:	begin
 		gotoxy(20,16);
-		leecampo(item,Confirma, 1, AFIRMA_NIEGA);
+		leecampo(item,Confirma, 1, AFIRMA_NIEGA); 
 		end;
 
 	8:
 		item:=1;
-
+	
 	end;
 
 end;  //fin while.
@@ -880,7 +945,7 @@ end;  //fin while.
 	if Confirma[1] in['s','S'] then
 
 	begin
-
+		
 		if length(Participante.Clave)<6 then
 			begin
 			textbackground(9);
@@ -890,11 +955,11 @@ end;  //fin while.
 			item:=5;
 			Confirma[1]:='N';
 			end
-
-			else Datos_OK:=true;  //Primer Usuario!
-
+			
+			else Datos_OK:=true;  //Primer Usuario!	
+			
 	end;
-
+	
 until (Datos_OK=true) or (Confirma[1]='X');
 
 //______________________________________________
@@ -908,13 +973,13 @@ until (Datos_OK=true) or (Confirma[1]='X');
 	assign(f,'usuarios.dat');
 	reset(f);
 	seek(f, INDICE_ARCHIVO_DAT);
-
+	
 	write(f, Participante);
 	//Indexa_X_Usuarios(f); No es necesario en este caso ya que no modificamos el usuario.
     close(f);
 	end
 
-
+	
 end;
 
 
@@ -945,10 +1010,10 @@ gotoxy(10,16);
 Write('Confirma? (S/N): ');
 
 gotoxy(28,16);
-leecampo(item,Confirma, 1, AFIRMA_NIEGA);
+leecampo(item,Confirma, 1, AFIRMA_NIEGA); 
 
-if Confirma[1] in['s','S'] then
-
+if Confirma[1] in['s','S'] then 
+	
 	begin
 	assign(f,'usuarios.dat');
 	reset(f);
@@ -963,7 +1028,7 @@ if Confirma[1] in['s','S'] then
 	readkey;
 	end
 
-
+	
 end;
 
 
@@ -1193,7 +1258,11 @@ until (Datos_OK=true) or (Confirma[1]='X');
 if Datos_OK then Ingresa_Usuario:=true else Ingresa_Usuario:=false;
 
 end;
-
+{
+   *
+   *
+   *
+   * }
 procedure Listar_Usuarios_Inactivos (var diasa:tsalvacion);
 
 var
